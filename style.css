@@ -1,0 +1,770 @@
+:root {
+  --bg-color: #0a0a0a;
+  --text-color: #f0f0f0;
+  --accent-color: #888;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* HEADER */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.214);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+nav a {
+  position: relative;
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover {
+  transform: translateY(-3px) scale(1.05);
+  color: #CE3233; /* Azuki-ähnlicher Farbton – optional anpassbar */
+}
+
+/* Animierter Unterstrich wie bei Azuki */
+nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #CE3233;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+nav a:hover::after {
+  transform: scaleX(1);
+}
+
+/* --- Icon-Link-Effekt --- */
+.nav-icon-link {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-icon-link::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nav-icon-link:hover::after {
+  transform: translate(-50%, -50%) scale(1.2);
+  opacity: 1;
+}
+
+.nav-icon-link img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.85;
+  position: relative;
+  z-index: 1; /* damit Bild über dem Effekt liegt */
+}
+
+.nav-icon-link img:hover {
+  transform: scale(1.1) rotate(-2deg);
+  opacity: 1;
+}
+
+
+/* HERO */
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: transform 0.5s ease-in-out;
+  transform: translateX(100%);
+  opacity: 1; /* Bleibt sichtbar, wir bewegen es */
+  pointer-events: none; /* Damit nur aktives Slide klickbar */
+  z-index: 0;
+}
+
+.carousel-slide.active {
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.carousel-slide.prev {
+  transform: translateX(-100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  color: white;
+  font-size: 3rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+/* CAROUSEL BUTTONS */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 30;
+}
+
+.carousel-btn.prev { left: 1rem; }
+.carousel-btn.next { right: 1rem; }
+.carousel-btn:hover { background: rgba(0,0,0,0.8); }
+
+/* ABOUT SECTION */
+#about {
+  margin-top: 10vh;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.about-text {
+  flex: 2;
+}
+
+.about-img {
+  flex: 1;
+}
+
+.about-img img {
+  max-width: 300px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.about-social-icons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1.2rem;
+}
+
+.about-social-icons a img {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.8;
+}
+
+.about-social-icons a:hover img {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+
+/* WORK SECTION */
+#projects {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+
+#projects h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 300px;
+  gap: 0;
+  overflow: hidden;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: brightness(70%);
+}
+
+/* Overlay-Titel */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-align: center;
+  padding: 10px;
+  pointer-events: none;
+}
+
+.gallery-item:hover .overlay {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-auto-rows: 150px;
+  }
+}
+
+
+#clients {
+  text-align: center;
+  padding: 4rem;
+}
+
+.clients {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  max-width: 800px;              /* ⬅️ Schmaleres Raster */
+  margin: 0 auto;                /* ⬅️ Zentrierung */
+  gap: 2rem 3rem;                /* ⬅️ Mehr Abstand zwischen Zeilen und Spalten */
+  align-items: center;
+  justify-items: center;
+  padding-top: 4rem;
+}
+
+.client-logo img {
+  max-width: 120px;
+  height: auto;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.client-logo img:hover {
+  filter: grayscale(0%);
+}
+
+#contact {
+  max-width: 800px;
+  margin: 6rem auto;
+  padding: 2rem;
+  text-align: center;
+  background: #111;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+#contact h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.contact-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.contact-info {
+  text-align: left;
+  color: var(--text-color);
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.contact-info a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+.contact-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+.contact-info {
+  flex: 1 1 40%;
+  color: white;
+}
+
+.social-icons a img {
+  width: 30px;
+  margin-right: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.social-icons a:hover img {
+  transform: scale(1.1);
+}
+
+.contact-form {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-form label {
+  color: white;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  background: #1a1a1a;
+  color: white;
+  border-radius: 5px;
+}
+
+.contact-form button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--accent-color);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+footer {
+  padding-bottom: 80px; /* Platz für den fixierten Footer */
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--accent-color);
+  font-size: 0.75rem;
+  text-align: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+
+footer a {
+  color: var(--accent-color);
+  text-decoration: none;
+  pointer-events: auto; /* Links wieder klickbar machen */
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+#scrollToTop {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: auto;
+  transition: color 0.3s ease;
+}
+
+#scrollToTop:hover {
+  color: var(--text-color);
+}
+
+
+/* ===========================
+   Unterseiten – Hero Single
+   =========================== */
+
+.subpage .body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.subpage .hero-single {
+  position: relative;
+  width: 100vw;
+  height: 100vh; /* Vollflächig: gesamte Bildschirmhöhe */
+  overflow: hidden;
+}
+
+.subpage .hero-single img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Bild wird gefüllt, ohne verzerren */
+  object-position: center; /* Bildinhalt wird zentriert */
+  display: block;
+  z-index: 1;
+}
+
+.subpage .hero-caption {
+  position: absolute;
+  z-index: 2;
+  bottom: 2rem;
+  left: 2rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  max-width: 90%;
+  backdrop-filter: blur(4px);
+}
+
+
+/* Zurück-zur-Startseite-Pfeil */
+.subpage .back-to-home {
+  position: fixed;       /* fixiert den Button im Viewport */
+  bottom: 2rem;          /* Abstand von unten */
+  right: 2rem;           /* Abstand von rechts */
+  font-size: 2rem;
+  text-decoration: none;
+  color: white;
+  background-color: #c03541d0;
+  padding: 0.4rem 0.7rem;
+  border-radius: 20%;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+}
+
+.subpage .back-to-home img {
+  width: 32px;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.subpage .back-to-home:hover {
+  background-color: #fdaeb4;
+}
+
+/* Projekt-Textbereich */
+.project-content {
+  padding: 4rem 2rem;
+}
+
+.project-content .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.project-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.project-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Unterseiten Pfeil */
+.scroll-back {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 3.5rem;
+  border-radius: 50%;
+  z-index: 1000;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-back:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+/* Video // Verlinkungen // Etc. */
+
+.video-section {
+  max-width: 800px;  /* Breite der Video-Box */
+  margin: 2rem auto; /* Zentriert und mit Abstand oben und unten */
+  padding: 0 1rem;
+}
+
+.video-section video {
+  width: 100%;      /* Video passt sich der Box an */
+  height: auto;     /* Höhe proportional zur Breite */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: block;
+}
+
+.project-description {
+  padding: 6rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.project-title h2 {
+  font-size: 3rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.project-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #e1e1e1;
+}
+
+/* Responsive Anpassung */
+@media (max-width: 900px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-title {
+    margin-bottom: 2rem;
+  }
+}
+
+.play-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+  background-color: #fff;
+  color: #111;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin-top: 1rem;
+}
+
+.play-button:hover {
+    background-color: #C03540;
+  color: #000;
+}
+
+/* Slider */
+.slider-section {
+  padding: 4rem 2rem;
+  background-color: #0f0f0f;
+  overflow: hidden;
+}
+
+.slider-heading {
+  text-align: center;
+  color: #ffffff;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slider-track {
+  display: flex;
+  width: calc(600px * 10); /* passt sich JS/Anzahl Slides an */
+  animation: scroll 25s linear infinite;
+}
+
+.slide {
+  flex: 0 0 auto;
+  width: 600px;
+  height: 400px;
+  margin-right: 1rem;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* kein Verziehen, sauber skaliert */
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.slide img:hover {
+  transform: scale(1.03);
+}
+
+/* Animierter Endlos-Scroll */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+.image-slider {
+  overflow: hidden;
+  width: 100vw;
+  background-color: #0f0f0f;
+}
+
+.slider-track {
+  display: flex;
+  animation: slide-left 30s linear infinite;
+  gap: 0; /* Kein Abstand zwischen Bildern */
+}
+
+.slider-track img {
+  flex-shrink: 0;
+  width: 100vw;
+  height: auto;
+  object-fit: cover;
+}
+
+} 
+
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.hero-content {
+  position: absolute;
+  z-index: 2;
+  bottom: 2rem;
+  left: 2rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  max-width: 90%;
+  backdrop-filter: blur(4px);
+}
+
+
+.hero-content h1 {
+  font-size: 2rem;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.hero-content p {
+  font-size: 1rem;
+}
