@@ -474,25 +474,29 @@ footer a:hover {
   color: var(--text-color);
 }
 
+/* Hero-Container passt sich dynamisch dem Bild an */
 .subpage .hero-single {
   position: relative;
-  width: 100vw;
-  height: 100vh; /* Vollflächig: gesamte Bildschirmhöhe */
+  width: 100%;
+  height: auto; /* Höhe passt sich automatisch an */
+  background-color: #000; /* Optionaler Hintergrund, falls das Bild zentriert wird */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
+/* Bild vollständig anzeigen, Seitenverhältnis erhalten */
 .subpage .hero-single img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* Bild wird gefüllt, ohne verzerren */
-  object-position: center; /* Bildinhalt wird zentriert */
+  height: auto;
+  object-fit: contain; /* vollständige Darstellung ohne Beschnitt */
+  object-position: center;
   display: block;
   z-index: 1;
 }
 
+/* Caption bleibt positioniert – aber auch responsive */
 .subpage .hero-caption {
   position: absolute;
   z-index: 2;
@@ -504,7 +508,19 @@ footer a:hover {
   border-radius: 1rem;
   max-width: 90%;
   backdrop-filter: blur(4px);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
 }
+
+/* Mobil-Anpassung */
+@media screen and (max-width: 768px) {
+  .subpage .hero-caption {
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.5rem;
+  }
+}
+
 
 
 /* Zurück-zur-Startseite-Pfeil */
@@ -767,4 +783,312 @@ footer a:hover {
 
 .hero-content p {
   font-size: 1rem;
+}
+
+/* -------------------------
+   Mobile Header & Burger Menu
+------------------------- */
+
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.463);
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+
+  }
+
+  /* Burger Icon sichtbar */
+  .burger {
+    display: block;
+    cursor: pointer;
+    font-size: 2rem;
+    margin: 0.5rem;
+    background: none;
+    border: none;
+    color: white;
+  }
+
+  /* Navigation verstecken */
+  nav {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* Wenn aktiv (per JS) */
+  nav.active {
+    display: flex;
+  }
+}
+
+/* Standardmäßig Burger-Icon ausblenden */
+.burger {
+  display: none;
+}
+
+
+@media screen and (max-width: 768px) {
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+
+  .burger {
+    display: block;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    
+    /* Zentrierung */
+    position: absolute;
+    bottom: 0.5rem;
+    right: 1rem;
+    transform: translateX(-50%);
+  }
+}
+
+
+/* -------------------------
+   Logo-Responsive-Styles
+------------------------- */
+
+/* Mobiloptimierung (iPhone / iPad) */
+@media screen and (max-width: 768px) {
+  .about-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* zentriert Bild & Text */
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .about-img {
+    order: -1; /* Bild erscheint vor dem Text */
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 👈 sorgt für echte horizontale Zentrierung */
+  }
+
+  .about-img img {
+    max-width: 150px;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .about-text {
+    order: 1;
+    width: 100%;
+  }
+
+  .about-text p {
+    text-align: center;
+  }
+}
+
+/* === Bestehender Code bleibt, nur responsive Ergänzungen hinzugefügt === */
+
+/* --- Responsive Header & Navigation --- */
+@media (max-width: 1024px) {
+  header {
+    padding: 1rem;
+  }
+  nav {
+    gap: 1rem;
+  }
+  nav a {
+    font-size: 1.2rem;
+  }
+  .nav-icon-link img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Mobile Navigation - z.B. bei 768px kleineren Geräten */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+  nav {
+    width: 100%;
+    justify-content: space-around;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+  }
+  nav a {
+    font-size: 1.5rem;
+  }
+  .nav-icon-link img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+
+/* --- Responsive Hero --- */
+@media (max-width: 768px) {
+  .hero {
+    height: 50vh;
+  }
+  .carousel-caption {
+    font-size: 1.8rem;
+    bottom: 1rem;
+    left: 1rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 50vh;
+  }
+  .carousel-caption {
+    font-size: 1.8rem;
+    bottom: 0.5rem;
+    left: 0.5rem;
+  }
+}
+
+/* --- About Section --- */
+@media (max-width: 768px) {
+  .about-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .about-text, .about-img {
+    flex: none;
+    width: 100%;
+    text-align: center;
+  }
+  .about-img img {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+  .about-social-icons {
+    justify-content: center;
+  }
+}
+
+/* --- Gallery --- */
+@media (max-width: 1024px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-auto-rows: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-auto-rows: 120px;
+  }
+}
+
+/* --- Clients Section --- */
+@media (max-width: 768px) {
+  .clients {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    max-width: 100%;
+    gap: 1.5rem 2rem;
+  }
+  .client-logo img {
+    max-width: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .clients {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 1rem 1.5rem;
+  }
+  .client-logo img {
+    max-width: 70px;
+  }
+}
+
+/* --- Contact Section --- */
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    padding: 0 0.5rem;
+  }
+  .contact-info, .contact-form {
+    flex: none;
+    width: 100%;
+  }
+  .contact-wrapper {
+    flex-direction: column;
+  }
+  .social-icons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.9rem;
+  }
+  .contact-form button {
+    font-size: 1rem;
+  }
+}
+
+/* --- Footer --- */
+@media (max-width: 480px) {
+  footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+  #scrollToTop {
+    margin: 0.5rem auto 0 auto;
+  }
+}
+
+.hero {
+  width: 100vw;       /* volle Breite des Viewports */
+  height: 100vh;      /* volle Höhe des Viewports */
+  overflow: hidden;   /* nichts soll herausragen */
+  position: relative;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Bild füllt den Bereich, schneidet aber bei Bedarf, um zu passen */
+  display: block;
 }
