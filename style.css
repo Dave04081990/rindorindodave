@@ -292,13 +292,6 @@ nav a:hover::after {
   opacity: 1;
 }
 
-@media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-auto-rows: 150px;
-  }
-}
-
 
 #clients {
   text-align: center;
@@ -477,26 +470,46 @@ footer a:hover {
 /* Hero-Container passt sich dynamisch dem Bild an */
 .subpage .hero-single {
   position: relative;
-  width: 100%;
-  height: auto; /* Höhe passt sich automatisch an */
-  background-color: #000; /* Optionaler Hintergrund, falls das Bild zentriert wird */
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-/* Bild vollständig anzeigen, Seitenverhältnis erhalten */
+/* Bild füllt den gesamten Viewport und wird ggf. beschnitten */
 .subpage .hero-single img {
   width: 100%;
-  height: auto;
-  object-fit: contain; /* vollständige Darstellung ohne Beschnitt */
+  height: 100%;
+  object-fit: cover;
   object-position: center;
   display: block;
   z-index: 1;
 }
 
-/* Caption bleibt positioniert – aber auch responsive */
+.subpage .hero-single2 {
+  position: relative;
+  width: 100vw;
+  height: auto;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Bild füllt den gesamten Viewport und wird ggf. beschnitten */
+.subpage .hero-single2 img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  z-index: 1;
+}
+
 .subpage .hero-caption {
   position: absolute;
   z-index: 2;
@@ -510,6 +523,7 @@ footer a:hover {
   backdrop-filter: blur(4px);
   font-size: clamp(1rem, 2.5vw, 1.5rem);
 }
+
 
 /* Mobil-Anpassung */
 @media screen and (max-width: 768px) {
@@ -691,14 +705,7 @@ footer a:hover {
   animation: scroll 25s linear infinite;
 }
 
-.slide {
-  flex: 0 0 auto;
-  width: 600px;
-  height: 400px;
-  margin-right: 1rem;
-  border-radius: 3px;
-  overflow: hidden;
-}
+
 
 .slide img {
   width: 100%;
@@ -928,6 +935,25 @@ footer a:hover {
 }
 
 /* Mobile Navigation - z.B. bei 768px kleineren Geräten */
+
+@media screen and (max-width: 768px) {
+  .subpage .hero-caption {
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .subpage .hero-caption {
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -998,22 +1024,31 @@ footer a:hover {
 /* --- Gallery --- */
 @media (max-width: 1024px) {
   .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-auto-rows: 200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 300px;
+  gap: 0;
+  overflow: hidden;
   }
 }
 
 @media (max-width: 768px) {
   .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-auto-rows: 150px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 300px;
+  gap: 0;
+  overflow: hidden;
   }
 }
 
 @media (max-width: 480px) {
   .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    grid-auto-rows: 120px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 300px;
+  gap: 0;
+  overflow: hidden;
   }
 }
 
