@@ -69,19 +69,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Scroll-Verhalten: Burger & Menü verbergen beim Runterscrollen
+  // Scroll-Verhalten: nur Navigation schließen, Burger bleibt sichtbar
   window.addEventListener("scroll", function () {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
     if (currentScroll > lastScrollTop + 10) {
-      // Runtergescrollt → ausblenden & Menü schließen
-      burger.style.opacity = "0";
-      burger.style.pointerEvents = "none";
+      // Runtergescrollt → Menü schließen
       nav.classList.remove("active");
-    } else if (currentScroll < lastScrollTop - 10) {
-      // Hochgescrollt → Burger wieder anzeigen
-      burger.style.opacity = "1";
-      burger.style.pointerEvents = "auto";
     }
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
