@@ -50,8 +50,40 @@ window.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("DOMContentLoaded", function () {
   const burger = document.querySelector(".burger");
   const nav = document.querySelector("nav");
+  let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  burger.addEventListener("click", function () {
+  // Toggle Navigation bei Klick auf Burger
+  burger.addEventListener("click", function (e) {
+    e.stopPropagation();
     nav.classList.toggle("active");
+  });
+
+  // Klick außerhalb → Navigation schließen
+  document.addEventListener("click", function (e) {
+    if (
+      nav.classList.contains("active") &&
+      !nav.contains(e.target) &&
+      !burger.contains(e.target)
+    ) {
+      nav.classList.remove("active");
+    }
+  });
+
+  // Scroll-Verhalten: Burger & Menü verbergen beim Runterscrollen
+  window.addEventListener("scroll", function () {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop + 10) {
+      // Runtergescrollt → ausblenden & Menü schließen
+      burger.style.opacity = "0";
+      burger.style.pointerEvents = "none";
+      nav.classList.remove("active");
+    } else if (currentScroll < lastScrollTop - 10) {
+      // Hochgescrollt → Burger wieder anzeigen
+      burger.style.opacity = "1";
+      burger.style.pointerEvents = "auto";
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   });
 });
