@@ -820,7 +820,6 @@ footer a:hover {
     background: none;
     border: none;
     color: white;
-          transition: opacity 0.3s ease;
   }
 
   /* Navigation verstecken */
