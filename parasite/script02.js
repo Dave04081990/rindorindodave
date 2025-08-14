@@ -81,3 +81,38 @@ document.addEventListener("DOMContentLoaded", function () {
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   });
 });
+
+let lastScroll = 0;
+const header = document.querySelector('header'); // Passe an deine Header-Selektor an
+let ticking = false;
+
+// Angenommen, dein Menü bekommt beim Öffnen die Klasse "menu-open"
+function isMenuOpen() {
+  return document.body.classList.contains('menu-open');
+}
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      // Wenn Menü geöffnet ist, Header immer anzeigen
+      if (isMenuOpen()) {
+        header.style.transform = 'translateY(0)';
+      } else {
+        if (currentScroll > lastScroll && currentScroll > 50) {
+          // Scroll nach unten → Header ausblenden
+          header.style.transform = 'translateY(-100%)';
+        } else {
+          // Scroll nach oben → Header einblenden
+          header.style.transform = 'translateY(0)';
+        }
+      }
+
+      header.style.transition = 'transform 0.3s ease';
+      lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+      ticking = false;
+    });
+    ticking = true;
+  }
+});

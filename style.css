@@ -1127,3 +1127,19 @@ footer a:hover {
   object-fit: cover;  /* Bild füllt den Bereich, schneidet aber bei Bedarf, um zu passen */
   display: block;
 }
+
+.logo {
+  font-size: 2rem;
+  text-align: left; /* Standard linksbündig */
+  margin: 0;
+  padding: 1rem;
+}
+
+/* Responsive ab 900px */
+@media (max-width: 768px) {
+  .logo {
+    text-align: center; /* zentrieren */
+    display: block;
+    width: 100%;
+  }
+}

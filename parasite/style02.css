@@ -294,7 +294,6 @@ footer a:hover {
 }
 
 /* Slider-Container */
-
 .slider-section {
   padding: 4rem 2rem;
   background-color: #0f0f0f;
@@ -308,6 +307,7 @@ footer a:hover {
   margin-bottom: 2rem;
 }
 
+/* Slider-Wrapper */
 .slider {
   position: relative;
   width: 100%;
@@ -320,27 +320,33 @@ footer a:hover {
   animation: scroll 40s linear infinite;
 }
 
-/* Einzelne Slides */
 .slide {
-  flex: 0 0 auto;
-  height: 400px;       /* fixe Höhe */
-  width: auto;         /* Breite automatisch */
-  margin-right: 0.5rem; /* geringerer Abstand */
+  flex: 0 0 auto;       /* Slide Breite automatisch */
+  height: 400px;        /* feste Höhe für alle Slides */
+  margin-right: 0.5rem;
   border-radius: 3px;
   overflow: hidden;
+  display: flex;
+  align-items: center;  /* Bild vertikal zentrieren */
+  justify-content: center; /* Bild horizontal zentrieren */
 }
 
-/* Bilder in Slides */
 .slide img {
-  height: 100%;        /* Bildhöhe an Slide-Höhe anpassen */
-  width: auto;         /* Breite proportional */
-  object-fit: cover;   /* Bild füllt Höhe, evtl. Beschnitt */
+  height: 100%;       /* Bild füllt Höhe des Slides */
+  width: auto;        /* Breite proportional */
+  object-fit: contain; /* Ganze Bildhöhe sichtbar */
   display: block;
   transition: transform 0.3s ease;
 }
 
 .slide img:hover {
   transform: scale(1.03);
+}
+
+/* Animierter Track */
+.slider-track {
+  display: flex;
+  animation: scroll 40s linear infinite; /* Desktop Standard */
 }
 
 /* Endlos-Animation */
@@ -353,36 +359,20 @@ footer a:hover {
   }
 }
 
-/* Responsive: auch auf Mobile feste Höhe */
-@media (max-width: 480px) {
-  .slide {
-    width: 100vw;       /* Slide füllt Breite */
-    height: 300px;      /* feste Höhe */
+/* Animation langsamer auf Tablets */
+@media (max-width: 1024px) {
+  .slider-track {
+    animation: scroll 60s linear infinite; /* langsamer */
   }
 }
 
-/* Responsive: auch auf Mobile feste Höhe */
+/* Animation langsamer auf Mobile */
 @media (max-width: 768px) {
-  .slide {
-    width: 100vw;       /* Slide füllt Breite */
-    height: 300px;      /* feste Höhe */
+  .slider-track {
+    animation: scroll 80s linear infinite; /* noch langsamer */
   }
 }
 
-  .slide img {
-    height: 100%;       /* Bildhöhe an Slide-Höhe anpassen */
-    width: auto;        /* Breite proportional */
-    object-fit: cover;  /* Bild füllt Höhe, evtl. Beschnitt */
-  }
-
-  @keyframes scroll-mobile {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
 
 
 .contact-socials {
@@ -428,6 +418,18 @@ footer a:hover {
   header h1 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+
+  }
+
+  /* Burger Icon sichtbar */
+  .burger {
+    display: block;
+    cursor: pointer;
+    font-size: 2rem;
+    margin: 0.5rem;
+    background: none;
+    border: none;
+    color: white;
   }
 
   /* Navigation verstecken */
@@ -446,6 +448,9 @@ footer a:hover {
 }
 
 /* Standardmäßig Burger-Icon ausblenden */
+.burger {
+  display: none;
+}
 
 
 @media screen and (max-width: 768px) {
@@ -471,7 +476,6 @@ footer a:hover {
     color: white;
     cursor: pointer;
     margin-bottom: 1rem;
-
     
     /* Zentrierung */
     position: absolute;
@@ -480,7 +484,6 @@ footer a:hover {
     transform: translateX(-50%);
   }
 }
-
 
 /* -------------------------
    Logo-Responsive-Styles
@@ -733,3 +736,17 @@ footer a:hover {
   }
 }
 
+.logo {
+  height: 60px;       /* Standardhöhe */
+  width: auto;        /* proportional */
+  display: inline-block;
+  margin: 0;
+}
+
+/* Responsive ab 900px */
+@media (max-width: 768px) {
+  .logo {
+    display: block;       /* macht margin auto wirksam */
+    margin: 0 auto;       /* zentriert horizontal */
+  }
+}
