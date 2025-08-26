@@ -14,7 +14,7 @@ body {
   font-family: 'Poppins', sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
-  background-image: url('../img/Background.png');
+  background-image: url('./img/Background.png');
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
