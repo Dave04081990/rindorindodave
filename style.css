@@ -539,6 +539,74 @@ display: none;
   overflow: hidden;
   margin-top: 7rem;
 }
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: transform 0.5s ease-in-out;
+  transform: translateX(100%);
+  opacity: 1; /* Bleibt sichtbar, wir bewegen es */
+  pointer-events: none; /* Damit nur aktives Slide klickbar */
+  z-index: 0;
+}
+
+.carousel-slide.active {
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.carousel-slide.prev {
+  transform: translateX(-100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  color: white;
+  font-size: 3rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+/* CAROUSEL BUTTONS */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 30;
+}
+
+.carousel-btn.prev { left: 1rem; }
+.carousel-btn.next { right: 1rem; }
+.carousel-btn:hover { background: rgba(0,0,0,0.8); }
 }
 
 
