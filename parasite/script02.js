@@ -1,40 +1,49 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const track = document.querySelector('.slider-track');
-  const slides = Array.from(track.children);
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = document.querySelectorAll('.carousel-slide');
+  const prevBtn = document.querySelector('.carousel-btn.prev');
+  const nextBtn = document.querySelector('.carousel-btn.next');
+  let currentIndex = 0;
+  let interval;
 
-  // Stelle sicher, dass alle Bilder geladen sind, bevor du die Breite misst
-  Promise.all(
-    slides.map(slide => {
-      const img = slide.querySelector('img');
-      return new Promise(resolve => {
-        if (img.complete) {
-          resolve();
-        } else {
-          img.onload = img.onerror = resolve;
-        }
-      });
-    })
-  ).then(() => {
-    // Dupliziere Slides für Endlos-Scroll
-    slides.forEach(slide => {
-      const clone = slide.cloneNode(true);
-      track.appendChild(clone);
+  function updateSlides(newIndex) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'prev');
+      if (i === newIndex) {
+        slide.classList.add('active');
+      } else if (i === currentIndex) {
+        slide.classList.add('prev');
+      }
+      // Alle anderen bleiben ohne Klasse = rechts außerhalb
     });
+    currentIndex = newIndex;
+  }
 
-    // Breite neu setzen für flüssige Animation
-    const totalWidth = Array.from(track.children).reduce((sum, slide) => {
-      return sum + slide.offsetWidth + parseFloat(getComputedStyle(slide).marginRight || 0);
-    }, 0);
+  function nextSlide() {
+    const newIndex = (currentIndex + 1) % slides.length;
+    updateSlides(newIndex);
+  }
 
-    track.style.width = totalWidth + 'px';
+  function prevSlide() {
+    const newIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateSlides(newIndex);
+  }
 
-    // Optional: Neuanimation triggern (falls nötig bei Layoutshift)
-    track.style.animation = 'none';
-    // kurz warten, dann Animation neu setzen
-    setTimeout(() => {
-      track.style.animation = '';
-    }, 10);
+  nextBtn.addEventListener('click', () => {
+    clearInterval(interval);
+    nextSlide();
+    interval = setInterval(nextSlide, 3000);
   });
+
+  prevBtn.addEventListener('click', () => {
+    clearInterval(interval);
+    prevSlide();
+    interval = setInterval(nextSlide, 3000);
+  });
+
+  // Starte initial
+  updateSlides(currentIndex);
+
+  interval = setInterval(nextSlide, 3000);
 });
 
 // Optionale Duplikation der Slides (für Endloswirkung)
@@ -47,16 +56,42 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const burger = document.querySelector(".burger");
-  const nav = document.querySelector("nav");
-  let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  // Toggle Navigation bei Klick auf Burger
-  burger.addEventListener("click", function (e) {
-    e.stopPropagation();
-    nav.classList.toggle("active");
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const burger = document.querySelector('.burger');
+  const nav = document.querySelector('.nav-links');
+  let lastScroll = 0;
+
+  if (burger && nav) {
+    // Klick auf Burger → Menü auf/zu
+    burger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+
+    // Klick außerhalb → Menü schließen
+    document.addEventListener('click', (e) => {
+      if (
+        nav.classList.contains('active') &&
+        !nav.contains(e.target) &&
+        !burger.contains(e.target)
+      ) {
+        nav.classList.remove('active');
+      }
+    });
+
+    // Scroll → Menü automatisch schließen
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (nav.classList.contains('active')) {
+        nav.classList.remove('active'); // Menü zuklappen
+      }
+
+      lastScroll = currentScroll;
+    });
+  }
+});
+
 
   // Klick außerhalb → Navigation schließen
   document.addEventListener("click", function (e) {
@@ -80,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   });
-});
 
 let lastScroll = 0;
 const header = document.querySelector('header'); // Passe an deine Header-Selektor an
@@ -115,4 +149,9 @@ window.addEventListener('scroll', () => {
     });
     ticking = true;
   }
+});
+
+const burger = document.querySelector('.burger');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('active');
 });

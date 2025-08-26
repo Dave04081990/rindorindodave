@@ -56,16 +56,42 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const burger = document.querySelector(".burger");
-  const nav = document.querySelector("nav");
-  let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  // Toggle Navigation bei Klick auf Burger
-  burger.addEventListener("click", function (e) {
-    e.stopPropagation();
-    nav.classList.toggle("active");
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const burger = document.querySelector('.burger');
+  const nav = document.querySelector('.nav-links');
+  let lastScroll = 0;
+
+  if (burger && nav) {
+    // Klick auf Burger → Menü auf/zu
+    burger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+
+    // Klick außerhalb → Menü schließen
+    document.addEventListener('click', (e) => {
+      if (
+        nav.classList.contains('active') &&
+        !nav.contains(e.target) &&
+        !burger.contains(e.target)
+      ) {
+        nav.classList.remove('active');
+      }
+    });
+
+    // Scroll → Menü automatisch schließen
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (nav.classList.contains('active')) {
+        nav.classList.remove('active'); // Menü zuklappen
+      }
+
+      lastScroll = currentScroll;
+    });
+  }
+});
+
 
   // Klick außerhalb → Navigation schließen
   document.addEventListener("click", function (e) {
@@ -89,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   });
-});
 
 let lastScroll = 0;
 const header = document.querySelector('header'); // Passe an deine Header-Selektor an
@@ -124,4 +149,9 @@ window.addEventListener('scroll', () => {
     });
     ticking = true;
   }
+});
+
+const burger = document.querySelector('.burger');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('active');
 });

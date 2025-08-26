@@ -14,6 +14,12 @@ body {
   font-family: 'Poppins', sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
+  background-image: url('../rindorindodave/img/Background.png');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  margin: 0;
+  height: 100vh;
 }
 
 /* HEADER */
@@ -471,8 +477,8 @@ footer a:hover {
 /* Hero-Container passt sich dynamisch dem Bild an */
 .subpage .hero-single {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: auto;
+  height: auto;
   background-color: #000;
   display: flex;
   align-items: center;
@@ -512,28 +518,27 @@ footer a:hover {
 }
 
 .subpage .hero-caption {
-  position: absolute;
-  z-index: 2;
-  bottom: 2rem;
-  left: 2rem;
-  color: white;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 1rem 2rem;
-  border-radius: 1rem;
-  max-width: 90%;
-  backdrop-filter: blur(4px);
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
+display: none;
 }
 
 
 /* Mobil-Anpassung */
 @media screen and (max-width: 768px) {
   .subpage .hero-caption {
-    bottom: 1rem;
-    left: 1rem;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.5rem;
+display: none;
   }
+
+  .subpage .hero-single {
+  position: relative;
+  width: auto;
+  height: auto;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: 7rem;
+}
 }
 
 
@@ -649,7 +654,7 @@ footer a:hover {
 }
 
 /* Responsive Anpassung */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .project-grid {
     grid-template-columns: 1fr;
   }
@@ -657,6 +662,17 @@ footer a:hover {
   .project-title {
     margin-bottom: 2rem;
   }
+
+  .subpage .hero-single {
+  position: relative;
+  width: auto;
+  height: auto;
+  background-color: #00000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 }
 
 .play-button {
@@ -762,8 +778,6 @@ footer a:hover {
   left: 50%;
   min-width: 100%;
   min-height: 100%;
-  width: auto;
-  height: auto;
   z-index: 1;
   transform: translate(-50%, -50%);
   object-fit: cover;
@@ -780,6 +794,7 @@ footer a:hover {
   border-radius: 1rem;
   max-width: 90%;
   backdrop-filter: blur(4px);
+
 }
 
 
@@ -799,28 +814,54 @@ footer a:hover {
 
 @media screen and (max-width: 768px) {
   header {
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1rem;
     text-align: center;
-    background: rgba(0, 0, 0, 0.463);
+    background: rgba(0,0,0,0.5);
   }
 
   header h1 {
-    font-size: 1.5rem;
+    font-size: 1 rem;
     margin-bottom: 0.5rem;
 
   }
 
+  .hero-content {
+display: none;
+
+}
+
+.hero-video-container {
+  position: relative;
+  width: auto;
+  height: auto;
+  aspect-ratio: 16/9; /* passt Höhe automatisch an */
+  overflow: hidden;
+  margin-top: 7rem;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* zentriert das Video */
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Video wird komplett sichtbar */
+}
+
   /* Burger Icon sichtbar */
   .burger {
     display: block;
-    cursor: pointer;
     font-size: 2rem;
-    margin: 0.5rem;
+    margin: 1rem auto; /* zentriert */
     background: none;
     border: none;
     color: white;
+    cursor: pointer;
+    z-index: 1001;
   }
 
   /* Navigation verstecken */
@@ -832,10 +873,44 @@ footer a:hover {
     margin-top: 1rem;
   }
 
-  /* Wenn aktiv (per JS) */
-  nav.active {
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0,0,0,0.95);
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease;
+    z-index: 999;
+      margin: 0;   /* sicherheitshalber */
   }
+
+  .nav-links.active {
+    height: 100vh;
+  }
+
+  .nav-links a {
+    color: white;
+    font-size: 2rem;
+    margin: 1rem 0;
+    text-decoration: none;
+  }
+  
+  .nav-icon-link img {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.85;
+  position: relative;
+  z-index: 1; /* damit Bild über dem Effekt liegt */
+  margin: 1rem;
+}
 }
 
 /* Standardmäßig Burger-Icon ausblenden */
@@ -859,22 +934,19 @@ footer a:hover {
     margin-bottom: 0.5rem;
   }
 
-  .burger {
-    display: block;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    margin-bottom: 1rem;
-    
-    /* Zentrierung */
-    position: absolute;
-    bottom: 0.5rem;
-    right: 1rem;
-    transform: translateX(-50%);
-  }
+.burger {
+  display: block;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin: 1rem auto; /* automatisch zentrieren */
+  position: static;  /* keine absolute Position */
 }
+
+  }
+
 
 
 /* -------------------------
@@ -901,7 +973,7 @@ footer a:hover {
 
   .about-img img {
     max-width: 150px;
-    width: 100%;
+    width: 50%;
     height: auto;
     border-radius: 8px;
   }
@@ -918,22 +990,7 @@ footer a:hover {
 
 /* === Bestehender Code bleibt, nur responsive Ergänzungen hinzugefügt === */
 
-/* --- Responsive Header & Navigation --- */
-@media (max-width: 1024px) {
-  header {
-    padding: 1rem;
-  }
-  nav {
-    gap: 1rem;
-  }
-  nav a {
-    font-size: 1.2rem;
-  }
-  .nav-icon-link img {
-    width: 40px;
-    height: 40px;
-  }
-}
+
 
 /* Mobile Navigation - z.B. bei 768px kleineren Geräten */
 
@@ -943,6 +1000,20 @@ footer a:hover {
     left: 1rem;
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
+  }
+
+  .hero-video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9; /* Höhe passt sich automatisch an */
+    overflow: hidden;
+  }
+
+  .hero-video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Video füllt den Container */
+    display: block; /* stellt sicher, dass das Video sichtbar ist */
   }
 }
 
@@ -955,24 +1026,104 @@ footer a:hover {
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   header {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     padding: 1rem;
+    text-align: center;
+    background: rgba(0,0,0,0.5);
   }
+
+  header h1 {
+    font-size: 1 rem;
+    margin-bottom: 0.5rem;
+
+  }
+
+  /* Burger Icon sichtbar */
+  
+.burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.burger span {
+  display: block;
+  height: 0.25rem;
+  width: 100%;
+  background: white;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  transform-origin: center; /* Drehpunkt in der Mitte der Linie */
+}
+
+
+/* Klick -> X */
+.burger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+  background: #ffffff;
+}
+
+.burger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+  background: #ffffff;
+}
+
+  /* Hover-Effekt */
+.burger:hover {
+  color: #da2727;         /* Farbe beim Hover ändern */
+  transform: scale(1.2);  /* leicht vergrößern */
+}
+
+  /* Navigation verstecken */
   nav {
-    width: 100%;
-    justify-content: space-around;
-    gap: 0.7rem;
-    margin-top: 0.5rem;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
   }
-  nav a {
-    font-size: 1.5rem;
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease;
+    z-index: 999;
+      margin: 0;   /* sicherheitshalber */
   }
-  .nav-icon-link img {
-    width: 40px;
-    height: 40px;
+
+  .nav-links.active {
+    height: 100vh;
+  }
+
+  .nav-links a {
+    color: white;
+    font-size: 2rem;
+    margin: 1rem 0;
+    text-decoration: none;
   }
 }
 
@@ -983,11 +1134,9 @@ footer a:hover {
     height: 50vh;
   }
   .carousel-caption {
-    font-size: 1.8rem;
-    bottom: 1rem;
-    left: 1rem;
-    max-width: 90%;
+display: none;
   }
+
 }
 
 @media (max-width: 480px) {
@@ -995,10 +1144,9 @@ footer a:hover {
     height: 50vh;
   }
   .carousel-caption {
-    font-size: 1.8rem;
-    bottom: 0.5rem;
-    left: 0.5rem;
+display: none;
   }
+  
 }
 
 /* --- About Section --- */
@@ -1139,8 +1287,6 @@ footer a:hover {
 /* Responsive ab 900px */
 @media (max-width: 768px) {
   .logo {
-    text-align: center; /* zentrieren */
-    display: block;
-    width: 100%;
+display: none;
   }
 }
