@@ -1,7 +1,7 @@
 :root {
   --bg-color: #0a0a0a;
   --text-color: #f0f0f0;
-  --accent-color: #888;
+  --accent-color: #f87472;
 }
 
 * {
@@ -29,7 +29,7 @@ header {
   left: 0;
   width: 100%;
   height: 12%;
-  background: rgba(0, 0, 0, 0.214);
+  background: rgba(0, 0, 0, 0);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -54,7 +54,7 @@ nav a {
 
 nav a:hover {
   transform: translateY(-3px) scale(1.05);
-  color: #CE3233; /* Azuki-ähnlicher Farbton – optional anpassbar */
+  color: #f87472; /* Azuki-ähnlicher Farbton – optional anpassbar */
 }
 
 /* Animierter Unterstrich wie bei Azuki */
@@ -65,7 +65,7 @@ nav a::after {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #CE3233;
+  background-color: #f87472;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.2s ease;
@@ -167,7 +167,7 @@ nav a:hover::after {
   color: white;
   font-size: 3rem;
   font-weight: 600;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.819);
 }
 
 /* CAROUSEL BUTTONS */
@@ -242,7 +242,6 @@ nav a:hover::after {
 #projects {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 6rem 2rem;
 }
 
 #projects h2 {
@@ -251,10 +250,11 @@ nav a:hover::after {
   margin-bottom: 3rem;
 }
 
+
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-auto-rows: 300px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-auto-rows: 350px;
   gap: 0;
   overflow: hidden;
 }
@@ -425,7 +425,6 @@ footer {
   left: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
-  color: var(--accent-color);
   font-size: 0.75rem;
   text-align: right;
   display: flex;
@@ -440,7 +439,7 @@ footer {
 
 
 footer a {
-  color: var(--accent-color);
+  color: var(--white);
   text-decoration: none;
   pointer-events: auto; /* Links wieder klickbar machen */
 }
@@ -537,8 +536,9 @@ display: none;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-top: 7rem;
+  margin-top: 6.5rem;
 }
+
 .hero {
   position: relative;
   width: 100vw;
@@ -546,6 +546,7 @@ display: none;
   overflow: hidden;
   z-index: 10;
 }
+
 
 .carousel-slide {
   position: absolute;
@@ -582,12 +583,15 @@ display: none;
 
 .carousel-caption {
   position: absolute;
-  bottom: 2rem;
-  left: 2rem;
+  top: 63%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* horizontale + vertikale Zentrierung */
   color: white;
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 600;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.82);
+  text-align: center; /* falls der Text mehrzeilig ist */
+  width: 70%; /* optional: damit der Text nicht überläuft */
 }
 
 /* CAROUSEL BUTTONS */
@@ -619,7 +623,7 @@ display: none;
   font-size: 2rem;
   text-decoration: none;
   color: white;
-  background-color: #c03541d0;
+  background-color: #f87472;
   padding: 0.4rem 0.7rem;
   border-radius: 20%;
   z-index: 10;
@@ -633,7 +637,9 @@ display: none;
 }
 
 .subpage .back-to-home:hover {
-  background-color: #fdaeb4;
+  color: #f87472;
+  background-color: #ffffff;
+  transition: transform 0.3s ease;
 }
 
 /* Projekt-Textbereich */
@@ -760,78 +766,10 @@ display: none;
 }
 
 .play-button:hover {
-    background-color: #C03540;
+    background-color: #f87472;
   color: #000;
 }
 
-/* Slider */
-.slider-section {
-  padding: 4rem 2rem;
-  background-color: #0f0f0f;
-  overflow: hidden;
-}
-
-.slider-heading {
-  text-align: center;
-  color: #ffffff;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
-.slider {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-}
-
-.slider-track {
-  display: flex;
-  width: calc(600px * 10); /* passt sich JS/Anzahl Slides an */
-  animation: scroll 25s linear infinite;
-}
-
-
-
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* kein Verziehen, sauber skaliert */
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.slide img:hover {
-  transform: scale(1.03);
-}
-
-/* Animierter Endlos-Scroll */
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-.image-slider {
-  overflow: hidden;
-  width: 100vw;
-  background-color: #0f0f0f;
-}
-
-.slider-track {
-  display: flex;
-  animation: slide-left 30s linear infinite;
-  gap: 0; /* Kein Abstand zwischen Bildern */
-}
-
-.slider-track img {
-  flex-shrink: 0;
-  width: 100vw;
-  height: auto;
-  object-fit: cover;
-}
-
-} 
 
 .hero-video-container {
   position: relative;
@@ -881,20 +819,6 @@ display: none;
 ------------------------- */
 
 @media screen and (max-width: 768px) {
-  header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    text-align: center;
-    background: rgba(0,0,0,0.5);
-  }
-
-  header h1 {
-    font-size: 1 rem;
-    margin-bottom: 0.5rem;
-
-  }
 
   .hero-content {
 display: none;
@@ -907,7 +831,7 @@ display: none;
   height: auto;
   aspect-ratio: 16/9; /* passt Höhe automatisch an */
   overflow: hidden;
-  margin-top: 7rem;
+  margin-top: 6.5rem;
 }
 
 .hero-video {
@@ -988,12 +912,6 @@ display: none;
 
 
 @media screen and (max-width: 768px) {
-  header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem 0;
-  }
 
   .site-title {
     font-size: 1.5rem;
@@ -1101,7 +1019,7 @@ display: none;
     align-items: center;
     padding: 1rem;
     text-align: center;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0);
   }
 
   header h1 {
@@ -1153,7 +1071,7 @@ display: none;
 
   /* Hover-Effekt */
 .burger:hover {
-  color: #da2727;         /* Farbe beim Hover ändern */
+  color: #f87472;         /* Farbe beim Hover ändern */
   transform: scale(1.2);  /* leicht vergrößern */
 }
 
@@ -1201,18 +1119,12 @@ display: none;
   .hero {
     height: 50vh;
   }
-  .carousel-caption {
-display: none;
-  }
 
 }
 
 @media (max-width: 480px) {
   .hero {
     height: 50vh;
-  }
-  .carousel-caption {
-display: none;
   }
   
 }

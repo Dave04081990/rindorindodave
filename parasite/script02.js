@@ -1,51 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const slides = document.querySelectorAll('.carousel-slide');
-  const prevBtn = document.querySelector('.carousel-btn.prev');
-  const nextBtn = document.querySelector('.carousel-btn.next');
-  let currentIndex = 0;
-  let interval;
-
-  function updateSlides(newIndex) {
-    slides.forEach((slide, i) => {
-      slide.classList.remove('active', 'prev');
-      if (i === newIndex) {
-        slide.classList.add('active');
-      } else if (i === currentIndex) {
-        slide.classList.add('prev');
-      }
-      // Alle anderen bleiben ohne Klasse = rechts außerhalb
-    });
-    currentIndex = newIndex;
-  }
-
-  function nextSlide() {
-    const newIndex = (currentIndex + 1) % slides.length;
-    updateSlides(newIndex);
-  }
-
-  function prevSlide() {
-    const newIndex = (currentIndex - 1 + slides.length) % slides.length;
-    updateSlides(newIndex);
-  }
-
-  nextBtn.addEventListener('click', () => {
-    clearInterval(interval);
-    nextSlide();
-    interval = setInterval(nextSlide, 3000);
-  });
-
-  prevBtn.addEventListener('click', () => {
-    clearInterval(interval);
-    prevSlide();
-    interval = setInterval(nextSlide, 3000);
-  });
-
-  // Starte initial
-  updateSlides(currentIndex);
-
-  interval = setInterval(nextSlide, 3000);
-});
-
 // Optionale Duplikation der Slides (für Endloswirkung)
 window.addEventListener('DOMContentLoaded', () => {
   const track = document.querySelector('.slider-track');
@@ -155,3 +107,54 @@ const burger = document.querySelector('.burger');
 burger.addEventListener('click', () => {
   burger.classList.toggle('active');
 });
+
+const slider = document.querySelector('.slider');
+const track = document.querySelector('.slider-track');
+const slides = document.querySelectorAll('.slide');
+
+let isDown = false;
+let startX;
+let scrollLeft;
+let lastX = 0;
+let speed = 0.5;
+
+const startDrag = (e) => {
+  isDown = true;
+  slider.classList.add('active');
+  startX = e.pageX || e.touches[0].pageX;
+  scrollLeft = track.scrollLeft;
+};
+
+const endDrag = () => {
+  isDown = false;
+  slider.classList.remove('active');
+  lastX = track.scrollLeft;
+};
+
+const dragMove = (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX || e.touches[0].pageX;
+  const walk = (x - startX) * 2; // Geschwindigkeit des Ziehens
+  track.scrollLeft = scrollLeft - walk;
+};
+
+const autoScroll = () => {
+  if (!isDown) {
+    track.scrollLeft += speed;
+    if (track.scrollLeft >= track.scrollWidth - slider.offsetWidth) {
+      track.scrollLeft = 0;
+    }
+  }
+  requestAnimationFrame(autoScroll);
+};
+
+slider.addEventListener('mousedown', startDrag);
+slider.addEventListener('touchstart', startDrag);
+slider.addEventListener('mousemove', dragMove);
+slider.addEventListener('touchmove', dragMove);
+slider.addEventListener('mouseup', endDrag);
+slider.addEventListener('mouseleave', endDrag);
+slider.addEventListener('touchend', endDrag);
+
+autoScroll();

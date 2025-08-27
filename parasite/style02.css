@@ -1,7 +1,7 @@
 :root {
   --bg-color: #0a0a0a;
   --text-color: #f0f0f0;
-  --accent-color: #888;
+  --accent-color: #f87472;
 }
 
 * {
@@ -48,7 +48,7 @@ nav a {
 
 nav a:hover {
   transform: translateY(-3px) scale(1.05);
-  color: #CE3233; /* Azuki-ähnlicher Farbton – optional anpassbar */
+  color: #f87472; /* Azuki-ähnlicher Farbton – optional anpassbar */
 }
 
 /* Animierter Unterstrich wie bei Azuki */
@@ -59,7 +59,7 @@ nav a::after {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #CE3233;
+  background-color: #f87472;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.2s ease;
@@ -196,22 +196,19 @@ nav a:hover::after {
 }
 
 .social-icons a img {
-  width: 36px;
-  height: 36px;
-  fill: #ffffff;
-  filter: brightness(0) invert(1); /* Weiß auf dunklem Hintergrund */
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .social-icons a:hover img {
   transform: scale(1.2);
-  filter: brightness(0) saturate(100%) invert(27%) sepia(85%) saturate(7490%) hue-rotate(357deg) brightness(93%) contrast(107%); /* Azuki-Rot */
+  filter: brightness(0) saturate(100%) invert(69%) sepia(20%) saturate(6526%) hue-rotate(317deg) brightness(101%) contrast(97%);
+  /* entspricht #f87472 */
 }
 
 footer {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
-  color: var(--accent-color);
+  color: var(--white);
   font-size: 0.75rem;
   text-align: right;
   display: flex;
@@ -226,7 +223,7 @@ footer {
 
 
 footer a {
-  color: var(--accent-color);
+  color: var(--white);
   text-decoration: none;
   pointer-events: auto; /* Links wieder klickbar machen */
 }
@@ -269,7 +266,7 @@ footer a:hover {
   font-size: 2rem;
   text-decoration: none;
   color: white;
-  background-color: #c03541d0;
+  background-color: #f87472;
   padding: 0.4rem 0.7rem;
   border-radius: 20%;
   z-index: 10;
@@ -283,7 +280,9 @@ footer a:hover {
 }
 
 .back-to-home:hover {
-  background-color: #fdaeb4;
+  color: #f87472;
+  background-color: #ffffff;
+  transition: transform 0.3s ease;
 }
 
 /* Slider-Container */
@@ -310,7 +309,9 @@ footer a:hover {
 /* Animierter Track */
 .slider-track {
   display: flex;
-  animation: scroll 40s linear infinite;
+  animation: scroll 20s linear infinite;
+  width: calc(6 * 100%); /* doppelte Breite, weil Slides dupliziert */
+    transition: transform 0.3s ease;
 }
 
 .slide {
@@ -339,7 +340,9 @@ footer a:hover {
 /* Animierter Track */
 .slider-track {
   display: flex;
-  animation: scroll 40s linear infinite; /* Desktop Standard */
+  animation: scroll 20s linear infinite;
+  width: calc(6 * 100%); /* doppelte Breite, weil Slides dupliziert */
+    transition: transform 0.3s ease;
 }
 
 /* Endlos-Animation */
@@ -352,17 +355,13 @@ footer a:hover {
   }
 }
 
-/* Animation langsamer auf Tablets */
-@media (max-width: 1024px) {
-  .slider-track {
-    animation: scroll 40s linear infinite; /* langsamer */
-  }
-}
-
 /* Animation langsamer auf Mobile */
 @media (max-width: 768px) {
   .slider-track {
-    animation: scroll 40s linear infinite; /* noch langsamer */
+   display: flex;
+  animation: scroll 20s linear infinite;
+  width: calc(12 * 100%); /* doppelte Breite, weil Slides dupliziert */
+    transition: transform 0.3s ease;
   }
 }
 
@@ -392,7 +391,8 @@ footer a:hover {
 
 .social-icons a:hover img {
   transform: scale(1.2);
-  filter: brightness(0) saturate(100%) invert(27%) sepia(85%) saturate(7490%) hue-rotate(357deg) brightness(93%) contrast(107%); /* Azuki-Rot */
+  filter: brightness(0) saturate(100%) invert(69%) sepia(20%) saturate(6526%) hue-rotate(317deg) brightness(101%) contrast(97%);
+  /* entspricht #f87472 */
 }
 
 
@@ -455,7 +455,7 @@ footer a:hover {
 
   /* Hover-Effekt */
 .burger:hover {
-  color: #da2727;         /* Farbe beim Hover ändern */
+  color: #f87472;         /* Farbe beim Hover ändern */
   transform: scale(1.2);  /* leicht vergrößern */
 }
 
