@@ -12,15 +12,17 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: var(--bg-color);
-  color: var(--text-color);
-  background-image: url('./img/Background.png');
+  background: rgba(0,0,0,0.4) url('./img/annie-spratt-6a3nqQ1YwBw-unsplash.jpg');
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay; /* oder multiply, lighten, etc. */
   margin: 0;
   height: 100vh;
+  color: var(--text-color);
 }
+
 
 /* HEADER */
 header {
