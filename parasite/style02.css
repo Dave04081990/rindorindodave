@@ -266,9 +266,9 @@ footer a:hover {
   font-size: 2rem;
   text-decoration: none;
   color: white;
-  background-color: #f87472;
-  padding: 0.4rem 0.7rem;
-  border-radius: 20%;
+  background-color: #000000;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50%;
   z-index: 10;
   transition: background-color 0.3s ease;
 }
@@ -282,8 +282,16 @@ footer a:hover {
 .back-to-home:hover {
   color: #f87472;
   background-color: #ffffff;
-  transition: transform 0.3s ease;
+  animation: bounce 0.6s infinite alternate ease-in-out;
 }
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }}
 
 /* Slider-Container */
 .slider-section {

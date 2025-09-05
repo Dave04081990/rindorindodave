@@ -476,9 +476,16 @@ footer a:hover {
    Unterseiten – Hero Single
    =========================== */
 
-.subpage .body {
+.subpage body {
   font-family: 'Poppins', sans-serif;
-  background: var(--bg-color);
+  background: rgba(0,0,0,0.4) url('./img/annie-spratt-6a3nqQ1YwBw-unsplash.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay; /* oder multiply, lighten, etc. */
+  margin: 0;
+  height: 100vh;
   color: var(--text-color);
 }
 
@@ -630,11 +637,12 @@ display: none;
   bottom: 2rem;          /* Abstand von unten */
   right: 2rem;           /* Abstand von rechts */
   font-size: 2rem;
+  font-weight: bold;
   text-decoration: none;
-  color: white;
-  background-color: #f87472;
-  padding: 0.4rem 0.7rem;
-  border-radius: 20%;
+  color: rgb(255, 255, 255);
+  background-color: #000000;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50%;
   z-index: 10;
   transition: background-color 0.3s ease;
 }
@@ -648,7 +656,16 @@ display: none;
 .subpage .back-to-home:hover {
   color: #f87472;
   background-color: #ffffff;
-  transition: transform 0.3s ease;
+  animation: bounce 0.6s infinite alternate ease-in-out;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }
 }
 
 /* Projekt-Textbereich */
