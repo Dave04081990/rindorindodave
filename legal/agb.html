@@ -1,130 +1,608 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agb</title>
-  <link rel="stylesheet" href="../style.css" />
-  <script defer src="../script.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AGB — Dave Rindo Rindo</title>
+<meta name="description" content="Allgemeine Geschäftsbedingungen — Dave Rindo Rindo, Freier Art Director & Illustrator aus Köln." />
+
+<link rel="icon" href="../img/Flavicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/Flavicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="legal.css">
 </head>
-<body class="subpage">
-  <header>
-    <h1>Dave Rindo Rindo</h1>
-     <button class="burger" aria-label="Menü öffnen/schließen">☰</button>
-    <nav>
-      <a href="../index.html#about">About Me</a>
-      <a href="../index.html#work">Work</a>
-      <a href="../index.html#clients">Clients</a>
-      <a href="../index.html#contact">Contact</a>
-              <a href="../projects/parasite.html" class="nav-icon-link" aria-label="Projekt">
-  <img src="../img/Profilbild02.png" alt="Projekt-Icon" /></a>
-    </nav>
+<body class="legal-page">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 7 9-7"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <a href="../index.html" class="brand" aria-label="Dave RindoRindo — Home">
+      <img class="logo" src="../img/Dave.svg" alt="Dave RindoRindo">
+    </a>
+  </div>
+  <div class="nav-center">
+    <a href="../index.html#work">Work</a>
+    <a href="../index.html#about">About me</a>
+    <a href="../index.html#contact">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a class="back-pill" href="../index.html">
+      <span class="arr">←</span>
+      <span>Back to Portfolio</span>
+    </a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+    <button class="burger" id="burger" aria-label="Menu">≡</button>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="navMobile">
+  <a href="../index.html#work">Work</a>
+  <a href="../index.html#about">About me</a>
+  <a href="../index.html#contact">Contact</a>
+  <a href="../index.html">← Portfolio</a>
+</div>
+
+<main>
+
+  <header class="legal-header">
+    <div class="legal-header-meta">
+      <span class="num">L / 03</span>
+      <span class="sep">·</span>
+      <span>Terms &amp; Conditions</span>
+    </div>
+    <h1>AGB.</h1>
+    <p class="legal-lead">
+      Allgemeine Geschäftsbedingungen für freiberufliche Leistungen als Art Director,
+      Visual Designer &amp; Illustrator. Stand: April 2026.
+    </p>
   </header>
- <a href="../index.html#projects" class="back-to-home" aria-label="Zurück zur Startseite">⟵</a>
-  <!-- Hero-Bereich mit statischem Bild -->
-  <section class="hero-single">
 
-    <img src="../img/philipp-katzenberger-iIJrUoeRoCQ-unsplash.jpg" alt="Projekt Hero">
+  <!-- TOC -->
+  <nav class="legal-toc" aria-label="Paragrafen">
+    <div class="toc-label">§§ Übersicht</div>
+    <ol>
+      <li><a href="#p1">Geltungsbereich</a></li>
+      <li><a href="#p2">Vertragsgegenstand</a></li>
+      <li><a href="#p3">Angebot &amp; Vertragsschluss</a></li>
+      <li><a href="#p4">Leistungen, Korrekturen &amp; Mitwirkung</a></li>
+      <li><a href="#p5">Termine &amp; Liefertreue</a></li>
+      <li><a href="#p6">Vergütung &amp; Zahlung</a></li>
+      <li><a href="#p7">Nutzungsrechte</a></li>
+      <li><a href="#p8">Eigentum &amp; Arbeitsdateien</a></li>
+      <li><a href="#p9">Urheberrecht &amp; Namensnennung</a></li>
+      <li><a href="#p10">KI-Training &amp; Text-/Data-Mining</a></li>
+      <li><a href="#p11">Freigabe &amp; Abnahme</a></li>
+      <li><a href="#p12">Gewährleistung &amp; Mängel</a></li>
+      <li><a href="#p13">Haftung</a></li>
+      <li><a href="#p14">Vertraulichkeit</a></li>
+      <li><a href="#p15">Subunternehmer &amp; Dritte</a></li>
+      <li><a href="#p16">Datenschutz</a></li>
+      <li><a href="#p17">Höhere Gewalt</a></li>
+      <li><a href="#p18">Rücktritt &amp; Kündigung</a></li>
+      <li><a href="#p19">Schlussbestimmungen</a></li>
+    </ol>
+  </nav>
 
-  </div> 
-   
+  <article class="legal-content">
+
+    <section class="legal-section" id="p1">
+      <h2><span class="n">§1</span> Geltungsbereich</h2>
+      <p>
+        (1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für sämtliche Verträge
+        zwischen <strong>Dave Rindo Rindo</strong> (nachfolgend „Auftragnehmer") und dem
+        Auftraggeber über kreative Dienstleistungen wie Art Direction, Illustration,
+        Storyboarding, Konzeption, 3D/Motion-Design und verwandte visuelle
+        Gestaltungsleistungen.
+      </p>
+      <p>
+        (2) Abweichende, entgegenstehende oder ergänzende Bedingungen des Auftraggebers
+        werden nur dann Vertragsbestandteil, wenn der Auftragnehmer ihrer Geltung
+        ausdrücklich schriftlich zustimmt.
+      </p>
+      <p>
+        (3) Die AGB gelten gegenüber Unternehmern (§ 14 BGB), juristischen Personen des
+        öffentlichen Rechts und öffentlich-rechtlichen Sondervermögen. Verträge mit
+        Verbrauchern (§ 13 BGB) werden nur im Einzelfall und unter ausdrücklicher
+        Zusatzvereinbarung geschlossen.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p2">
+      <h2><span class="n">§2</span> Vertragsgegenstand</h2>
+      <p>
+        (1) Gegenstand des Vertrages ist die Erbringung gestalterischer Leistungen
+        gemäß individueller Vereinbarung — insbesondere Konzeption, Illustration,
+        visuelle Gestaltung, Art Direction, 3D-Visualisierung sowie die Integration von
+        KI-gestützten Workflows (z. B. Midjourney, Runway, ChatGPT) in den kreativen
+        Prozess.
+      </p>
+      <p>
+        (2) Der genaue Leistungsumfang einschließlich Meilensteinen, Formaten, Anzahl
+        der Entwürfe und Lieferumfang wird im schriftlichen Angebot oder Projektvertrag
+        festgehalten. Im Angebot nicht ausdrücklich genannte Leistungen sind nicht
+        Vertragsbestandteil.
+      </p>
+      <p>
+        (3) Der Auftragnehmer schuldet die sorgfältige Erbringung der vereinbarten
+        Leistung, jedoch keinen bestimmten wirtschaftlichen Erfolg (Dienstvertrag gemäß
+        §§ 611 ff. BGB). Abweichend hiervon können einzelne Leistungen werkvertraglich
+        (§§ 631 ff. BGB) vereinbart werden — dies ist im Angebot dann ausdrücklich
+        gekennzeichnet.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p3">
+      <h2><span class="n">§3</span> Angebot &amp; Vertragsschluss</h2>
+      <p>
+        (1) Angebote des Auftragnehmers sind freibleibend und gelten — sofern nicht
+        anders angegeben — für 30 Tage ab Ausstellungsdatum.
+      </p>
+      <p>
+        (2) Ein Vertrag kommt durch schriftliche Bestätigung des Angebots, durch
+        Beauftragung per E-Mail oder durch schlüssiges Verhalten (z. B. erste
+        Zahlungsleistung, Materiallieferung, Feedback zu Entwürfen) zustande.
+      </p>
+      <p>
+        (3) Mündliche Nebenabreden bestehen nicht. Änderungen und Ergänzungen bedürfen
+        der Textform (E-Mail genügt).
+      </p>
+    </section>
+
+    <section class="legal-section" id="p4">
+      <h2><span class="n">§4</span> Leistungen, Korrekturen &amp; Mitwirkungspflichten</h2>
+      <p>
+        (1) Der Auftragnehmer erbringt die vereinbarten Leistungen persönlich oder
+        — bei Bedarf und nach vorheriger Information des Auftraggebers — durch
+        qualifizierte Dritte.
+      </p>
+      <p>
+        (2) Im Angebot enthalten sind grundsätzlich <strong>zwei Korrekturschleifen
+        pro Projektphase</strong>. Jede weitere Korrekturschleife wird nach Aufwand zum
+        vereinbarten Stunden- oder Tagessatz gesondert berechnet. Als Korrektur gilt
+        die gestalterische Überarbeitung auf Basis eines vorliegenden Entwurfs —
+        nicht ein vollständig neuer Konzeptansatz.
+      </p>
+      <p>
+        (3) Wesentliche Änderungen des Briefings nach Projektstart (Scope-Change)
+        werden als Zusatzleistung behandelt und separat angeboten. Der Auftragnehmer
+        weist den Auftraggeber frühzeitig auf einen entstehenden Mehraufwand hin.
+      </p>
+      <p>
+        (4) Der Auftraggeber ist verpflichtet, alle für die Leistungserbringung
+        erforderlichen Inhalte, Materialien (Texte, Bilder, Logos, CI-Vorgaben),
+        Informationen und Entscheidungen rechtzeitig und in geeigneter Form
+        bereitzustellen. Verzögerungen, die auf verspätete Mitwirkung zurückzuführen
+        sind, verlängern die vereinbarten Lieferfristen entsprechend.
+      </p>
+      <p>
+        (5) Der Auftraggeber gewährleistet, dass er an den übergebenen Materialien die
+        erforderlichen Rechte besitzt und deren Nutzung durch den Auftragnehmer keine
+        Rechte Dritter verletzt. Er stellt den Auftragnehmer insoweit von Ansprüchen
+        Dritter frei.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p5">
+      <h2><span class="n">§5</span> Termine &amp; Liefertreue</h2>
+      <p>
+        (1) Vereinbarte Liefertermine sind nur dann verbindlich, wenn sie ausdrücklich
+        als „Fixtermin" schriftlich bestätigt wurden. Andernfalls handelt es sich um
+        geplante Richttermine.
+      </p>
+      <p>
+        (2) Die Einhaltung von Terminen setzt den rechtzeitigen Eingang aller vom
+        Auftraggeber beizubringenden Unterlagen, Freigaben und Mitwirkungshandlungen
+        voraus.
+      </p>
+      <p>
+        (3) Kommt der Auftragnehmer in Verzug, hat der Auftraggeber eine angemessene
+        Nachfrist von mindestens 10 Werktagen zu setzen, bevor weitergehende Ansprüche
+        geltend gemacht werden können.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p6">
+      <h2><span class="n">§6</span> Vergütung &amp; Zahlung</h2>
+      <p>
+        (1) Die Vergütung richtet sich nach dem vereinbarten Angebot. Abrechnungsmodelle
+        können pauschal, als Tagessatz, Stundensatz oder leistungsbezogen vereinbart
+        werden.
+      </p>
+      <p>
+        (2) Alle Preise verstehen sich netto zuzüglich der jeweils gesetzlichen
+        Umsatzsteuer, sofern diese anfällt. Bei Anwendung der Kleinunternehmerregelung
+        nach § 19 UStG wird keine Umsatzsteuer ausgewiesen.
+      </p>
+      <p>
+        (3) Bei Projektvolumen ab 2.000 € netto ist der Auftragnehmer berechtigt, eine
+        <strong>Anzahlung von 30–50 %</strong> bei Projektstart in Rechnung zu stellen.
+        Bei längerfristigen Projekten können Teilleistungen nach Meilensteinen
+        zwischenabgerechnet werden.
+      </p>
+      <p>
+        (4) Rechnungen sind — sofern nicht anders vereinbart — innerhalb von
+        <strong>14 Tagen</strong> ab Rechnungsdatum ohne Abzug zur Zahlung fällig.
+      </p>
+      <p>
+        (5) Bei Zahlungsverzug ist der Auftragnehmer berechtigt, Verzugszinsen in
+        gesetzlicher Höhe (§ 288 BGB) zu berechnen sowie eine pauschale
+        Mahnkostenpauschale von 40 € gemäß § 288 Abs. 5 BGB geltend zu machen.
+        Weitergehende Schäden bleiben vorbehalten.
+      </p>
+      <p>
+        (6) Der Auftragnehmer ist berechtigt, bei Zahlungsverzug laufende Arbeiten bis
+        zum Ausgleich offener Forderungen zurückzustellen.
+      </p>
+      <p class="muted small">
+        (7) Reise-, Material-, Lizenz- und Produktionskosten (z. B. Stockmaterial,
+        Druckkosten, Cloud-Rendering, KI-Abos) werden, sofern nicht in der
+        Pauschalvergütung enthalten, gegen Nachweis an den Auftraggeber weiterberechnet.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p7">
+      <h2><span class="n">§7</span> Nutzungsrechte</h2>
+      <p>
+        (1) Der Auftragnehmer überträgt dem Auftraggeber nach vollständiger Bezahlung
+        der vereinbarten Vergütung die Nutzungsrechte an den im Rahmen des Projekts
+        geschaffenen Arbeiten in dem vertraglich vereinbarten Umfang (räumlich,
+        zeitlich, inhaltlich).
+      </p>
+      <p>
+        (2) Ist der Umfang der Rechteübertragung nicht ausdrücklich geregelt, werden
+        im Zweifel nur jene einfachen, nicht ausschließlichen Nutzungsrechte
+        übertragen, die für den konkret vereinbarten Verwendungszweck erforderlich sind
+        (Zweckübertragungsgrundsatz, § 31 Abs. 5 UrhG).
+      </p>
+      <p>
+        (3) Jede über den vereinbarten Umfang hinausgehende Nutzung — insbesondere:
+      </p>
+      <ul class="legal-list">
+        <li>Bearbeitung, Umgestaltung oder Abwandlung der Werke</li>
+        <li>Weiterlizenzierung an Dritte</li>
+        <li>Exklusive bzw. ausschließliche Nutzung</li>
+        <li>Nutzung in anderen Medien, Kampagnen oder Zeiträumen als vereinbart</li>
+        <li>Verwendung als Vorlage, Template oder Asset-Bibliothek</li>
+      </ul>
+      <p>
+        bedarf einer gesonderten schriftlichen Vereinbarung und einer zusätzlichen
+        Vergütung.
+      </p>
+      <p>
+        (4) Die Rechteübertragung steht unter der aufschiebenden Bedingung der
+        vollständigen Zahlung. Bis zur vollständigen Zahlung dürfen die gelieferten
+        Arbeiten nicht veröffentlicht, produziert oder anderweitig verwertet werden.
+      </p>
+      <p>
+        (5) Entwürfe, die nicht zur Ausführung gelangen, verbleiben vollumfänglich beim
+        Auftragnehmer. Eine Nutzung nicht ausgeführter Entwürfe durch den Auftraggeber
+        ist ausgeschlossen, sofern nicht anders vereinbart.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p8">
+      <h2><span class="n">§8</span> Eigentum, Arbeitsdateien &amp; Archivierung</h2>
+      <p>
+        (1) Originaldaten, offene Arbeitsdateien (PSD, AI, INDD, C4D, Blend, Figma-Files,
+        3D-Projektordner etc.) und Zwischenergebnisse verbleiben im Eigentum des
+        Auftragnehmers, sofern nicht ausdrücklich etwas anderes vereinbart ist.
+      </p>
+      <p>
+        (2) Die Herausgabe offener Arbeitsdateien erfolgt nur gegen gesonderte
+        Vereinbarung und zusätzliche Vergütung. Geschuldet ist grundsätzlich die
+        Lieferung in exportierten, finalen Formaten (z. B. PDF, JPG, PNG, MP4, MOV).
+      </p>
+      <p>
+        (3) Der Auftragnehmer ist nicht verpflichtet, Projektdateien nach Abschluss
+        dauerhaft zu archivieren. Eine Archivierung erfolgt im Regelfall für 24 Monate;
+        darüber hinaus nur gegen gesonderte Vereinbarung.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p9">
+      <h2><span class="n">§9</span> Urheberrecht &amp; Namensnennung</h2>
+      <p>
+        (1) Der Auftragnehmer bleibt Urheber der erbrachten Leistungen gemäß
+        § 13 UrhG, unabhängig vom Umfang der übertragenen Nutzungsrechte.
+      </p>
+      <p>
+        (2) Der Auftragnehmer hat das Recht, auf oder neben dem Werk als Urheber
+        genannt zu werden (Namensnennungsrecht). Bei werbewirksamen Einsätzen (Plakat,
+        Kampagne, Film-Credits) bemüht sich der Auftraggeber um eine angemessene
+        Nennung.
+      </p>
+      <p>
+        (3) Der Auftragnehmer ist berechtigt, entstandene Arbeiten im Rahmen seiner
+        Eigenwerbung (Website, Portfolio, Social Media, Ausstellungen, Awards,
+        Showreels) zu präsentieren, sofern keine ausdrückliche Vertraulichkeit
+        vereinbart wurde. Der Auftraggeber kann dieser Nutzung für konkret genannte
+        Projekte aus wichtigem Grund widersprechen.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p10">
+      <h2><span class="n">§10</span> KI-Training &amp; Text-/Data-Mining</h2>
+      <p>
+        (1) Der Auftragnehmer widerspricht ausdrücklich der Nutzung seiner Werke und
+        gelieferten Arbeitsergebnisse zum Training von Künstlicher Intelligenz,
+        Machine-Learning-Modellen, Large Language Models, Text-to-Image- oder
+        Text-to-Video-Systemen.
+      </p>
+      <p>
+        (2) Dieser Vorbehalt stellt eine Nutzungsvorbehaltserklärung im Sinne von
+        § 44b Abs. 3 UrhG dar. Er gilt für alle vom Auftragnehmer erstellten Werke,
+        unabhängig davon, auf welchem Medium sie zugänglich gemacht werden.
+      </p>
+      <p>
+        (3) Der Auftraggeber ist verpflichtet, die von ihm beauftragten Arbeiten nicht
+        zum Training generativer KI-Systeme zu verwenden oder Dritten zu diesem Zweck
+        zur Verfügung zu stellen, sofern dies nicht ausdrücklich und schriftlich
+        vereinbart wurde.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p11">
+      <h2><span class="n">§11</span> Freigabe &amp; Abnahme</h2>
+      <p>
+        (1) Der Auftraggeber ist verpflichtet, gelieferte Teil- oder Endergebnisse
+        zeitnah zu prüfen und freizugeben bzw. konkrete Änderungswünsche innerhalb von
+        14 Tagen mitzuteilen.
+      </p>
+      <p>
+        (2) Erfolgt innerhalb dieser Frist keine Rückmeldung, gilt das jeweilige
+        Arbeitsergebnis als abgenommen.
+      </p>
+      <p>
+        (3) Mit Freigabe einer Gestaltung übernimmt der Auftraggeber die Verantwortung
+        für Richtigkeit von Text, Bild, Maßangaben und produktionsrelevanten Daten.
+        Nach Freigabe auftretende Fehler gehen zu Lasten des Auftraggebers.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p12">
+      <h2><span class="n">§12</span> Gewährleistung &amp; Mängel</h2>
+      <p>
+        (1) Der Auftragnehmer gewährleistet, dass die erbrachten Leistungen den
+        vereinbarten Eigenschaften entsprechen und frei von Mängeln sind, die den Wert
+        oder die Tauglichkeit zu dem gewöhnlichen oder vertraglich vorausgesetzten
+        Gebrauch aufheben oder mindern.
+      </p>
+      <p>
+        (2) Offensichtliche Mängel sind unverzüglich, spätestens innerhalb von
+        14 Tagen nach Lieferung schriftlich anzuzeigen. Bei verdeckten Mängeln
+        beginnt die Frist mit deren Entdeckung.
+      </p>
+      <p>
+        (3) Liegt ein berechtigter Mangel vor, hat der Auftragnehmer das Recht zur
+        Nachbesserung innerhalb angemessener Frist. Schlägt die Nachbesserung
+        endgültig fehl, kann der Auftraggeber Minderung verlangen.
+      </p>
+      <p class="muted small">
+        (4) Geschmacksfragen, subjektive Gestaltungspräferenzen oder nachträgliche
+        Änderungswünsche, die über das vereinbarte Briefing hinausgehen, stellen keinen
+        Mangel im Rechtssinne dar.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p13">
+      <h2><span class="n">§13</span> Haftung</h2>
+      <p>
+        (1) Der Auftragnehmer haftet unbeschränkt für Schäden aus der Verletzung des
+        Lebens, des Körpers oder der Gesundheit sowie für Schäden, die auf Vorsatz oder
+        grober Fahrlässigkeit beruhen.
+      </p>
+      <p>
+        (2) Bei leichter Fahrlässigkeit haftet der Auftragnehmer nur bei Verletzung
+        wesentlicher Vertragspflichten (Kardinalpflichten). Die Haftung ist in diesem
+        Fall auf den vertragstypischen, vorhersehbaren Schaden begrenzt — höchstens
+        jedoch auf die Höhe der Netto-Auftragssumme des betroffenen Projekts.
+      </p>
+      <p>
+        (3) Eine Haftung für entgangenen Gewinn, mittelbare Schäden, Folgeschäden,
+        Datenverlust oder Reputationsschäden ist — außer in den Fällen von Absatz (1) —
+        ausgeschlossen.
+      </p>
+      <p>
+        (4) Für Inhalte, Daten, Texte, Bildmaterial oder Marken, die vom Auftraggeber
+        bereitgestellt werden, übernimmt der Auftragnehmer keine Haftung — insbesondere
+        nicht für etwaige Schutzrechtsverletzungen Dritter (Urheber-, Marken-,
+        Persönlichkeitsrechte). Der Auftraggeber stellt den Auftragnehmer von
+        diesbezüglichen Ansprüchen Dritter frei.
+      </p>
+      <p>
+        (5) Der Auftraggeber ist verpflichtet, gelieferte Arbeiten vor Veröffentlichung
+        oder Produktion (z. B. Druck, Serienfertigung) auf Fehler zu prüfen.
+      </p>
+      <p class="muted small">
+        (6) Die vorstehenden Haftungsbeschränkungen gelten auch zugunsten der
+        Erfüllungs- und Verrichtungsgehilfen des Auftragnehmers.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p14">
+      <h2><span class="n">§14</span> Vertraulichkeit</h2>
+      <p>
+        (1) Beide Parteien verpflichten sich, alle im Rahmen der Zusammenarbeit bekannt
+        werdenden vertraulichen Informationen — insbesondere Geschäfts- und
+        Betriebsgeheimnisse, Briefings, Strategien, unveröffentlichte Produkte —
+        geheim zu halten und nicht an Dritte weiterzugeben.
+      </p>
+      <p>
+        (2) Diese Verpflichtung besteht auch nach Beendigung des Vertragsverhältnisses
+        für die Dauer von <strong>drei Jahren</strong> fort.
+      </p>
+      <p>
+        (3) Die Vertraulichkeitsverpflichtung gilt nicht für Informationen, die
+        nachweislich öffentlich bekannt sind, rechtmäßig von Dritten erlangt wurden
+        oder aufgrund gesetzlicher Verpflichtung offengelegt werden müssen.
+      </p>
+      <p>
+        (4) Die Präsentation abgeschlossener Projekte im Portfolio des Auftragnehmers
+        (§ 9 Abs. 3) gilt ausdrücklich nicht als Verletzung dieser
+        Vertraulichkeitsverpflichtung, sofern die Projekte offiziell veröffentlicht
+        wurden und keine expliziten NDA-Regelungen entgegenstehen.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p15">
+      <h2><span class="n">§15</span> Subunternehmer &amp; Dritte</h2>
+      <p>
+        (1) Der Auftragnehmer ist berechtigt, zur Erfüllung des Auftrags qualifizierte
+        Subunternehmer, Kollaborateur*innen oder Dienstleister einzubeziehen.
+      </p>
+      <p>
+        (2) Der Auftragnehmer verpflichtet diese zur Einhaltung der Vertraulichkeit
+        und der datenschutzrechtlichen Pflichten.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p16">
+      <h2><span class="n">§16</span> Datenschutz</h2>
+      <p>
+        Für die Verarbeitung personenbezogener Daten gilt ergänzend die
+        <a href="datenschutz.html">Datenschutzerklärung</a>. Soweit im Rahmen eines
+        Auftrags eine Auftragsverarbeitung nach Art. 28 DSGVO erforderlich ist, wird
+        hierzu eine gesonderte Vereinbarung geschlossen.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p17">
+      <h2><span class="n">§17</span> Höhere Gewalt</h2>
+      <p>
+        (1) Keine Partei haftet für Leistungsstörungen, die auf höherer Gewalt beruhen
+        — hierzu zählen insbesondere: Naturkatastrophen, Krieg, Pandemien, längerer
+        Ausfall von Strom-, Internet- oder Cloud-Infrastruktur, behördliche Anordnungen
+        sowie Krankheit oder Unfall des Auftragnehmers.
+      </p>
+      <p>
+        (2) Die betroffene Partei informiert die andere unverzüglich. Vereinbarte
+        Termine verlängern sich um die Dauer der Leistungsstörung.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p18">
+      <h2><span class="n">§18</span> Rücktritt &amp; Projektabbruch</h2>
+      <p>
+        (1) Wird ein Projekt vom Auftraggeber vorzeitig abgebrochen oder nicht zu Ende
+        geführt, sind die bis dahin erbrachten Leistungen in voller Höhe zu vergüten.
+      </p>
+      <p>
+        (2) Bereits begonnene, aber noch nicht fertiggestellte Leistungen werden
+        anteilig entsprechend dem tatsächlichen Arbeitsfortschritt berechnet. Sofern
+        keine nachvollziehbare Aufwandsermittlung möglich ist, gilt eine pauschale
+        Abrechnung in Höhe von <strong>mindestens 50 %</strong> des jeweiligen
+        Projektbudgets als vereinbart.
+      </p>
+      <p>
+        (3) Bereits geleistete Anzahlungen werden im Fall des Projektabbruchs nicht
+        zurückerstattet, soweit der bereits erbrachte Leistungswert die Anzahlung
+        erreicht oder übersteigt.
+      </p>
+      <p>
+        (4) Das Recht zur außerordentlichen Kündigung aus wichtigem Grund (§ 626 BGB)
+        bleibt beiden Parteien unberührt. Ein wichtiger Grund liegt insbesondere bei
+        wiederholtem Zahlungsverzug, Verletzung der Mitwirkungspflichten oder grobem
+        Vertrauensverlust vor.
+      </p>
+    </section>
+
+    <section class="legal-section" id="p19">
+      <h2><span class="n">§19</span> Schlussbestimmungen</h2>
+      <p>
+        (1) Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des
+        UN-Kaufrechts (CISG).
+      </p>
+      <p>
+        (2) Ausschließlicher Gerichtsstand für alle Streitigkeiten aus dem
+        Vertragsverhältnis ist <strong>Köln</strong>, sofern der Auftraggeber
+        Kaufmann, juristische Person des öffentlichen Rechts oder ein
+        öffentlich-rechtliches Sondervermögen ist.
+      </p>
+      <p>
+        (3) Erfüllungsort für alle Leistungen ist Köln.
+      </p>
+      <p>
+        (4) Änderungen und Ergänzungen dieser AGB bedürfen der Textform. Dies gilt
+        auch für die Aufhebung des Textformerfordernisses.
+      </p>
+      <p>
+        (5) Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise unwirksam oder
+        undurchführbar sein oder werden, berührt dies die Wirksamkeit der übrigen
+        Bestimmungen nicht. An die Stelle der unwirksamen Regelung tritt diejenige
+        wirksame Regelung, die dem wirtschaftlichen Zweck am nächsten kommt.
+      </p>
+      <p class="muted small">Stand: April 2026</p>
+    </section>
+
+  </article>
+
+  <nav class="legal-pager" aria-label="Weitere Rechtstexte">
+    <a href="impressum.html" class="pager-link">
+      <span class="num">L / 01</span>
+      <span class="title">Impressum</span>
+      <span class="ico"><svg><use href="#i-arrow-up-right"/></svg></span>
+    </a>
+    <a href="datenschutz.html" class="pager-link">
+      <span class="num">L / 02</span>
+      <span class="title">Datenschutz</span>
+      <span class="ico"><svg><use href="#i-arrow-up-right"/></svg></span>
+    </a>
+  </nav>
+
+  <section class="legal-contact">
+    <div>
+      <div class="num">CONTACT</div>
+      <h2>Fragen zu den AGB?</h2>
+    </div>
+    <a class="contact-mail" href="mailto:daverindorindo@googlemail.com">
+      <span class="ico"><svg><use href="#i-mail"/></svg></span>
+      <span>daverindorindo@googlemail.com</span>
+    </a>
   </section>
 
-  <section class="agb-section" style="padding: 2rem; max-width: 900px; margin: auto; font-family: sans-serif; line-height: 1.6; color: #f0f0f0; background-color: #0a0a0a;">
-  <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
-  <p><strong>für freiberufliche Leistungen als Art Director &amp; Illustrator</strong><br>
-  Dave Rindo – freier Art Director &amp; Illustrator</p>
+  <footer>
+    <div>© 2026 Dave Rindo Rindo · Cologne</div>
+    <div class="links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB</a>
+    </div>
+  </footer>
 
-  <h2>§1 Geltungsbereich</h2>
-  <p>
-    (1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen Dave Rindo (nachfolgend „Auftragnehmer“) und dem Auftraggeber über kreative Dienstleistungen wie Art Direction, Illustration, Storyboarding, Konzeption und verwandte Designleistungen.<br>
-    (2) Abweichende Bedingungen des Auftraggebers werden nicht anerkannt, es sei denn, der Auftragnehmer stimmt deren Geltung ausdrücklich schriftlich zu.
-  </p>
+</main>
 
-  <h2>§2 Vertragsgegenstand</h2>
-  <p>
-    (1) Gegenstand des Vertrages ist die Erbringung gestalterischer Leistungen, insbesondere Konzeption, Illustration, visuelle Gestaltung und Art Direction gemäß individueller Vereinbarung.<br>
-    (2) Der genaue Leistungsumfang, inklusive Meilensteinen und Formaten, wird in einem schriftlichen Angebot oder Projektvertrag festgehalten.
-  </p>
+<script>
+  const burger = document.getElementById('burger');
+  const navMobile = document.getElementById('navMobile');
+  if (burger && navMobile) {
+    burger.addEventListener('click', () => navMobile.classList.toggle('open'));
+    navMobile.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => navMobile.classList.remove('open'))
+    );
+  }
 
-  <h2>§3 Angebot und Vertragsschluss</h2>
-  <p>
-    (1) Angebote des Auftragnehmers sind freibleibend.<br>
-    (2) Ein Vertrag kommt durch schriftliche Bestätigung des Angebots, durch die Beauftragung per E-Mail oder durch schlüssiges Verhalten zustande.
-  </p>
-
-  <h2>§4 Leistungen, Korrekturen und Mitwirkungspflichten</h2>
-  <p>
-    (1) Der Auftragnehmer erbringt die Leistungen persönlich oder durch geeignete Dritte.<br>
-    (2) Zwei Korrekturschleifen pro Projektphase sind im Angebot enthalten. Weitere Korrekturen werden nach Aufwand gesondert berechnet.<br>
-    (3) Der Auftraggeber ist verpflichtet, notwendige Inhalte, Materialien und Informationen rechtzeitig bereitzustellen.
-  </p>
-
-  <h2>§5 Vergütung</h2>
-  <p>
-    (1) Die Vergütung erfolgt auf Grundlage des vereinbarten Angebots – pauschal, als Tagessatz oder auf Stundenbasis.<br>
-    (2) Preise verstehen sich netto zzgl. gesetzlicher Umsatzsteuer, sofern diese anfällt.<br>
-    (3) Teilleistungen dürfen anteilig abgerechnet werden.<br>
-    (4) Rechnungen sind innerhalb von 14 Tagen ab Rechnungsdatum ohne Abzug zahlbar.
-  </p>
-
-  <h2>§6 Nutzungsrechte</h2>
-  <p>
-    (1) Der Auftragnehmer überträgt dem Auftraggeber die einfachen Nutzungsrechte an den im Rahmen des Projekts geschaffenen Arbeiten in dem vertraglich vereinbarten Umfang.<br>
-    (2) Eine weitergehende Nutzung (z. B. Bearbeitung, Weiterlizenzierung, exklusive Nutzung) bedarf einer gesonderten schriftlichen Vereinbarung und wird zusätzlich vergütet.<br>
-    (3) Die Rechteübertragung erfolgt erst nach vollständiger Bezahlung.
-  </p>
-
-  <h2>§7 Eigentum, Daten und Archivierung</h2>
-  <p>
-    (1) Originaldaten, Arbeitsdateien (z. B. PSD, AI, etc.) und Zwischenergebnisse bleiben im Eigentum des Auftragnehmers, sofern nicht ausdrücklich etwas anderes vereinbart wurde.<br>
-    (2) Eine Herausgabe von offenen Dateien erfolgt nur gegen gesonderte Vergütung.<br>
-    (3) Der Auftragnehmer ist nicht verpflichtet, Projektdateien nach Abschluss dauerhaft zu archivieren.
-  </p>
-
-  <h2>§8 Urheberrecht und Namensnennung</h2>
-  <p>
-    (1) Der Auftragnehmer bleibt Urheber der erbrachten Leistungen gemäß §13 UrhG.<br>
-    (2) Der Auftragnehmer darf auf oder neben dem Werk als Urheber genannt werden.<br>
-    (3) Der Auftragnehmer behält sich vor, entstandene Arbeiten im Rahmen seiner Eigenwerbung (z. B. Website, Social Media, Portfolio) zu präsentieren, sofern keine Vertraulichkeit vereinbart wurde.
-  </p>
-
-  <h2>§9 Vertraulichkeit</h2>
-  <p>
-    (1) Beide Parteien verpflichten sich zur vertraulichen Behandlung aller Informationen, die im Rahmen der Zusammenarbeit bekannt werden und nicht allgemein zugänglich sind.
-  </p>
-
-  <h2>§10 Haftung</h2>
-  <p>
-    (1) Der Auftragnehmer haftet nur für vorsätzlich oder grob fahrlässig verursachte Schäden.<br>
-    (2) Für Inhalte, Daten oder Materialien, die vom Auftraggeber geliefert werden, übernimmt der Auftragnehmer keine Haftung, insbesondere nicht für etwaige Schutzrechtsverletzungen Dritter.<br>
-    (3) Der Auftraggeber ist verpflichtet, die gelieferten Arbeiten vor Veröffentlichung zu prüfen und etwaige Mängel unverzüglich zu melden.
-  </p>
-
-  <h2>§11 Rücktritt / Projektabbruch</h2>
-  <p>
-    (1) Wird ein Projekt vorzeitig abgebrochen, sind die bis dahin erbrachten Leistungen in voller Höhe zu vergüten.<br>
-    (2) Bereits begonnene, aber noch nicht fertiggestellte Leistungen werden anteilig berechnet.
-  </p>
-
-  <h2>§12 Schlussbestimmungen</h2>
-  <p>
-    (1) Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts.<br>
-    (2) Gerichtsstand ist Köln, sofern der Auftraggeber Kaufmann oder juristische Person ist.<br>
-    (3) Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder werden, berührt dies die Wirksamkeit der übrigen Bestimmungen nicht.
-  </p>
-
-  <p><em>Stand: Juli 2025</em></p>
-</section>
-
-
-<footer>
-  <div class="footer-links">
-    <a href="../legal/impressum.html">Impressum</a>
-    <a href="../legal/datenschutz.html">Datenschutz</a>
-    <a href="../legal/agb.html">agb</a>
-  </div>
-  <div>&copy; 2025 Dave Rindo</div>
-</footer>
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    themeToggle.addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', cur);
+      localStorage.setItem('theme', cur);
+    });
+  }
+</script>
 </body>
 </html>

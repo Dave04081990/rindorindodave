@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- ┌──────────────────────────────────────────────────────────────────┐
+     │ ANLEITUNG ZUM DUPLIZIEREN                                       │
+     │ 1. Datei kopieren als projects/projektX.html                    │
+     │ 2. Alle [PLATZHALTER] suchen & ersetzen (siehe Kommentare)      │
+     │ 3. Bilder-Pfade anpassen — alle Bilder liegen in ../img/        │
+     │ 4. "Next Project"-Block am Ende auf nächstes Projekt verlinken  │
+     └──────────────────────────────────────────────────────────────────┘ -->
+
+<title>[PROJEKT_TITEL] — Dave Rindo Rindo</title>
+<meta name="description" content="[KURZE_BESCHREIBUNG_FÜR_SEO]" />
+
+<link rel="icon" href="../img/Flavicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/Flavicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+
+<!-- body.project = nav stays solid (no transparent over hero) -->
+<body class="project">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============= NAV (gleich wie Home) ============= -->
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <a href="../index.html" class="brand" aria-label="Dave RindoRindo — Home">
+      <img class="logo" src="../img/Dave.svg" alt="Dave RindoRindo">
+    </a>
+  </div>
+
+  <div class="nav-center">
+    <a href="../index.html#work">Work</a>
+    <a href="../index.html#about">About me</a>
+    <a href="../index.html#contact">Contact</a>
+  </div>
+
+  <div class="nav-right">
+    <a class="parasite-pill" href="parasite.html">
+      <div class="pavatar" style="background:url('../img/Profilbild02.png') center/cover, var(--red);"></div>
+      <div class="ptext">
+        <span class="ptag">Independent</span>
+        <span class="pname">Parasite_Manga</span>
+      </div>
+      <span class="live"></span>
+    </a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+    <button class="burger" id="burger" aria-label="Menu">≡</button>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="navMobile">
+  <a href="../index.html#work">Work</a>
+  <a href="../index.html#about">About me</a>
+  <a href="../index.html#contact">Contact</a>
+</div>
+
+<main>
+
+  <!-- ============= PROJECT HERO ============= -->
+  <!-- Tausche das Bild gegen dein Hero-Bild aus -->
+  <section class="project-hero">
+    <div class="bg" style="background-image:url('../img/[HERO_BILD.jpg]')"></div>
+    <div class="content">
+      <div>
+        <div class="label">[NUMMER] / [KATEGORIE]</div>
+        <h1>[PROJEKT_TITEL]</h1>
+      </div>
+      <div class="meta">
+        <div class="row"><span class="k">Client</span><span class="v">[KLIENT]</span></div>
+        <div class="row"><span class="k">Year</span><span class="v">[JAHR]</span></div>
+        <div class="row"><span class="k">Role</span><span class="v">[ROLLE]</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= PROJECT BODY ============= -->
+  <article class="project-body">
+
+    <!-- INTRO: links sticky-Title + Play-Button, rechts Meta + Beschreibung -->
+    <section class="pb-intro">
+      <div class="left">
+        <h2>[KURZER_INTRO_TITEL.<br>Z.B. "Die Weltpremiere<br>der neuen A-Klasse."]</h2>
+
+        <!-- Optional: Video-Button. Wenn nicht vorhanden, kompletten Block löschen -->
+        <a class="play-btn" href="[YOUTUBE_LINK_ODER_VIDEO]" target="_blank" rel="noopener">
+          <span class="ico"><svg viewBox="0 0 24 24" width="14" height="14"><use href="#i-play"/></svg></span>
+          <span>Watch Video</span>
+        </a>
+      </div>
+
+      <div class="right">
+        <div class="meta-row">
+          <div><span>Discipline</span><strong>[Z.B. Art Direction · 3D · Exhibition]</strong></div>
+          <div><span>Tools</span><strong>[Z.B. C4D · Photoshop · Lightroom]</strong></div>
+        </div>
+
+        <p>
+          [DEUTSCHER_BESCHREIBUNGSTEXT_ABSATZ_1]
+        </p>
+        <p>
+          [DEUTSCHER_BESCHREIBUNGSTEXT_ABSATZ_2_OPTIONAL]
+        </p>
+
+        <div class="lang-divider">English</div>
+
+        <p>
+          [ENGLISH_DESCRIPTION_PARAGRAPH_1]
+        </p>
+
+        <div class="tags">
+          <span>Art Direction</span>
+          <span>3D Design</span>
+          <span>[WEITERE_TAGS]</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== BAUSTEIN-BIBLIOTHEK ============================== -->
+    <!-- Kopiere/lösche/sortiere die folgenden Blöcke nach Bedarf. -->
+
+    <!-- 1. Vollbreites Bild -->
+    <div class="pb-image">
+      <img src="../img/[BILD_NAME.jpg]" alt="[ALT_TEXT]">
+    </div>
+
+    <!-- 2. Vollbreites Bild mit Caption -->
+    <div class="pb-image">
+      <img src="../img/[BILD_NAME.jpg]" alt="[ALT_TEXT]">
+      <div class="caption">[CAPTION · Z.B. "Keyvisual"]</div>
+    </div>
+
+    <!-- 3. Zwei-Spalten-Bilder (z.B. für Vorher/Nachher oder Detailshots) -->
+    <div class="pb-image-2col">
+      <div class="pb-image"><img src="../img/[BILD_LINKS.jpg]" alt=""></div>
+      <div class="pb-image"><img src="../img/[BILD_RECHTS.jpg]" alt=""></div>
+    </div>
+
+    <!-- 4. Video-Embed (YouTube) -->
+    <!--
+    <div class="pb-video">
+      <iframe src="https://www.youtube.com/embed/[VIDEO_ID]"
+              title="[VIDEO_TITEL]"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+    </div>
+    -->
+
+    <!-- ====== ENDE BAUSTEIN-BIBLIOTHEK ========================= -->
+
+  </article>
+
+  <!-- ============= NEXT PROJECT ============= -->
+  <section class="pb-next">
+    <div>
+      <div class="label">Next Project</div>
+      <h3>
+        <a href="[NÄCHSTES_PROJEKT.html]">
+          <span>[NÄCHSTER_PROJEKTNAME]</span>
+          <span class="arrow">→</span>
+        </a>
+      </h3>
+    </div>
+    <div class="right">[KATEGORIE_NÄCHSTES]<br>[JAHR_NÄCHSTES]</div>
+  </section>
+
+  <a class="back-link" href="../index.html#work">
+    <svg viewBox="0 0 24 24" width="14" height="14"><use href="#i-arrow-left"/></svg>
+    <span>Back to Work</span>
+  </a>
+
+  <footer>
+    <div>© 2026 Dave Rindo Rindo · Cologne</div>
+    <div class="links">
+      <a href="../legal/impressum.html">Impressum</a>
+      <a href="../legal/datenschutz.html">Datenschutz</a>
+      <a href="../legal/agb.html">AGB</a>
+    </div>
+  </footer>
+
+</main>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

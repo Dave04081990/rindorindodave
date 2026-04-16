@@ -1,121 +1,1118 @@
-
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parasite-Manga</title>
-  <link rel="stylesheet" href="../parasite/style02.css" />
-  <script defer src="../parasite/script02.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Parasite_Manga — Dave Rindo Rindo</title>
+<meta name="description" content="Parasite_Manga — independent manga, illustration and personal artwork by Dave Rindo Rindo." />
 
-  
-    <!-- Favicon für Browser & mobile Geräte -->
-    <link rel="icon" href="../img/Para-Flavicon.png" type="image/x-icon">
-    <link rel="icon" href="../img/Para-Flavicon.png" sizes="32x32" type="image/png">
-    <link rel="apple-touch-icon" href="../img/Para-Flavicon.png">
+<link rel="icon" href="../img/Para-Flavicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/Para-Flavicon.png">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
+<style>
+  /* =====================================================================
+     PARASITE_MANGA — v6
+     - No top nav or logo
+     - Persistent floating CTA (top-right, position: fixed)
+     - Full-bleed hero across entire viewport
+     - X + arrow SVG icons as reusable design elements
+     - Lightbox gallery overlay (transparent black bg, X close)
+     ===================================================================== */
+
+  :root{
+    --p-black:   #0f0f0f;
+    --p-black-2: #1a1a1a;
+    --p-black-3: #262626;
+    --p-white:   #ffffff;
+    --p-cream:   #e8dfc8;
+    --p-cream-2: #d8ceb4;
+    --p-cream-3: #c2b898;
+    --p-orange:  #ff6b1f;
+    --p-orange-2:#ff8847;
+    --p-ink:     #1a1a1a;
+    --p-gray:    #8a8a8a;
+    --p-gray-2:  #4a4a4a;
+
+    --p-display: "Archivo Black", "Helvetica Neue", Arial, sans-serif;
+    --p-sans:    "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --p-mono:    "JetBrains Mono", ui-monospace, monospace;
+
+    --p-pad:     clamp(16px, 3vw, 40px);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background: var(--p-black);
+    color: var(--p-white);
+    font-family: var(--p-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body{ font-size: 14px; line-height: 1.5; position: relative; }
+  body::before{
+    content:""; position: fixed; inset:0; z-index: 200;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .18;
+    mix-blend-mode: overlay;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  ::selection{ background: var(--p-orange); color: var(--p-black); }
+
+  /* =====================================================================
+     FLOATING CTA — fixed, always visible even when scrolling
+     ===================================================================== */
+  .zz-cta-floating{
+    position: fixed;
+    top: 22px;
+    right: var(--p-pad);
+    z-index: 150;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: var(--p-orange);
+    color: var(--p-black);
+    font-family: var(--p-display);
+    font-size: 13px; letter-spacing: .06em;
+    text-transform: uppercase;
+    border: 2px solid var(--p-black);
+    box-shadow: 5px 5px 0 var(--p-black);
+    transition: transform .15s, box-shadow .15s, background .15s;
+  }
+  .zz-cta-floating:hover{
+    background: var(--p-orange-2);
+    transform: translate(-2px,-2px);
+    box-shadow: 7px 7px 0 var(--p-black);
+  }
+  .zz-cta-floating .arr{ font-size: 16px; line-height: 1; }
+  @media (max-width: 600px){
+    .zz-cta-floating{ top: 14px; padding: 10px 14px; font-size: 11px; }
+    .zz-cta-floating .txt{ display: none; }
+  }
+
+  /* =====================================================================
+     HERO — full-bleed viewport
+     ===================================================================== */
+  .zz-hero{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    min-height: 560px;
+    overflow: hidden;
+    background: var(--p-black);
+    border-bottom: 3px solid var(--p-orange);
+  }
+  .zz-hero-img{
+    position: absolute; inset: 0;
+    background-image: url('../img/Para/Nihoon2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .zz-side-katakana{
+    position:absolute; top:30px; left: var(--p-pad); z-index: 3;
+    writing-mode: vertical-rl;
+    font-family: var(--p-display);
+    font-size: clamp(34px, 5vw, 64px);
+    color: var(--p-orange);
+    letter-spacing: .1em;
+    line-height: 1;
+    text-shadow: 2px 2px 0 var(--p-black);
+  }
+
+  .zz-badge{
+    position:absolute; top: 26px; left: 50%; transform: translateX(-50%);
+    z-index: 4;
+    display:inline-flex; align-items:center; gap:10px;
+    padding: 10px 22px;
+    background: var(--p-orange);
+    color: var(--p-black);
+    font-family: var(--p-display);
+    font-size: 14px; letter-spacing: .1em;
+    box-shadow: 5px 5px 0 var(--p-black);
+  }
+  @media (max-width: 640px){
+    .zz-badge{ font-size: 11px; padding: 8px 14px; top: 84px; }
+  }
+
+  .zz-bubble{
+    position:absolute; left: var(--p-pad); bottom: 110px; z-index:4;
+    max-width: 340px;
+    animation: stickerFloat 4.5s ease-in-out infinite;
+    filter: drop-shadow(4px 6px 0 rgba(0,0,0,.5));
+    transform-origin: center center;
+  }
+  .zz-bubble img{
+    display:block;
+    width: 100%;
+    height: auto;
+    transform: rotate(-3deg);
+  }
+  @keyframes stickerFloat{
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-8px) rotate(1.5deg); }
+  }
+  @media (max-width: 720px){ .zz-bubble{ display:none; } }
+
+  .zz-icons{
+    position:absolute; right: var(--p-pad); bottom: 40px; z-index:4;
+    display:flex; gap: 8px;
+  }
+  .zz-icons a{
+    width:34px; height:34px; border-radius:50%;
+    background: var(--p-orange);
+    color: var(--p-black);
+    display:grid; place-items:center;
+    font-family: var(--p-display); font-size: 11px;
+    transition: transform .15s;
+    overflow: hidden;
+  }
+  .zz-icons a img{
+    width: 62%; height: 62%;
+    object-fit: contain;
+    display: block;
+  }
+  .zz-icons a:hover{ transform: scale(1.12); }
+
+  .zz-scroll{
+    position:absolute; left: 50%; bottom: 40px;
+    transform: translateX(-50%); z-index: 3;
+    font-family: var(--p-mono); font-size: 10px; letter-spacing: .3em;
+    text-transform: uppercase; color: var(--p-white);
+    display:flex; flex-direction:column; align-items:center; gap: 10px;
+  }
+  .zz-scroll .line{
+    width: 1px; height: 34px;
+    background: var(--p-orange);
+    animation: scrollLine 1.6s ease-in-out infinite;
+  }
+  @keyframes scrollLine{
+    0%{ transform: scaleY(0); transform-origin: top; }
+    50%{ transform: scaleY(1); transform-origin: top; }
+    51%{ transform: scaleY(1); transform-origin: bottom; }
+    100%{ transform: scaleY(0); transform-origin: bottom; }
+  }
+  @media (max-width: 720px){ .zz-scroll{ display:none; } }
+
+  /* =====================================================================
+     INFO BLOCK — with new 4-arrow cluster as visual anchor
+     ===================================================================== */
+  .zz-info{
+    background: var(--p-black);
+    padding: 60px var(--p-pad) 70px;
+    border-bottom: 2px solid var(--p-black-2);
+  }
+  .zz-info-inner{
+    max-width: 1280px; margin: 0 auto;
+    display:grid; grid-template-columns: 1fr auto 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .zz-title-huge{
+    font-family: var(--p-display);
+    font-size: clamp(56px, 9vw, 128px);
+    line-height: .9; letter-spacing: -.02em;
+    color: var(--p-orange);
+    text-transform: uppercase;
+  }
+  .zz-title-huge span{ display:block; }
+
+  .zz-divider{
+    width: 2px; align-self: stretch;
+    background: var(--p-white); opacity: .5;
+  }
+
+  /* 4-arrow cluster — matches the reference image */
+  .zz-arrow-cluster{
+    display:grid; grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    width: clamp(140px, 18vw, 200px);
+    aspect-ratio: 1/1;
+  }
+  .zz-arrow-cluster .cell{
+    background: var(--p-black-2);
+    display:grid; place-items:center;
+    aspect-ratio: 1/1;
+  }
+  .zz-arrow-cluster .cell.on{ color: var(--p-orange); }
+  .zz-arrow-cluster .cell.off{ color: var(--p-gray-2); }
+  .zz-arrow-cluster .cell svg{
+    width: 62%; height: 62%;
+    stroke: currentColor;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
+
+  .zz-info-text{
+    grid-column: 1 / 2;
+    margin-top: 28px;
+    max-width: 520px;
+    font-family: var(--p-sans);
+    font-size: 15px; line-height: 1.55;
+    color: var(--p-gray);
+  }
+  .zz-info-text .lead{ color: var(--p-white); font-weight: 700; }
+
+  .zz-info-meta{
+    grid-column: 2 / 4;
+    margin-top: 28px;
+    display:grid; grid-template-columns: auto 2px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .zz-info-meta .mdiv{ width:2px; height: 60px; background: var(--p-white); opacity:.3; }
+  .zz-info-meta .col{ display:flex; flex-direction:column; gap:4px; }
+  .zz-info-meta .k{
+    font-family: var(--p-mono); font-size: 10px; letter-spacing:.15em;
+    text-transform: uppercase; color: var(--p-gray);
+  }
+  .zz-info-meta .v{
+    font-family: var(--p-display);
+    font-size: clamp(18px, 2.2vw, 26px);
+    color: var(--p-white);
+    letter-spacing: -.01em;
+  }
+
+  @media (max-width: 880px){
+    .zz-info-inner{ grid-template-columns: 1fr; }
+    .zz-divider{ display:none; }
+    .zz-arrow-cluster{ justify-self: start; }
+    .zz-info-text{ grid-column: auto; }
+    .zz-info-meta{ grid-column: auto; grid-template-columns: auto 2px auto; }
+  }
+
+  /* =====================================================================
+     DECO ROW — signed by + X row + checker + icon buttons
+     ===================================================================== */
+  .zz-deco{
+    background: var(--p-black);
+    padding: 20px var(--p-pad) 50px;
+  }
+  .zz-deco-inner{
+    max-width: 1280px; margin: 0 auto;
+    display:grid; grid-template-columns: 1fr auto;
+    gap: 30px; align-items: center;
+  }
+  .zz-signed{
+    display:flex; align-items:center; gap: 18px;
+  }
+  .zz-signed .sq{
+    width: 54px; height: 54px;
+    background: var(--p-orange);
+    color: var(--p-black);
+    display:grid; place-items:center;
+    font-family: var(--p-display); font-size: 20px;
+  }
+  .zz-signed .txt{ display:flex; flex-direction:column; }
+  .zz-signed .txt .k{
+    font-family: var(--p-mono); font-size: 10px; letter-spacing:.15em;
+    text-transform: uppercase; color: var(--p-gray);
+  }
+  .zz-signed .txt .v{
+    font-family: var(--p-display); font-size: 20px; color: var(--p-white);
+  }
+
+  /* X-marks — SVG version matching reference (thick bold X on black) */
+  .zz-xmarks{
+    display:flex; gap: 10px; align-items:center;
+  }
+  .zz-xmarks .x-cell{
+    width: 46px; height: 46px;
+    background: var(--p-black-2);
+    display:grid; place-items:center;
+    color: var(--p-orange);
+  }
+  .zz-xmarks .x-cell.dim{ color: var(--p-gray-2); }
+  .zz-xmarks .x-cell svg{
+    width: 60%; height: 60%;
+    stroke: currentColor;
+    stroke-width: 4;
+    fill: none; stroke-linecap: square;
+  }
+
+  .zz-action-row{ display:flex; align-items:center; gap:12px; }
+  .zz-checker{
+    width: 60px; height: 60px;
+    background-image:
+      linear-gradient(45deg, var(--p-gray-2) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--p-gray-2) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--p-gray-2) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--p-gray-2) 75%);
+    background-size: 14px 14px;
+    background-position: 0 0, 0 7px, 7px -7px, -7px 0;
+    background-color: var(--p-black);
+  }
+  .zz-icon-btn{
+    width: 46px; height: 46px;
+    background: var(--p-black-2);
+    color: var(--p-white);
+    display:grid; place-items:center;
+    transition: background .15s, color .15s;
+    cursor: pointer; border: 0;
+  }
+  .zz-icon-btn svg{ width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+  .zz-icon-btn:hover{ background: var(--p-orange); color: var(--p-black); }
+
+  @media (max-width: 720px){
+    .zz-deco-inner{ grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* =====================================================================
+     TRACK BAR
+     ===================================================================== */
+  .zz-trackbar{
+    background: var(--p-black);
+    border-top: 2px solid var(--p-black-3);
+    padding: 18px var(--p-pad);
+  }
+  .zz-trackbar-inner{
+    max-width: 1280px; margin: 0 auto;
+    display:flex; justify-content: space-between; align-items:center;
+    gap: 30px; flex-wrap: wrap;
+    font-family: var(--p-mono);
+    font-size: 10px; letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--p-gray);
+  }
+  .zz-trackbar-inner span{ display:inline-flex; align-items:center; gap: 8px; }
+  .zz-trackbar-inner span::before{
+    content:""; display:inline-block;
+    width: 6px; height: 6px; background: var(--p-orange);
+  }
+
+  /* =====================================================================
+     GALLERY (cream)
+     ===================================================================== */
+  .zz-paper{
+    background: var(--p-cream);
+    color: var(--p-ink);
+    padding: 60px var(--p-pad) 80px;
+    position: relative;
+  }
+  .zz-paper::before{
+    content:""; position:absolute; inset:0;
+    background-image: radial-gradient(var(--p-cream-3) 1px, transparent 1px);
+    background-size: 14px 14px;
+    opacity: .5;
+    pointer-events: none;
+  }
+
+  .zz-paper-head{
+    position: relative;
+    max-width: 1280px; margin: 0 auto 40px;
+    padding: 24px 4px;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 30px;
+    flex-wrap: wrap;
+    border-bottom: 3px solid var(--p-ink);
+  }
+  .zz-paper-head h2{
+    font-family: var(--p-display);
+    font-size: clamp(60px, 10vw, 148px);
+    line-height: .88; letter-spacing: -.04em;
+    color: var(--p-ink);
+    text-transform: uppercase;
+    position: relative;
+  }
+  .zz-paper-head h2 .strike{
+    position: relative; display: inline-block;
+  }
+  .zz-paper-head h2 .strike::after{
+    content:""; position:absolute;
+    top: 45%; left: -4px; right: -4px;
+    height: 12px;
+    background: var(--p-orange);
+    transform: skew(-3deg, -1deg);
+    z-index: -1;
+  }
+
+  .zz-paper-badge{
+    flex-shrink: 0;
+    display:flex; flex-direction: column; gap: 8px;
+    align-items: flex-end;
+  }
+  .zz-paper-badge .stamp{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 8px 14px;
+    background: var(--p-orange);
+    color: var(--p-ink);
+    font-family: var(--p-display); font-size: 12px; letter-spacing: .08em;
+  }
+  .zz-paper-badge .rating{
+    font-family: var(--p-display); font-size: 14px; color: var(--p-ink);
+    letter-spacing: .3em;
+  }
+  .zz-paper-badge .jp{
+    font-family: var(--p-mono); font-size: 10px; color: var(--p-ink);
+    letter-spacing: .2em; text-transform: uppercase;
+  }
+
+  .zz-paper-sidelabel{
+    position: absolute;
+    top: 80px; left: 18px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--p-display);
+    font-size: 13px; letter-spacing: .18em;
+    color: var(--p-ink);
+    text-transform: uppercase;
+  }
+
+  /* ABOUT on paper — decorated with orange arrow icons */
+  .zz-about-text{
+    position: relative;
+    max-width: 1280px; margin: 0 auto 40px;
+    display:grid; grid-template-columns: 1fr 1fr; gap: 40px;
+    padding: 0 4px;
+  }
+  .zz-about-text .label{
+    font-family: var(--p-mono); font-size: 10px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--p-orange); font-weight: 700;
+    margin-bottom: 12px;
+    display:inline-flex; align-items:center; gap: 10px;
+  }
+  .zz-about-text .label::before{
+    content:""; width: 22px; height: 2px; background: var(--p-orange);
+  }
+  .zz-about-text h3{
+    font-family: var(--p-display);
+    font-size: clamp(22px, 3vw, 36px);
+    line-height: 1.02; letter-spacing: -.02em;
+    color: var(--p-ink);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  /* About decorative row — arrow + X icons on cream */
+  .zz-about-deco{
+    display:flex; gap: 10px; align-items: center;
+    margin-top: 24px;
+  }
+  .zz-about-deco .deco-cell{
+    width: 44px; height: 44px;
+    display:grid; place-items:center;
+    color: var(--p-orange);
+  }
+  .zz-about-deco .deco-cell.dim{ color: var(--p-ink); opacity: .35; }
+  .zz-about-deco .deco-cell svg{
+    width: 66%; height: 66%;
+    stroke: currentColor; stroke-width: 3.5;
+    fill: none; stroke-linecap: square; stroke-linejoin: miter;
+  }
+
+  .zz-about-text p{
+    font-size: 14.5px; line-height: 1.65;
+    color: var(--p-gray-2);
+    margin-bottom: 14px;
+    max-width: 480px;
+  }
+  .zz-about-text p .lead{ color: var(--p-ink); font-weight: 700; }
+  .zz-about-text .tags{
+    display:flex; flex-wrap:wrap; gap: 6px; margin-top: 16px;
+  }
+  .zz-about-text .tags span{
+    font-family: var(--p-mono); font-size: 10px; letter-spacing: .15em;
+    font-weight: 700; text-transform: uppercase;
+    padding: 6px 10px;
+    background: var(--p-cream-2);
+    color: var(--p-ink);
+  }
+
+  @media (max-width: 800px){
+    .zz-about-text{ grid-template-columns: 1fr; }
+  }
+
+  /* MASONRY — clickable, opens lightbox */
+  .zz-masonry{
+    max-width: 1280px; margin: 0 auto;
+    column-count: 4; column-gap: 12px;
+    position: relative;
+  }
+  .zz-masonry .item{
+    break-inside: avoid;
+    margin-bottom: 12px;
+    background: var(--p-cream-2);
+    overflow: hidden;
+    display: block;
+    position: relative;
+    transition: transform .25s ease, box-shadow .25s ease;
+    cursor: zoom-in;
+  }
+  .zz-masonry .item:hover{
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--p-ink);
+    z-index: 3;
+  }
+  .zz-masonry .item img{
+    width: 100%; height: auto; display:block;
+  }
+
+  @media (max-width: 1100px){ .zz-masonry{ column-count: 3; } }
+  @media (max-width: 760px){  .zz-masonry{ column-count: 2; } }
+  @media (max-width: 460px){  .zz-masonry{ column-count: 1; } }
+
+  /* =====================================================================
+     LIGHTBOX — opens on image click
+     ===================================================================== */
+  .zz-lightbox{
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: clamp(20px, 4vw, 60px);
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  .zz-lightbox.open{
+    display: flex;
+    opacity: 1;
+  }
+  .zz-lightbox-img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 20px 60px rgba(0,0,0,.8);
+  }
+  .zz-lightbox-close{
+    position: fixed;
+    top: clamp(16px, 3vw, 32px);
+    right: clamp(16px, 3vw, 32px);
+    z-index: 301;
+    width: 52px; height: 52px;
+    background: var(--p-orange);
+    color: var(--p-black);
+    border: 2px solid var(--p-black);
+    box-shadow: 5px 5px 0 var(--p-black);
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, background .15s;
+  }
+  .zz-lightbox-close:hover{
+    background: var(--p-orange-2);
+    transform: translate(-2px,-2px);
+    box-shadow: 7px 7px 0 var(--p-black);
+  }
+  .zz-lightbox-close svg{
+    width: 22px; height: 22px;
+    stroke: currentColor; stroke-width: 4;
+    fill: none; stroke-linecap: square;
+  }
+  /* nav arrows for lightbox */
+  .zz-lightbox-nav{
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    z-index: 301;
+    width: 52px; height: 52px;
+    background: rgba(255,107,31,.9);
+    color: var(--p-black);
+    display: grid; place-items: center;
+    cursor: pointer;
+    border: 0;
+    transition: background .15s;
+  }
+  .zz-lightbox-nav:hover{ background: var(--p-orange); }
+  .zz-lightbox-nav.prev{ left: clamp(16px, 3vw, 32px); }
+  .zz-lightbox-nav.next{ right: clamp(16px, 3vw, 32px); }
+  .zz-lightbox-nav svg{
+    width: 22px; height: 22px;
+    stroke: currentColor; stroke-width: 3;
+    fill: none; stroke-linecap: square;
+  }
+  .zz-lightbox-counter{
+    position: fixed;
+    bottom: clamp(16px, 3vw, 32px);
+    left: 50%; transform: translateX(-50%);
+    z-index: 301;
+    padding: 8px 16px;
+    background: var(--p-orange);
+    color: var(--p-black);
+    font-family: var(--p-mono); font-size: 11px;
+    letter-spacing: .15em; text-transform: uppercase;
+  }
+
+  /* Prevent body scroll when lightbox open */
+  body.lightbox-open{ overflow: hidden; }
+
+  /* =====================================================================
+     SOCIALS (cream) — borders KEPT
+     ===================================================================== */
+  .zz-social{
+    background: var(--p-cream);
+    padding: 20px var(--p-pad) 80px;
+    border-top: 2px solid var(--p-cream-3);
+  }
+  .zz-social-inner{
+    max-width: 1280px; margin: 0 auto;
+  }
+  .zz-social-head{
+    display:flex; justify-content: space-between; align-items: flex-end;
+    gap: 30px; flex-wrap: wrap;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--p-ink);
+  }
+  .zz-social-head h2{
+    font-family: var(--p-display);
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: .95; letter-spacing: -.03em;
+    color: var(--p-ink);
+    text-transform: uppercase;
+  }
+  .zz-social-head h2 em{
+    font-family: var(--p-sans); font-style: italic; font-weight: 400;
+    color: var(--p-orange);
+  }
+  .zz-social-head .label{
+    font-family: var(--p-mono); font-size: 10px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--p-orange); font-weight: 700;
+    display:inline-flex; align-items:center; gap: 10px;
+  }
+
+  .zz-social-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .zz-social-link{
+    display:flex; align-items: center; gap: 14px;
+    padding: 16px 18px;
+    border: 2px solid var(--p-ink);
+    background: var(--p-cream-2);
+    color: var(--p-ink);
+    transition: all .15s;
+  }
+  .zz-social-link:hover{
+    background: var(--p-orange);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--p-ink);
+  }
+  .zz-social-link .ico{
+    width: 36px; height: 36px;
+    border: 2px solid var(--p-ink);
+    background: transparent;
+    color: var(--p-ink);
+    display:grid; place-items:center;
+    font-family: var(--p-display); font-size: 11px;
+    flex-shrink: 0;
+    overflow: hidden;
+    transition: background .15s, color .15s;
+  }
+  .zz-social-link .ico img{
+    width: 70%; height: 70%;
+    object-fit: contain;
+    display: block;
+    /* force icon to pure black no matter the source color */
+    filter: brightness(0) saturate(100%);
+    transition: filter .15s;
+  }
+  .zz-social-link:hover .ico{
+    background: var(--p-ink);
+    color: var(--p-cream);
+  }
+  .zz-social-link:hover .ico img{
+    /* force icon to pure white on hover */
+    filter: brightness(0) invert(1);
+  }
+  .zz-social-link .info{ display:flex; flex-direction:column; flex:1; }
+  .zz-social-link .platform{
+    font-family: var(--p-display); font-size: 13px; letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .zz-social-link .handle{
+    font-family: var(--p-mono); font-size: 10px; opacity: .6;
+    letter-spacing: .05em;
+  }
+  .zz-social-link .arr{ font-family: var(--p-display); font-size: 16px; }
+
+  @media (max-width: 860px){ .zz-social-grid{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px){ .zz-social-grid{ grid-template-columns: 1fr; } }
+
+  /* =====================================================================
+     FOOTER — decorated with X + arrow SVG icon row
+     ===================================================================== */
+  .zz-footer{
+    background: var(--p-black);
+    color: var(--p-gray);
+    border-top: 3px solid var(--p-orange);
+    padding: 40px var(--p-pad) 30px;
+  }
+  .zz-footer-deco{
+    max-width: 1280px; margin: 0 auto 30px;
+    display:flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .zz-footer-deco .cell{
+    width: 52px; height: 52px;
+    background: var(--p-black-2);
+    display:grid; place-items:center;
+  }
+  .zz-footer-deco .cell svg{
+    width: 60%; height: 60%;
+    stroke: currentColor; stroke-width: 3.5;
+    fill: none; stroke-linecap: square; stroke-linejoin: miter;
+  }
+  .zz-footer-deco .cell.orange{ color: var(--p-orange); }
+  .zz-footer-deco .cell.gray{ color: var(--p-gray-2); }
+
+  .zz-footer-bottom{
+    max-width: 1280px; margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--p-black-3);
+    font-family: var(--p-mono); font-size: 10px; letter-spacing: .2em;
+    text-transform: uppercase;
+    display:flex; justify-content: space-between; align-items:center;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .zz-footer-bottom a{ color: var(--p-white); margin-left: 16px; }
+  .zz-footer-bottom a:hover{ color: var(--p-orange); }
+  @media (max-width: 640px){
+    .zz-footer-bottom{ flex-direction:column; text-align:center; gap: 14px; }
+    .zz-footer-bottom a{ margin: 0 8px; }
+  }
+
+  /* =====================================================================
+     REVEAL
+     ===================================================================== */
+  .reveal{opacity:0; transform:translateY(24px); transition: opacity .8s, transform .8s;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
 </head>
-<body class="subpage">
-<header>
-<h1 class="logo">
-  <a href="../index.html">
-    <img src="../img/Para/Dave.png" alt="Projekt-Logo" class="logo-img" />
-  </a>
-</h1>
-  <button class="burger" aria-label="Menü öffnen/schließen">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-     <nav class="nav-links">
-    <a href="../index.html#aboutme" class="nav-link">About Me</a>
-    <a href="../index.html#projects" class="nav-link">Work</a>
-    <a href="../index.html#clients" class="nav-link">Clients</a>
-    <a href="../index.html#contact" class="nav-link">Contact</a>
-    <a href="../index.html" class="nav-icon-link" aria-label="Projekt">
-      <img src="../img/Profilbild01.png" alt="Profilbild" class="nav-icon" />
-    </a>
-  </nav>
-</header>
+<body>
 
-  <section class="hero-single">
-    <img src="../img/Para/Para01.jpg" alt="Projekt Hero">
-  </section>
+<!-- ===== SVG ICON DEFINITIONS (reusable) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="icon-x" viewBox="0 0 24 24">
+      <path d="M5 5 L19 19 M19 5 L5 19"/>
+    </symbol>
+    <symbol id="icon-arrow-ur" viewBox="0 0 24 24">
+      <path d="M7 17 L17 7"/>
+      <path d="M9 7 L17 7 L17 15"/>
+    </symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+      <path d="M19 12 L5 12"/>
+      <path d="M12 19 L5 12 L12 5"/>
+    </symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+      <path d="M5 12 L19 12"/>
+      <path d="M12 5 L19 12 L12 19"/>
+    </symbol>
+    <symbol id="icon-expand" viewBox="0 0 24 24">
+      <path d="M4 10 L4 4 L10 4 M20 10 L20 4 L14 4 M4 14 L4 20 L10 20 M20 14 L20 20 L14 20"/>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="M16 16 L21 21"/>
+    </symbol>
+  </defs>
+</svg>
 
-  <section id="about">
-    <div class="about-wrapper">
-      <div class="about-text">
-<h2><img src="../img/Para/parasite02.png" alt="Projekt Hero"></h2>
+<!-- ===== FLOATING CTA (persistent, always on top) ===== -->
+<a href="../index.html" class="zz-cta-floating">
+  <span class="txt">Back to Portfolio</span>
+</a>
 
-      <p class="text-block">Para_Site_Manga ist meine Künstlerseite, entstanden an der Schnittstelle von Manga, persönlicher Kunst und digitaler Freizeitgestaltung. Was als privates Hobby begann, ist eine kleine Welt eigener Charaktere, Skizzen und Geschichten, die ich in meiner Freizeit erschaffe.
-Diese Para-Seite ist mein Raum für kreative Experimente, in dem ich mit Zeichnungen und Ideen spiele – fernab von kommerziellen Ansprüchen. Hier entsteht ein Universum persönlicher Manga-Illustrationen für alle, die Freude an handgezeichneter Kunst und originellen Figuren haben.
-</p>
-<p class="text-block">Para_Site_Manga is a artist alley, born at the intersection of manga, personal art, and digital leisure. What began as a private hobby has grown into a small world of original characters, sketches, and stories I create in my spare time. This para-site is my space for creative exploration — a place to experiment with drawings and ideas, free from commercial expectations. It’s a personal manga universe for anyone who enjoys hand-drawn art and original characters.</p>
-     </p>
-     </div>
-  </section>
+<!-- ===== HERO (full-bleed) ===== -->
+<section class="zz-hero">
+  <div class="zz-hero-img"></div>
 
+  <div class="zz-side-katakana">パラ<br>サイト</div>
 
-  
+  <div class="zz-bubble">
+    <img src="../img/social/sticker.png" alt="Artbook soon will be released">
+  </div>
+
+  <div class="zz-icons" aria-label="Social shortcuts">
+    <a href="https://www.instagram.com/para_site_manga/" target="_blank" rel="noopener" aria-label="Instagram"><img src="../img/social/icons8-instagram-96.png" alt=""></a>
+    <a href="https://ko-fi.com/para_site_manga" target="_blank" rel="noopener" aria-label="Ko-Fi"><img src="../img/social/icons8-ko-fi-100.png" alt=""></a>
+    <a href="https://www.youtube.com/@parasitemanga" target="_blank" rel="noopener" aria-label="YouTube"><img src="../img/social/icons8-youtube-100.png" alt=""></a>
+  </div>
+
+  <div class="zz-scroll">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
 </section>
-  <section class="slider-section">
-    <h2 class="slider-heading">Showcase</h2>
-    <div class="slider">           
-      <div class="slider-track">
-                <div class="slide"><img src="../img/Para/Para015.png" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Obelix.jpg" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para013.png" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para010.png" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para014.jpg" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para06.jpg" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para01.jpg" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para02.png" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para03.jpg" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para07.png" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para09.jpg" alt="Bild 1"></div>    
-                <div class="slide"><img src="../img/Para/Para05.jpg" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para011.jpg" alt="Bild 1"></div>
-                <div class="slide"><img src="../img/Para/Para08.png" alt="Bild 1"></div>     
+
+<!-- ===== INFO BLOCK ===== -->
+<section class="zz-info">
+  <div class="zz-info-inner">
+
+    <div class="zz-title-huge">
+      <span>PARASITE</span>
+      <span>MANGA</span>
+    </div>
+
+    <div class="zz-divider"></div>
+
+    <!-- decorative spacing -->
+
+    <p class="zz-info-text">
+      <span class="lead">A self-published independent manga series</span>
+      by Dave Rindo Rindo. Drawn between client work and louder coffees —
+      a quiet horror you can hold in your hands.
+    </p>
+
+    <div class="zz-info-meta">
+      <div class="col">
+        <span class="k">Vol. 01</span>
+        <span class="v">2026</span>
+      </div>
+      <div class="mdiv"></div>
+      <div class="col">
+        <span class="k">Cologne, DE</span>
+        <span class="v">Hand-drawn</span>
       </div>
     </div>
 
-
-<section class="contact-socials">
-
-          <h2 class="slider-heading">CHECK OUT MY SOCIALMEDIA</h2>
-
-  <div class="social-icons">
-    <a href="https://www.instagram.com/para_site_manga/" target="_blank" aria-label="Instagram">
-      <img src="../img/icons/icons8-instagram-96.png" alt="Instagram" />
-    </a>
-    <a href="https://ko-fi.com/para_site_manga" target="_blank" aria-label="LinkedIn">
-      <img src="../img/icons/icons8-ko-fi-100.png" alt="Instagram" />
-    </a>
-    <a href="https://www.artstation.com/para-site" target="_blank" aria-label="ArtStation">
-      <img src="../img/icons/icons8-artstation-96.png" alt="Instagram" />
-    </a>
-        <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
-      <img src="../img/icons/icons8-tiktok-100.png" alt="Instagram" />
-    </a>
-        <a href="https://www.youtube.com/@parasitemanga" target="_blank" aria-label="Instagram">
-      <img src="../img/icons/icons8-youtube-100.png" alt="Instagram" />
-    </a>
   </div>
 </section>
 
+<!-- ===== DECO ROW ===== -->
+<section class="zz-deco">
+  <div class="zz-deco-inner">
 
-<footer>
-  <div class="footer-links">
-    <a href="../legal/impressum.html">Impressum</a>
-    <a href="../legal/datenschutz.html">Datenschutz</a>
-    <a href="../legal/agb.html">Agb</a>  
-    <div>&copy; 2025 Dave Rindo</div>
+    <div style="display:flex; align-items:center; gap: 24px;">
+      <div class="zz-action-row">
+        <svg width="260" height="91" viewBox="0 0 157 55" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;">
+          <path d="M156.701 6.99992V47.9999H143.034V30.914L126.341 47.6073L116.678 37.9433L133.954 20.6669H115.701V6.99992H156.701Z" fill="#FF7D2A"/>
+          <path d="M34.4998 6.99995V20.9998H47.4998V33.9998L34.4998 33.9998L34.4998 47.9997H20.4999L20.4999 33.9998H6.5V20.9998L20.4999 20.9998L20.4999 6.99995H34.4998Z" fill="#FF7D2A"/>
+          <path d="M103.201 47.9999H62.2011V6.99992H103.201V47.9999ZM76.2011 33.9999H89.2011V20.9999H76.2011V33.9999Z" fill="#FF7D2A"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== TRACK BAR ===== -->
+<div class="zz-trackbar">
+  <div class="zz-trackbar-inner">
+    <span>PARASITE MANGA</span>
+    <span>GRAPHIC DESIGN</span>
+    <span>ILLUSTRATION</span>
+    <span>MANGADESIGN</span>
+  </div>
+</div>
+
+<!-- ===== GALLERY ===== -->
+<section class="zz-paper" id="works">
+
+  <div class="zz-paper-sidelabel">PARASITE · WORKS · VOL. 01</div>
+
+  <div class="zz-paper-head">
+    <h2>PARASITE<br><span class="strike">MANGA</span></h2>
+    <div class="zz-paper-badge">
+      <span class="rating">★ ★ ★ ★ ★</span>
+      <span class="jp">VOL. 01 · 2026</span>
+    </div>
   </div>
 
-</footer>     
+  <div class="zz-about-text">
+    <div class="left">
+      <div class="label"><svg width="14" height="14" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="#FF7D2A"/></svg> About the Work</div>
+      <h3>An independent<br>manga universe.</h3>
+    </div>
+    <div class="right">
+      <p>
+        <span class="lead">Parasite_Manga is my creative side-project</span> —
+        a self-published space where I get to draw whatever I want, free from briefs,
+        deadlines and brand guidelines. It started as a sketchbook habit and slowly
+        grew into its own world of recurring characters, ink studies and short-form
+        stories.
+      </p>
+      <p>
+        Each piece is hand-drawn, mostly in black ink with the occasional bleed of red.
+        The work lives somewhere between manga, editorial illustration and personal
+        diary — a quiet horror you can hold in your hands.
+      </p>
+      <div class="tags">
+        <span>Manga</span>
+        <span>Illustration</span>
+        <span>Story</span>
+      </div>
+    </div>
+  </div>
 
+  <div class="zz-masonry" id="zzMasonry"></div>
+</section>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="zz-lightbox" id="zzLightbox" role="dialog" aria-hidden="true">
+  <button class="zz-lightbox-close" id="zzLbClose" aria-label="Close">
+    <svg viewBox="0 0 24 24"><use href="#icon-x"/></svg>
+  </button>
+  <button class="zz-lightbox-nav prev" id="zzLbPrev" aria-label="Previous">
+    <svg viewBox="0 0 24 24"><use href="#icon-arrow-left"/></svg>
+  </button>
+  <button class="zz-lightbox-nav next" id="zzLbNext" aria-label="Next">
+    <svg viewBox="0 0 24 24"><use href="#icon-arrow-right"/></svg>
+  </button>
+  <img class="zz-lightbox-img" id="zzLbImg" alt="">
+  <div class="zz-lightbox-counter" id="zzLbCounter">01 / 14</div>
+</div>
+
+<!-- ===== SOCIALS ===== -->
+<section class="zz-social" id="follow">
+  <div class="zz-social-inner">
+    <div class="zz-social-head">
+      <div>
+        <div class="label"><svg width="14" height="14" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="#FF7D2A"/></svg> Follow the journey</div>
+        <h2 style="margin-top:10px;">FIND ME <em>ON EVERY</em> PAGE</h2>
+      </div>
+    </div>
+
+    <div class="zz-social-grid">
+      <a class="zz-social-link" href="https://www.instagram.com/para_site_manga/" target="_blank" rel="noopener">
+        <span class="ico"><img src="../img/social/icons8-instagram-96.png" alt="Instagram"></span>
+        <span class="info">
+          <span class="platform">Instagram</span>
+        </span>
+        <span class="arr"><svg width="18" height="18" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="currentColor"/></svg></span>
+      </a>
+      <a class="zz-social-link" href="https://ko-fi.com/para_site_manga" target="_blank" rel="noopener">
+        <span class="ico"><img src="../img/social/icons8-ko-fi-100.png" alt="Ko-Fi"></span>
+        <span class="info">
+          <span class="platform">Ko-Fi</span>
+        </span>
+        <span class="arr"><svg width="18" height="18" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="currentColor"/></svg></span>
+      </a>
+      <a class="zz-social-link" href="https://www.artstation.com/para-site" target="_blank" rel="noopener">
+        <span class="ico"><img src="../img/social/icons8-artstation-96.png" alt="ArtStation"></span>
+        <span class="info">
+          <span class="platform">ArtStation</span>
+        </span>
+        <span class="arr"><svg width="18" height="18" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="currentColor"/></svg></span>
+      </a>
+      <a class="zz-social-link" href="https://www.youtube.com/@parasitemanga" target="_blank" rel="noopener">
+        <span class="ico"><img src="../img/social/icons8-youtube-100.png" alt="YouTube"></span>
+        <span class="info">
+          <span class="platform">YouTube</span>
+        </span>
+        <span class="arr"><svg width="18" height="18" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="currentColor"/></svg></span>
+      </a>
+      <a class="zz-social-link" href="#" target="_blank" rel="noopener">
+        <span class="ico"><img src="../img/social/icons8-tiktok-100.png" alt="TikTok"></span>
+        <span class="info">
+          <span class="platform">TikTok</span>
+        </span>
+        <span class="arr"><svg width="18" height="18" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="currentColor"/></svg></span>
+      </a>
+      <a class="zz-social-link" href="mailto:daverindorindo@googlemail.com">
+        <span class="ico"><img src="../img/social/icons8-gmail-logo-128.png" alt="Email"></span>
+        <span class="info">
+          <span class="platform">Email</span>
+        </span>
+        <span class="arr"><svg width="18" height="18" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="currentColor"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER — decorated with X + arrow icons ===== -->
+<footer class="zz-footer">
+  <div class="zz-footer-bottom">
+    <div>© 2026 Dave Rindo Rindo · Para_Site_Manga</div>
+    <div>
+      <a href="../legal/impressum.html">Impressum</a>
+      <a href="../legal/datenschutz.html">Datenschutz</a>
+      <a href="../legal/agb.html">AGB</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // =====================================================================
+  // MASONRY GALLERY — random order
+  // =====================================================================
+  const galleryImages = [
+    'Para015.png','Obelix.jpg','Para013.png','Para010.png','Para014.jpg',
+    'Para06.jpg','Para01.jpg','Para02.png','Para03.jpg','Para07.png',
+    'Para09.jpg','Para05.jpg','Para011.jpg','Para08.png','Illustration_Project-color.jpg',
+    'Manga_Illustration_EVE.png','Panda.png','Sunset-mood.png','Unbenanntes_Projekt 2.png','ProjectEvE_three.png'
+  ];
+  for (let i = galleryImages.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [galleryImages[i], galleryImages[j]] = [galleryImages[j], galleryImages[i]];
+  }
+
+  const masonry = document.getElementById('zzMasonry');
+  masonry.innerHTML = galleryImages.map((name, idx) =>
+    `<a class="item" data-idx="${idx}" href="../img/Para/${name}">
+       <img src="../img/Para/${name}" alt="" loading="lazy">
+     </a>`
+  ).join('');
+
+  // =====================================================================
+  // LIGHTBOX
+  // =====================================================================
+  const lightbox = document.getElementById('zzLightbox');
+  const lbImg    = document.getElementById('zzLbImg');
+  const lbClose  = document.getElementById('zzLbClose');
+  const lbPrev   = document.getElementById('zzLbPrev');
+  const lbNext   = document.getElementById('zzLbNext');
+  const lbCount  = document.getElementById('zzLbCounter');
+
+  let currentIdx = 0;
+
+  function openLb(idx){
+    currentIdx = idx;
+    lbImg.src = `../img/Para/${galleryImages[idx]}`;
+    lbCount.textContent = `${String(idx + 1).padStart(2,'0')} / ${String(galleryImages.length).padStart(2,'0')}`;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden','false');
+    document.body.classList.add('lightbox-open');
+  }
+  function closeLb(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden','true');
+    document.body.classList.remove('lightbox-open');
+  }
+  function nextLb(){
+    openLb((currentIdx + 1) % galleryImages.length);
+  }
+  function prevLb(){
+    openLb((currentIdx - 1 + galleryImages.length) % galleryImages.length);
+  }
+
+  // Click on any gallery item -> open lightbox
+  masonry.addEventListener('click', (e) => {
+    const item = e.target.closest('.item');
+    if (!item) return;
+    e.preventDefault();
+    openLb(parseInt(item.dataset.idx, 10));
+  });
+
+  lbClose.addEventListener('click', closeLb);
+  lbNext.addEventListener('click', nextLb);
+  lbPrev.addEventListener('click', prevLb);
+
+  // click on lightbox background -> close
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLb();
+  });
+
+  // keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowRight') nextLb();
+    if (e.key === 'ArrowLeft') prevLb();
+  });
+
+  // =====================================================================
+  // REVEAL
+  // =====================================================================
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
- <a  href="../index.html" class="back-to-home" aria-label="Zurück zur Startseite">←</a>
 </html>
