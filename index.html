@@ -18,6 +18,18 @@
 <style>
   .parasite-pill .pavatar{ background: url('img/Profilbild02.png') center/cover, var(--red); }
   .about-img{ background: url('img/Dave3.png') center/cover; }
+
+  /* Client marquee: grayscale by default, full color on hover */
+  .clients-marquee .marquee-track img{
+    filter: grayscale(100%) contrast(0.9);
+    opacity: 0.65;
+    transition: filter .35s ease, opacity .35s ease, transform .35s ease;
+  }
+  .clients-marquee .marquee-track img:hover{
+    filter: grayscale(0%) contrast(1);
+    opacity: 1;
+    transform: scale(1.05);
+  }
 </style>
 </head>
 <body>
@@ -73,13 +85,10 @@
     <div class="hero-content">
       <div class="hero-eyebrow">
         <span class="dot"></span>
-        <span>Available Q2 2026 — Cologne / Remote</span>
+        <span>Art Direction, Visual Design <span class="accent">&amp;</span> Illustration</span>
       </div>
-      <h1>
-        Art Direction, Visual Design <span class="accent">&amp;</span> Illustration
-        for brands that want to be remembered.
-      </h1>
-      <div class="hero-sub">Dave Rindo Rindo · 07+ Years </div>
+        <h1>TAKE YOUR BRAND TO THE NEXT LEVEL</h1>
+      <div class="hero-sub">Dave Rindo Rindo · 07+ Years · Cologne · Remote</div>
     </div>
 
     <div class="slider-ui">
@@ -104,9 +113,12 @@
 
     <div class="about-content reveal">
       <p>
-        I'm <strong>Dave Rindo Rindo</strong> — Art Director with 6+ years across design, illustration
+        I'm <strong>Dave Rindo Rindo</strong> — Art Director with 7+ years across design, illustration
         and visual brand communication. From gaming and automotive to lifestyle, I craft concepts
         with a strong sense for brand and audience.
+      </p>
+      <p>
+      After completing my studies in Product Design, I gained over six years of experience in art direction, graphic design, and project management for both national and international clients. My professional journey began at Oliver Schrott Kommunikation (OSK), where I worked, among others, for Daimler/Mercedes. There, I designed trade show and event architectures, illustrated storyboards, and produced high-quality renderings.
       </p>
       <p>
         Before my sabbatical in 2024, I worked at <strong>Build a Rocket</strong> on campaigns for
@@ -121,9 +133,9 @@
       </div>
 
       <div class="about-stats">
-        <div><div class="n">06+</div><div class="l">Years</div></div>
-        <div><div class="n">40+</div><div class="l">Projects</div></div>
-        <div><div class="n">22</div><div class="l">Brands</div></div>
+        <div><div class="n">07+</div><div class="l">Years</div></div>
+        <div><div class="n">100+</div><div class="l">Projects</div></div>
+        <div><div class="n">20+</div><div class="l">Brands</div></div>
       </div>
     </div>
   </section>
@@ -239,11 +251,6 @@
     </div>
 
     <div class="socials">
-      <a href="https://www.instagram.com/daveodnirodnir/" target="_blank" rel="noopener">
-        <span class="ico"><svg><use href="#i-instagram"/></svg></span>
-        <span>Instagram</span>
-        <span class="ico"><svg><use href="#i-arrow-up-right"/></svg></span>
-      </a>
       <a href="https://www.linkedin.com/in/dave-rindorindo-25547a145/" target="_blank" rel="noopener">
         <span class="ico"><svg><use href="#i-linkedin"/></svg></span>
         <span>LinkedIn</span>
@@ -275,10 +282,12 @@
 <script>
   window.HERO_IMAGES = [
     'img/Titelfolie-mittel.png',
-    'img/A-Class_Teaser (1).jpg',
-    'img/gallery-Porsche3-1-750x417.jpg',
+    'img/18C0280_317.jpg',
+    'img/IMG_8507.JPG',
+    'img/Puma-porsche-vexx3.png',
     'img/Portfolio_08.png',
     'img/Portfolio_01.png',
+    'img/Brausergames.png',
     'img/LG-UltraGear-LoL-edition-27GR95QL.jpg',
     'img/Portfolio_17.png',
     'img/Kalt_Warm.jpg'
