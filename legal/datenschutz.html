@@ -1,123 +1,356 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Datenschutz</title>
-  <link rel="stylesheet" href="../style.css" />
-  <script defer src="../script.js"></script>
-</head>
-<body class="subpage">
-  <header>
-    <h1>Dave Rindo Rindo</h1>
-     <button class="burger" aria-label="Menü öffnen/schließen">☰</button>
-    <nav>
-      <a href="../index.html#about">About Me</a>
-      <a href="../index.html#work">Work</a>
-      <a href="../index.html#clients">Clients</a>
-      <a href="../index.html#contact">Contact</a>
-                    <a href="../projects/parasite.html" class="nav-icon-link" aria-label="Projekt">
-  <img src="../img/Profilbild02.png" alt="Projekt-Icon" /></a>
-    </nav>
-  </header>
-    <a href="../index.html#projects" class="back-to-home" aria-label="Zurück zur Startseite">⟵</a>
-  <!-- Hero-Bereich mit statischem Bild -->
-  <section class="hero-single">
-    <img src="../img/philipp-katzenberger-iIJrUoeRoCQ-unsplash.jpg" alt="Projekt Hero">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Datenschutz — Dave Rindo Rindo</title>
+<meta name="description" content="Datenschutzerklärung nach DSGVO — Dave Rindo Rindo, Freier Art Director in Köln." />
 
+<link rel="icon" href="../img/Flavicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/Flavicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="legal.css">
+</head>
+<body class="legal-page">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 7 9-7"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></symbol>
+  </defs>
+</svg>
+
+<!-- ================= NAV ================= -->
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <a href="../index.html" class="brand" aria-label="Dave RindoRindo — Home">
+      <img class="logo" src="../img/Dave.svg" alt="Dave RindoRindo">
+    </a>
+  </div>
+
+  <div class="nav-center">
+    <a href="../index.html#work">Work</a>
+    <a href="../index.html#about">About me</a>
+    <a href="../index.html#contact">Contact</a>
+  </div>
+
+  <div class="nav-right">
+    <a class="back-pill" href="../index.html">
+      <span class="arr">←</span>
+      <span>Back to Portfolio</span>
+    </a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Theme">◐</button>
+    <button class="burger" id="burger" aria-label="Menu">≡</button>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="navMobile">
+  <a href="../index.html#work">Work</a>
+  <a href="../index.html#about">About me</a>
+  <a href="../index.html#contact">Contact</a>
+  <a href="../index.html">← Portfolio</a>
+</div>
+
+<main>
+
+  <!-- ================= LEGAL HEADER ================= -->
+  <header class="legal-header">
+    <div class="legal-header-meta">
+      <span class="num">L / 02</span>
+      <span class="sep">·</span>
+      <span>Privacy Policy</span>
+    </div>
+    <h1>Datenschutz.</h1>
+    <p class="legal-lead">
+      Informationen zur Verarbeitung personenbezogener Daten gemäß Art. 13 &amp; 14 DSGVO.
+      Letzte Aktualisierung: April 2026.
+    </p>
+  </header>
+
+  <!-- ================= TOC ================= -->
+  <nav class="legal-toc" aria-label="Inhaltsverzeichnis">
+    <div class="toc-label">Inhalt</div>
+    <ol>
+      <li><a href="#s1">Verantwortlicher</a></li>
+      <li><a href="#s2">Begriffe</a></li>
+      <li><a href="#s3">Hosting &amp; Server-Logs</a></li>
+      <li><a href="#s4">Kontaktaufnahme</a></li>
+      <li><a href="#s5">Auftragsverarbeitung</a></li>
+      <li><a href="#s6">Cookies &amp; Analyse-Tools</a></li>
+      <li><a href="#s7">Externe Inhalte &amp; Fonts</a></li>
+      <li><a href="#s8">Projektdaten von Kund*innen</a></li>
+      <li><a href="#s9">Speicherdauer</a></li>
+      <li><a href="#s10">Rechte der Betroffenen</a></li>
+      <li><a href="#s11">Datensicherheit</a></li>
+      <li><a href="#s12">Änderungen</a></li>
+    </ol>
+  </nav>
+
+  <!-- ================= CONTENT ================= -->
+  <article class="legal-content">
+
+    <section class="legal-section" id="s1">
+      <h2><span class="n">01</span> Verantwortlicher</h2>
+      <p>
+        Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) und anderer
+        nationaler Datenschutzgesetze der Mitgliedstaaten ist:
+      </p>
+      <div class="legal-card">
+        <p>
+          <strong>Dave Rindo Rindo</strong><br>
+          Freier Art Director &amp; Illustrator<br>
+          Heinsbergstraße [Hausnummer ergänzen]<br>
+          50674 Köln<br>
+          Deutschland<br><br>
+          E-Mail: <a href="mailto:daverindorindo@googlemail.com">daverindorindo@googlemail.com</a><br>
+          Telefon: <a href="tel:+4915782363987">+49 157 8236 3987</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section" id="s2">
+      <h2><span class="n">02</span> Allgemeine Hinweise &amp; Begriffe</h2>
+      <p>
+        Der Schutz Ihrer persönlichen Daten ist mir ein wichtiges Anliegen. Personenbezogene
+        Daten sind Daten, mit denen Sie persönlich identifiziert werden können. Die
+        Verarbeitung erfolgt im Einklang mit der DSGVO sowie dem Bundesdatenschutzgesetz
+        (BDSG).
+      </p>
+      <p class="muted small">
+        Die Rechtsgrundlage der Verarbeitung ergibt sich jeweils aus Art. 6 Abs. 1 DSGVO —
+        insbesondere lit. a (Einwilligung), lit. b (Vertragserfüllung/vorvertragliche
+        Maßnahmen), lit. c (rechtliche Verpflichtung) und lit. f (berechtigtes Interesse).
+      </p>
+    </section>
+
+    <section class="legal-section" id="s3">
+      <h2><span class="n">03</span> Hosting &amp; Server-Logfiles</h2>
+      <p>
+        Diese Website wird auf Servern eines externen Hosting-Anbieters betrieben. Bei jedem
+        Aufruf erhebt der Hosting-Anbieter automatisch technische Zugriffsdaten in
+        sogenannten Server-Logfiles:
+      </p>
+      <ul class="legal-list">
+        <li>IP-Adresse (gekürzt/anonymisiert, sofern technisch möglich)</li>
+        <li>Datum und Uhrzeit des Zugriffs</li>
+        <li>Aufgerufene Seite / Datei</li>
+        <li>Browsertyp und -version</li>
+        <li>Verwendetes Betriebssystem</li>
+        <li>Referrer-URL (zuvor besuchte Seite)</li>
+        <li>Übertragene Datenmenge und HTTP-Statuscode</li>
+      </ul>
+      <p class="muted small">
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren und
+        stabilen Betrieb der Website). Eine Zusammenführung dieser Daten mit anderen
+        Datenquellen erfolgt nicht. Die Logs werden nach spätestens 30 Tagen gelöscht,
+        sofern keine sicherheitsrelevanten Vorfälle eine längere Aufbewahrung erfordern.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s4">
+      <h2><span class="n">04</span> Kontaktaufnahme</h2>
+      <p>
+        Wenn Sie mich per E-Mail, Telefon oder über Social-Media-Direktnachrichten
+        kontaktieren, werden Ihre Angaben (Name, Kontaktdaten, Inhalt der Anfrage) zum Zweck
+        der Bearbeitung Ihrer Anfrage und für den Fall von Anschlussfragen gespeichert.
+      </p>
+      <p class="muted small">
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen /
+        Vertragserfüllung) bei geschäftlichen Anfragen; Art. 6 Abs. 1 lit. f DSGVO
+        (berechtigtes Interesse an der Beantwortung) bei allgemeinen Anfragen. Eine
+        Weitergabe an Dritte erfolgt nicht ohne Ihre Einwilligung.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s5">
+      <h2><span class="n">05</span> Auftragsverarbeitung &amp; Dienstleister</h2>
+      <p>
+        Für den Betrieb der Website und die Abwicklung von Projekten setze ich ausgewählte
+        Dienstleister ein (z. B. Hosting, E-Mail, Cloud-Speicher, Buchhaltung). Mit diesen
+        wurden — soweit erforderlich — Verträge zur Auftragsverarbeitung gemäß Art. 28
+        DSGVO abgeschlossen.
+      </p>
+      <p class="muted small">
+        Eine vollständige Übersicht der aktuell eingesetzten Auftragsverarbeiter stelle ich
+        auf schriftliche Anfrage gerne zur Verfügung.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s6">
+      <h2><span class="n">06</span> Cookies &amp; Analyse-Tools</h2>
+      <p>
+        Diese Website verwendet ausschließlich technisch notwendige Speichertechniken
+        (z. B. <span class="mono">localStorage</span> für die Speicherung Ihrer
+        Theme-Präferenz — Dark/Light-Mode). Es erfolgt kein Tracking, keine Profilbildung
+        und es werden keine Analyse-Tools wie Google Analytics, Matomo oder vergleichbare
+        Dienste eingesetzt.
+      </p>
+      <p class="muted small">
+        Rechtsgrundlage für technisch notwendige Speicherung: Art. 6 Abs. 1 lit. f DSGVO
+        i. V. m. § 25 Abs. 2 Nr. 2 TTDSG.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s7">
+      <h2><span class="n">07</span> Externe Inhalte &amp; Schriften</h2>
+      <p>
+        Diese Website bindet Schriftarten (Google Fonts — <em>Geist</em> &amp;
+        <em>Geist Mono</em>) von einem Server der Google Ireland Limited nach. Hierbei
+        kann Ihre IP-Adresse an Google übertragen werden.
+      </p>
+      <p class="muted small">
+        Sie können die Übertragung verhindern, indem Sie JavaScript in Ihrem Browser
+        deaktivieren oder einen Font-Blocker verwenden. Rechtsgrundlage: Art. 6 Abs. 1
+        lit. f DSGVO (einheitliches Schriftbild im berechtigten Gestaltungsinteresse).
+        Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.
+      </p>
+      <p>
+        Eingebettete Videos, Social-Media-Plugins oder Tracking-Pixel werden auf dieser
+        Website <strong>nicht</strong> verwendet. Links zu externen Plattformen
+        (Instagram, LinkedIn, Xing) öffnen erst nach aktivem Klick und übertragen keine
+        Daten beim bloßen Seitenaufruf.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s8">
+      <h2><span class="n">08</span> Verarbeitung von Projektdaten (Kund*innen)</h2>
+      <p>
+        Im Rahmen von Design-Aufträgen verarbeite ich typischerweise folgende Daten:
+      </p>
+      <ul class="legal-list">
+        <li>Stamm- und Kontaktdaten (Name, Firma, Anschrift, E-Mail, Telefon)</li>
+        <li>Vertrags- und Abrechnungsdaten (Angebote, Rechnungen, Zahlungsinformationen)</li>
+        <li>Projektinhalte, Briefings, Feedback-Kommunikation, übergebene Arbeitsdateien</li>
+      </ul>
+      <p>
+        Die Verarbeitung erfolgt zum Zweck der Vertragsanbahnung und -erfüllung (Art. 6
+        Abs. 1 lit. b DSGVO) sowie zur Erfüllung gesetzlicher Aufbewahrungspflichten
+        (Art. 6 Abs. 1 lit. c DSGVO, insbesondere §§ 147 AO, 257 HGB — 6 bzw. 10 Jahre).
+      </p>
+      <p class="muted small">
+        Von Kund*innen übergebene Bild-, Marken- oder Textmaterialien werden ausschließlich
+        für das jeweilige Projekt genutzt und nach Projektabschluss nicht ohne
+        ausdrückliche Einwilligung in anderen Kontexten weiterverwendet. Eine Nennung in
+        meinem Portfolio erfolgt nur, sofern keine Vertraulichkeit vereinbart wurde.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s9">
+      <h2><span class="n">09</span> Speicherdauer</h2>
+      <p>
+        Personenbezogene Daten werden nur so lange gespeichert, wie es für die genannten
+        Zwecke erforderlich ist oder gesetzliche Aufbewahrungsfristen dies vorschreiben.
+        Nach Wegfall des Zwecks bzw. Ablauf der Fristen werden die Daten routinemäßig
+        gelöscht.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s10">
+      <h2><span class="n">10</span> Ihre Rechte als betroffene Person</h2>
+      <p>Ihnen stehen im Rahmen der DSGVO folgende Rechte zu:</p>
+      <ul class="legal-list">
+        <li><strong>Auskunft</strong> über die bei mir gespeicherten Daten (Art. 15 DSGVO)</li>
+        <li><strong>Berichtigung</strong> unrichtiger Daten (Art. 16 DSGVO)</li>
+        <li><strong>Löschung</strong> Ihrer Daten, sofern keine Aufbewahrungspflichten entgegenstehen (Art. 17 DSGVO)</li>
+        <li><strong>Einschränkung</strong> der Verarbeitung (Art. 18 DSGVO)</li>
+        <li><strong>Datenübertragbarkeit</strong> in einem strukturierten, gängigen Format (Art. 20 DSGVO)</li>
+        <li><strong>Widerspruch</strong> gegen die Verarbeitung auf Grundlage berechtigter Interessen (Art. 21 DSGVO)</li>
+        <li><strong>Widerruf</strong> einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
+        <li><strong>Beschwerde</strong> bei einer Aufsichtsbehörde (Art. 77 DSGVO) — zuständig ist die
+          <a href="https://www.ldi.nrw.de" target="_blank" rel="noopener">Landesbeauftragte für Datenschutz und Informationsfreiheit NRW</a>.
+        </li>
+      </ul>
+      <p class="muted small">
+        Zur Ausübung Ihrer Rechte genügt eine formlose E-Mail an
+        <a href="mailto:daverindorindo@googlemail.com">daverindorindo@googlemail.com</a>.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s11">
+      <h2><span class="n">11</span> Datensicherheit</h2>
+      <p>
+        Die Website nutzt eine SSL/TLS-Verschlüsselung zum Schutz der Datenübertragung.
+        Zusätzlich setze ich technische und organisatorische Sicherheitsmaßnahmen ein
+        (u. a. verschlüsselte Speicherung, Zugangsbeschränkungen, regelmäßige Updates),
+        um Ihre Daten gegen zufällige oder vorsätzliche Manipulation, Verlust, Zerstörung
+        oder unbefugten Zugriff zu schützen.
+      </p>
+    </section>
+
+    <section class="legal-section" id="s12">
+      <h2><span class="n">12</span> Änderungen dieser Datenschutzerklärung</h2>
+      <p>
+        Ich behalte mir vor, diese Datenschutzerklärung anzupassen, damit sie stets den
+        aktuellen rechtlichen Anforderungen entspricht oder um Änderungen meiner
+        Leistungen umzusetzen. Für Ihren erneuten Besuch gilt dann die neue Fassung.
+      </p>
+      <p class="muted small">Stand: April 2026</p>
+    </section>
+
+  </article>
+
+  <!-- ================= LEGAL NAV ================= -->
+  <nav class="legal-pager" aria-label="Weitere Rechtstexte">
+    <a href="impressum.html" class="pager-link">
+      <span class="num">L / 01</span>
+      <span class="title">Impressum</span>
+      <span class="ico"><svg><use href="#i-arrow-up-right"/></svg></span>
+    </a>
+    <a href="agb.html" class="pager-link">
+      <span class="num">L / 03</span>
+      <span class="title">AGB</span>
+      <span class="ico"><svg><use href="#i-arrow-up-right"/></svg></span>
+    </a>
+  </nav>
+
+  <section class="legal-contact">
+    <div>
+      <div class="num">CONTACT</div>
+      <h2>Fragen zum Datenschutz?</h2>
+    </div>
+    <a class="contact-mail" href="mailto:daverindorindo@googlemail.com">
+      <span class="ico"><svg><use href="#i-mail"/></svg></span>
+      <span>daverindorindo@googlemail.com</span>
+    </a>
   </section>
 
-<section class="datenschutz-section" style="padding: 2rem; max-width: 900px; margin: auto; font-family: sans-serif; line-height: 1.6; color: #f0f0f0; background-color: #0a0a0a;">
-  <h1>Datenschutzerklärung</h1>
+  <footer>
+    <div>© 2026 Dave Rindo Rindo · Cologne</div>
+    <div class="links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB</a>
+    </div>
+  </footer>
 
-  <p>
-    Der Schutz Ihrer personenbezogenen Daten ist mir ein wichtiges Anliegen. Nachfolgend informiere ich Sie gemäß Art. 13 und Art. 14 der Datenschutz-Grundverordnung (DSGVO) über die Art, den Umfang und den Zweck der Erhebung und Verarbeitung personenbezogener Daten auf dieser Website.
-  </p>
+</main>
 
-  <h2>1. Verantwortlicher</h2>
-  <p>
-    Dave Rindo<br>
-    Freiberuflicher Art Director &amp; Illustrator<br>
-    Heinsgergstraße<br>
-    50674 Köln<br>
-    Deutschland<br>
-    E-Mail: daverindorindo@googlemail.com
-  </p>
+<script>
+  const burger = document.getElementById('burger');
+  const navMobile = document.getElementById('navMobile');
+  if (burger && navMobile) {
+    burger.addEventListener('click', () => navMobile.classList.toggle('open'));
+    navMobile.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => navMobile.classList.remove('open'))
+    );
+  }
 
-  <h2>2. Hosting</h2>
-  <p>
-    Diese Website wird bei einem deutschen oder europäischen Hostinganbieter betrieben. Der Hostinganbieter erhebt in der Regel folgende Daten, die automatisch in sogenannten Server-Logfiles gespeichert werden:
-  </p>
-  <ul>
-    <li>IP-Adresse</li>
-    <li>Datum und Uhrzeit der Anfrage</li>
-    <li>Browsertyp und -version</li>
-    <li>Verwendetes Betriebssystem</li>
-    <li>Referrer-URL</li>
-  </ul>
-  <p>
-    Diese Daten dienen der technischen Überwachung, Sicherheit und Optimierung des Webservers und werden in der Regel nach wenigen Tagen automatisch gelöscht.
-  </p>
-
-  <h2>3. Kontaktaufnahme</h2>
-  <p>
-    Wenn Sie mich per E-Mail kontaktieren, werden Ihre Angaben zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen gespeichert (Art. 6 Abs. 1 lit. b DSGVO). Diese Daten gebe ich nicht ohne Ihre Einwilligung weiter.
-  </p>
-
-  <h2>4. Auftragsverarbeitung</h2>
-  <p>
-    Zur Bereitstellung dieser Website nutze ich ggf. Dienstleister (z. B. Hosting, E-Mail), mit denen ein Vertrag zur Auftragsverarbeitung gemäß Art. 28 DSGVO geschlossen wurde.
-  </p>
-
-  <h2>5. Cookies & Analyse-Tools</h2>
-  <p>
-    Auf dieser Website werden derzeit keine Cookies und keine Webanalyse-Tools wie Google Analytics eingesetzt. Es erfolgt kein Tracking Ihres Nutzungsverhaltens.
-  </p>
-
-  <h2>6. Einbindung von externen Inhalten</h2>
-  <p>
-    Diese Website verwendet keine extern eingebetteten Inhalte (wie Google Fonts oder YouTube), die automatisch personenbezogene Daten übertragen. Sollte sich das ändern, wird die Datenschutzerklärung entsprechend angepasst.
-  </p>
-
-  <h2>7. Ihre Rechte als betroffene Person</h2>
-  <p>Sie haben gemäß DSGVO folgende Rechte:</p>
-  <ul>
-    <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
-    <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
-    <li>Recht auf Löschung (Art. 17 DSGVO)</li>
-    <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
-    <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
-    <li>Widerspruchsrecht gegen Verarbeitung (Art. 21 DSGVO)</li>
-    <li>Recht auf Beschwerde bei einer Datenschutzaufsichtsbehörde (Art. 77 DSGVO)</li>
-  </ul>
-
-  <h2>8. Datensicherheit</h2>
-  <p>
-    Ich verwende technische und organisatorische Sicherheitsmaßnahmen, um Ihre Daten gegen Manipulation, Verlust, Zerstörung oder den unbefugten Zugriff Dritter zu schützen.
-  </p>
-
-  <h2>9. Änderungen dieser Datenschutzerklärung</h2>
-  <p>
-    Ich behalte mir vor, diese Datenschutzerklärung anzupassen, um sie an aktuelle rechtliche Anforderungen oder Änderungen meiner Leistungen anzupassen.
-  </p>
-
-  <h2>10. Nutzungsrechte & Lizenzen</h2>
-  <p>
-    Die im Rahmen von Kundenaufträgen erstellten gestalterischen Leistungen (z. B. Illustrationen, Designs, Storyboards) unterliegen dem Urheberrecht. Der Kunde erhält – sofern vertraglich nichts anderes geregelt wurde – ein einfaches Nutzungsrecht zur Verwendung in dem vereinbarten Umfang und Kontext (z. B. Kampagne, Website, Printprodukt).<br><br>
-    Eine darüber hinausgehende Nutzung (z. B. Bearbeitung, Weitergabe an Dritte, Nachnutzung in anderen Medien oder Kampagnen) ist nur mit schriftlicher Zustimmung des Urhebers gestattet und kann eine zusätzliche Lizenzgebühr erfordern.<br><br>
-    Die vollständigen Nutzungsbedingungen sind in den <a href="/agb.html" style="color: #ccc; text-decoration: underline;">Allgemeinen Geschäftsbedingungen (AGB)</a> geregelt.
-  </p>
-
-  <p><em>Stand: Juli 2025</em></p>
-</section>
-
-<footer>
-  <div class="footer-links">
-    <a href="../legal/impressum.html">Impressum</a>
-    <a href="../legal/datenschutz.html">Datenschutz</a>
-    <a href="../legal/agb.html">agb</a>
-  </div>
-  <div>&copy; 2025 Dave Rindo</div>
-</footer>
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    themeToggle.addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', cur);
+      localStorage.setItem('theme', cur);
+    });
+  }
+</script>
 </body>
 </html>
