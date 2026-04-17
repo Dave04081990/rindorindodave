@@ -89,9 +89,27 @@
     transform: translate(-2px,-2px);
     box-shadow: 7px 7px 0 var(--p-black);
   }
-  .zz-cta-floating .arr{ font-size: 16px; line-height: 1; }
+  .zz-cta-floating .arr{
+    display: inline-grid; place-items: center;
+    width: 18px; height: 18px; line-height: 1;
+  }
+  .zz-cta-floating .arr svg{
+    width: 100%; height: 100%;
+    stroke: currentColor; stroke-width: 2.5;
+    fill: none; stroke-linecap: square; stroke-linejoin: miter;
+  }
   @media (max-width: 600px){
-    .zz-cta-floating{ top: 14px; padding: 10px 14px; font-size: 11px; }
+    .zz-cta-floating{
+      top: 14px;
+      padding: 0;
+      width: 48px; height: 48px;
+      gap: 0;
+      box-shadow: 3px 3px 0 var(--p-black);
+      display: grid; place-items: center;
+    }
+    .zz-cta-floating:hover{ box-shadow: 5px 5px 0 var(--p-black); }
+    .zz-cta-floating .arr{ width: 22px; height: 22px; }
+    .zz-cta-floating .arr svg{ stroke-width: 3.5; }
     .zz-cta-floating .txt{ display: none; }
   }
 
@@ -464,6 +482,22 @@
     color: var(--p-ink);
     text-transform: uppercase;
   }
+  @media (max-width: 720px){
+    .zz-paper-sidelabel{
+      position: static;
+      writing-mode: horizontal-tb;
+      transform: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      max-width: 1280px; margin: 0 auto 16px;
+      padding: 8px 0;
+      font-size: 11px;
+      letter-spacing: .2em;
+    }
+    .zz-paper-sidelabel::before{
+      content:""; display: inline-block;
+      width: 22px; height: 2px; background: var(--p-orange);
+    }
+  }
 
   /* ABOUT on paper — decorated with orange arrow icons */
   .zz-about-text{
@@ -554,8 +588,8 @@
   }
 
   @media (max-width: 1100px){ .zz-masonry{ column-count: 3; } }
-  @media (max-width: 760px){  .zz-masonry{ column-count: 2; } }
-  @media (max-width: 460px){  .zz-masonry{ column-count: 1; } }
+  @media (max-width: 900px){  .zz-masonry{ column-count: 2; } }
+  @media (max-width: 768px){  .zz-masonry{ column-count: 1; } }
 
   /* =====================================================================
      LIGHTBOX — opens on image click
@@ -775,6 +809,109 @@
   }
 
   /* =====================================================================
+     MUSIC PLAYER — fixed bottom-left, Parasite style
+     ===================================================================== */
+  .zz-player{
+    position: fixed;
+    left: var(--p-pad);
+    bottom: 22px;
+    z-index: 150;
+    display: inline-flex; align-items: center; gap: 0;
+    background: var(--p-black);
+    color: var(--p-white);
+    border: 2px solid var(--p-black);
+    box-shadow: 5px 5px 0 var(--p-orange);
+    font-family: var(--p-mono);
+    user-select: none;
+  }
+  .zz-player button{
+    width: 44px; height: 44px;
+    background: var(--p-orange);
+    color: var(--p-black);
+    border: 0;
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .zz-player button + button{
+    border-left: 2px solid var(--p-black);
+  }
+  .zz-player button:hover{
+    background: var(--p-orange-2);
+  }
+  .zz-player button svg{
+    width: 18px; height: 18px;
+    stroke: currentColor; stroke-width: 2.5;
+    fill: currentColor;
+    stroke-linecap: square; stroke-linejoin: miter;
+  }
+  .zz-player button.icon-stroke svg{
+    fill: none;
+  }
+  /* Hide inactive icon state per button */
+  .zz-player button .ic-pause,
+  .zz-player.is-playing .ic-play{ display: none; }
+  .zz-player.is-playing .ic-pause{ display: block; }
+  .zz-player button .ic-unmute,
+  .zz-player.is-muted .ic-mute{ display: none; }
+  .zz-player.is-muted .ic-unmute{ display: block; }
+
+  .zz-player .info{
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6px 14px;
+    gap: 2px;
+    min-width: 0;
+    background: var(--p-black);
+  }
+  .zz-player .info .k{
+    font-family: var(--p-mono);
+    font-size: 9px; letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--p-gray);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .zz-player .info .k::before{
+    content: ""; width: 6px; height: 6px;
+    background: var(--p-orange);
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: .4;
+    transition: opacity .2s;
+  }
+  .zz-player.is-playing:not(.is-muted) .info .k::before{
+    opacity: 1;
+    animation: zzPlayerPulse 1.2s ease-in-out infinite;
+  }
+  @keyframes zzPlayerPulse{
+    0%, 100% { transform: scale(1);   opacity: 1;   }
+    50%      { transform: scale(1.4); opacity: .4;  }
+  }
+  .zz-player .info .v{
+    font-family: var(--p-display);
+    font-size: 11px; letter-spacing: .04em;
+    color: var(--p-white);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+    max-width: 140px;
+  }
+
+  @media (max-width: 600px){
+    .zz-player{
+      bottom: 14px;
+      box-shadow: 3px 3px 0 var(--p-orange);
+    }
+    .zz-player button{ width: 40px; height: 40px; }
+    .zz-player button svg{ width: 16px; height: 16px; }
+    .zz-player .info{ padding: 4px 10px; }
+    .zz-player .info .v{ max-width: 90px; font-size: 10px; }
+    .zz-player .info .k{ font-size: 8px; }
+  }
+  @media (max-width: 380px){
+    .zz-player .info{ display: none; }
+  }
+
+  /* =====================================================================
      REVEAL
      ===================================================================== */
   .reveal{opacity:0; transform:translateY(24px); transition: opacity .8s, transform .8s;}
@@ -808,13 +945,51 @@
       <circle cx="11" cy="11" r="7"/>
       <path d="M16 16 L21 21"/>
     </symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24">
+      <path d="M7 5 L19 12 L7 19 Z"/>
+    </symbol>
+    <symbol id="icon-pause" viewBox="0 0 24 24">
+      <path d="M7 5 L10 5 L10 19 L7 19 Z"/>
+      <path d="M14 5 L17 5 L17 19 L14 19 Z"/>
+    </symbol>
+    <symbol id="icon-volume" viewBox="0 0 24 24">
+      <path d="M4 9 L4 15 L8 15 L13 19 L13 5 L8 9 Z"/>
+      <path d="M16 9 L20 13 M20 9 L16 13" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="square"/>
+    </symbol>
+    <symbol id="icon-volume-on" viewBox="0 0 24 24">
+      <path d="M4 9 L4 15 L8 15 L13 19 L13 5 L8 9 Z"/>
+      <path d="M16 9 C 18 11, 18 13, 16 15" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="square"/>
+      <path d="M18 6 C 22 10, 22 14, 18 18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="square"/>
+    </symbol>
   </defs>
 </svg>
 
 <!-- ===== FLOATING CTA (persistent, always on top) ===== -->
-<a href="../index.html" class="zz-cta-floating">
+<a href="../index.html" class="zz-cta-floating" aria-label="Back to Portfolio">
+  <span class="arr" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><use href="#icon-arrow-left"/></svg>
+  </span>
   <span class="txt">Back to Portfolio</span>
 </a>
+
+<!-- ===== MUSIC PLAYER (fixed bottom-left, permaloop) ===== -->
+<div class="zz-player is-muted" id="zzPlayer" role="region" aria-label="Music player">
+  <audio id="zzAudio" src="../img/Para/Sakura_Drift.mp3" preload="auto"></audio></audio>
+
+  <button type="button" id="zzPlayBtn" aria-label="Play or pause track">
+    <svg class="ic-play"  viewBox="0 0 24 24"><use href="#icon-play"/></svg>
+    <svg class="ic-pause" viewBox="0 0 24 24"><use href="#icon-pause"/></svg>
+  </button>
+  <button type="button" id="zzMuteBtn" class="icon-stroke" aria-label="Mute or unmute">
+    <svg class="ic-mute"   viewBox="0 0 24 24"><use href="#icon-volume-on"/></svg>
+    <svg class="ic-unmute" viewBox="0 0 24 24"><use href="#icon-volume"/></svg>
+  </button>
+
+  <div class="info">
+    <span class="k">Now playing</span>
+    <span class="v">Sakura Drift</span>
+  </div>
+</div>
 
 <!-- ===== HERO (full-bleed) ===== -->
 <section class="zz-hero">
@@ -847,12 +1022,14 @@
       <span>MANGA</span>
     </div>
 
+    <div class="zz-divider"></div>
+
     <!-- decorative spacing -->
 
     <p class="zz-info-text">
       <span class="lead">A self-published independent manga series</span>
       by Dave Rindo Rindo. Drawn between client work and louder coffees —
-      a quiet place you can hold in your hands.
+      a quiet horror you can hold in your hands.
     </p>
 
     <div class="zz-info-meta">
@@ -905,6 +1082,8 @@
   <div class="zz-paper-head">
     <h2>PARASITE<br><span class="strike">MANGA</span></h2>
     <div class="zz-paper-badge">
+      <span class="rating">★ ★ ★ ★ ★</span>
+      <span class="jp">VOL. 01 · 2026</span>
     </div>
   </div>
 
@@ -924,13 +1103,12 @@
       <p>
         Each piece is hand-drawn, mostly in black ink with the occasional bleed of red.
         The work lives somewhere between manga, editorial illustration and personal
-        diary — a quiet place you can hold in your hands.
+        diary — a quiet horror you can hold in your hands.
       </p>
       <div class="tags">
         <span>Manga</span>
         <span>Illustration</span>
         <span>Story</span>
-        <span>Storyboard</span>
       </div>
     </div>
   </div>
@@ -1100,6 +1278,160 @@
     if (e.key === 'ArrowRight') nextLb();
     if (e.key === 'ArrowLeft') prevLb();
   });
+
+  // =====================================================================
+  // MUSIC PLAYER — muted autoplay + smooth volume fade
+  // =====================================================================
+  (function initPlayer(){
+    const player   = document.getElementById('zzPlayer');
+    const audio    = document.getElementById('zzAudio');
+    const playBtn  = document.getElementById('zzPlayBtn');
+    const muteBtn  = document.getElementById('zzMuteBtn');
+    if (!player || !audio) return;
+
+    const TARGET_VOLUME = 0.6;
+    const FADE_MS       = 1200;
+
+    // Start silent so browsers allow autoplay; we fade via volume, not the muted flag
+    audio.muted  = false;
+    audio.volume = 0;
+
+    // Attempt autoplay (silent, so browsers permit it)
+    const tryAutoplay = () => {
+      const p = audio.play();
+      if (p && typeof p.then === 'function'){
+        p.then(() => {
+          player.classList.add('is-playing');
+        }).catch(() => {
+          // Fallback: some browsers still block — set muted flag as last resort
+          audio.muted = true;
+          audio.play().then(() => {
+            player.classList.add('is-playing');
+          }).catch(() => {
+            player.classList.remove('is-playing');
+          });
+        });
+      }
+    };
+    tryAutoplay();
+
+    // --- Fade engine ---
+    let fadeRaf = null;
+    function fadeTo(target, duration, onDone){
+      if (fadeRaf) cancelAnimationFrame(fadeRaf);
+      const start    = audio.volume;
+      const delta    = target - start;
+      const startTs  = performance.now();
+      function step(now){
+        const t = Math.min(1, (now - startTs) / duration);
+        // ease-in-out (cosine)
+        const eased = 0.5 - Math.cos(Math.PI * t) / 2;
+        audio.volume = Math.max(0, Math.min(1, start + delta * eased));
+        if (t < 1){
+          fadeRaf = requestAnimationFrame(step);
+        } else {
+          fadeRaf = null;
+          if (onDone) onDone();
+        }
+      }
+      fadeRaf = requestAnimationFrame(step);
+    }
+
+    // --- Track start/end fade ---
+    // Fade in at the start of every playthrough; fade out before the end;
+    // then loop manually (so the outro fade always plays out fully).
+    const TRACK_FADE_MS = 2500;
+    let didStartFade = false;      // guards the start-fade per playthrough
+    let isEndFading  = false;      // guards the end-fade per playthrough
+
+    function resetPlaythroughFlags(){
+      didStartFade = false;
+      isEndFading  = false;
+    }
+
+    // Kick off start-fade the first time the track is actually audible
+    function maybeStartFadeIn(){
+      if (didStartFade) return;
+      if (player.classList.contains('is-muted')) return;
+      if (audio.paused) return;
+      didStartFade = true;
+      audio.volume = 0;
+      fadeTo(TARGET_VOLUME, TRACK_FADE_MS);
+    }
+
+    audio.addEventListener('playing', maybeStartFadeIn);
+
+    // Watch for approaching end → fade out, then manually restart
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration || isNaN(audio.duration)) return;
+      const remaining = audio.duration - audio.currentTime;
+      if (remaining <= TRACK_FADE_MS / 1000 && !isEndFading &&
+          !player.classList.contains('is-muted') && !audio.paused){
+        isEndFading = true;
+        fadeTo(0, remaining * 1000);
+      }
+    });
+
+    // Manual loop: when the track finishes, rewind and start next pass with fade-in
+    audio.addEventListener('ended', () => {
+      resetPlaythroughFlags();
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        // maybeStartFadeIn() fires via 'playing' event
+      }).catch(()=>{});
+    });
+
+    // Play / Pause — fade out then pause, or resume then fade in
+    playBtn.addEventListener('click', () => {
+      if (audio.paused){
+        audio.play().then(() => {
+          player.classList.add('is-playing');
+          // Allow end-fade to re-arm for this playthrough
+          isEndFading = false;
+          // If user has previously unmuted, fade back up; else stay silent
+          if (!player.classList.contains('is-muted')){
+            fadeTo(TARGET_VOLUME, FADE_MS);
+          }
+        }).catch(()=>{});
+      } else {
+        fadeTo(0, FADE_MS, () => {
+          audio.pause();
+          player.classList.remove('is-playing');
+        });
+      }
+    });
+
+    // Mute / Unmute — smooth volume fade, playback continues
+    muteBtn.addEventListener('click', () => {
+      // Sync: ensure the real muted flag matches what user expects
+      if (audio.muted) audio.muted = false;
+
+      const isMuted = player.classList.contains('is-muted');
+      if (isMuted){
+        // Unmute → fade in (from wherever we are in the track)
+        player.classList.remove('is-muted');
+        // Mark start-fade as handled so the 'playing' listener doesn't double it
+        didStartFade = true;
+        isEndFading  = false;
+        if (audio.paused){
+          audio.play().then(() => {
+            player.classList.add('is-playing');
+            fadeTo(TARGET_VOLUME, FADE_MS);
+          }).catch(()=>{});
+        } else {
+          fadeTo(TARGET_VOLUME, FADE_MS);
+        }
+      } else {
+        // Mute → fade out (track keeps playing silently)
+        player.classList.add('is-muted');
+        fadeTo(0, FADE_MS);
+      }
+    });
+
+    // Keep state in sync with audio events
+    audio.addEventListener('play',  () => player.classList.add('is-playing'));
+    audio.addEventListener('pause', () => player.classList.remove('is-playing'));
+  })();
 
   // =====================================================================
   // REVEAL
