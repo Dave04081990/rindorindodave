@@ -1419,6 +1419,51 @@
     document.addEventListener('touchstart', unlockAudio, { capture: true, once: true });
     document.addEventListener('keydown',   unlockAudio, { capture: true, once: true });
 
+    // --- Tracks — endless shuffle queue ---
+    // All tracks play once per round before any repeats.
+    // When the queue empties it refills with a new shuffle (never same track twice in a row across rounds).
+    // All files must live in ../img/Para/
+    const TRACKS = [
+      'Sakura_Drift.mp3',
+      'Neon_Refrain.mp3',
+      'Saffron_Skyline.mp3',
+      'Neon_Lit_Reverie.mp3',
+    ];
+
+    let shuffleQueue  = [];
+    let lastTrackIdx  = -1;
+
+    function buildQueue(){
+      // Fisher-Yates shuffle
+      const arr = TRACKS.map((_, i) => i);
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      // Make sure first track of new round != last track of previous round
+      if (arr.length > 1 && arr[0] === lastTrackIdx){
+        const swap = Math.floor(Math.random() * (arr.length - 1)) + 1;
+        [arr[0], arr[swap]] = [arr[swap], arr[0]];
+      }
+      return arr;
+    }
+
+    function pickNextTrack(){
+      if (shuffleQueue.length === 0) shuffleQueue = buildQueue();
+      return shuffleQueue.shift();
+    }
+
+    function loadTrack(idx){
+      lastTrackIdx = idx;
+      audio.src = '../img/Para/' + TRACKS[idx];
+      const nameEl = player.querySelector('.info .v');
+      if (nameEl) nameEl.textContent = TRACKS[idx].replace(/\.[^.]+$/, '').replace(/_/g, ' ');
+    }
+
+    // Load first track from first shuffle
+    shuffleQueue = buildQueue();
+    loadTrack(shuffleQueue.shift());
+
     // --- Fade engine ---
     let fadeRaf = null;
     function fadeTo(target, duration, onDone){
@@ -1428,7 +1473,6 @@
       const startTs  = performance.now();
       function step(now){
         const t = Math.min(1, (now - startTs) / duration);
-        // ease-in-out (cosine)
         const eased = 0.5 - Math.cos(Math.PI * t) / 2;
         audio.volume = Math.max(0, Math.min(1, start + delta * eased));
         if (t < 1){
@@ -1442,18 +1486,16 @@
     }
 
     // --- Track start/end fade ---
-    // Fade in at the start of every playthrough; fade out before the end;
-    // then loop manually (so the outro fade always plays out fully).
     const TRACK_FADE_MS = 2500;
-    let didStartFade = false;      // guards the start-fade per playthrough
-    let isEndFading  = false;      // guards the end-fade per playthrough
+    let didStartFade = false;
+    let isEndFading  = false;
 
     function resetPlaythroughFlags(){
       didStartFade = false;
       isEndFading  = false;
     }
 
-    // Kick off start-fade the first time the track is actually audible
+    // Fade in when track becomes audible
     function maybeStartFadeIn(){
       if (didStartFade) return;
       if (player.classList.contains('is-muted')) return;
@@ -1465,7 +1507,7 @@
 
     audio.addEventListener('playing', maybeStartFadeIn);
 
-    // Watch for approaching end → fade out, then manually restart
+    // Watch for approaching end → fade out
     audio.addEventListener('timeupdate', () => {
       if (!audio.duration || isNaN(audio.duration)) return;
       const remaining = audio.duration - audio.currentTime;
@@ -1476,12 +1518,13 @@
       }
     });
 
-    // Manual loop: when the track finishes, rewind and start next pass with fade-in
+    // When track ends: ensure silence, load next track, fade in cleanly
     audio.addEventListener('ended', () => {
       resetPlaythroughFlags();
-      audio.currentTime = 0;
+      audio.volume = 0;          // guarantee silence before next src loads
+      loadTrack(pickNextTrack());
       audio.play().then(() => {
-        // maybeStartFadeIn() fires via 'playing' event
+        // maybeStartFadeIn fires via 'playing' event → fade in from 0
       }).catch(()=>{});
     });
 
