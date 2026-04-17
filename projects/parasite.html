@@ -809,14 +809,14 @@
   }
 
   /* =====================================================================
-     MUSIC PLAYER — fixed bottom-left, Parasite style
+     MUSIC PLAYER — fixed bottom-left, collapsible, Parasite style
      ===================================================================== */
   .zz-player{
     position: fixed;
     left: var(--p-pad);
     bottom: 22px;
     z-index: 150;
-    display: inline-flex; align-items: center; gap: 0;
+    display: inline-flex; align-items: stretch; gap: 0;
     background: var(--p-black);
     color: var(--p-white);
     border: 2px solid var(--p-black);
@@ -824,17 +824,18 @@
     font-family: var(--p-mono);
     user-select: none;
   }
+
+  /* Shared button styling (toggle + panel buttons) */
   .zz-player button{
     width: 44px; height: 44px;
+    flex-shrink: 0;
     background: var(--p-orange);
     color: var(--p-black);
     border: 0;
     display: grid; place-items: center;
     cursor: pointer;
+    position: relative;
     transition: background .15s, color .15s;
-  }
-  .zz-player button + button{
-    border-left: 2px solid var(--p-black);
   }
   .zz-player button:hover{
     background: var(--p-orange-2);
@@ -845,10 +846,50 @@
     fill: currentColor;
     stroke-linecap: square; stroke-linejoin: miter;
   }
-  .zz-player button.icon-stroke svg{
+  .zz-player button.icon-stroke svg,
+  .zz-player-toggle svg{
     fill: none;
   }
-  /* Hide inactive icon state per button */
+
+  /* Toggle (always visible) */
+  .zz-player-toggle .ic-close{ display: none; }
+  .zz-player.is-collapsed .zz-player-toggle .ic-open{ display: block; }
+  .zz-player.is-collapsed .zz-player-toggle .ic-close{ display: none; }
+  .zz-player:not(.is-collapsed) .zz-player-toggle .ic-open{ display: none; }
+  .zz-player:not(.is-collapsed) .zz-player-toggle .ic-close{ display: block; }
+
+  /* Pulse dot on the toggle — only visible when collapsed AND sound is playing */
+  .zz-player-toggle .pulse{
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--p-black);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .zz-player.is-collapsed.is-playing:not(.is-muted) .zz-player-toggle .pulse{
+    opacity: 1;
+    animation: zzPlayerPulse 1.2s ease-in-out infinite;
+  }
+
+  /* Collapsible panel */
+  .zz-player-panel{
+    display: flex; align-items: stretch;
+    overflow: hidden;
+    max-width: 340px;
+    opacity: 1;
+    transition: max-width .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease .1s;
+  }
+  .zz-player.is-collapsed .zz-player-panel{
+    max-width: 0;
+    opacity: 0;
+    transition: max-width .4s cubic-bezier(.6,.1,.6,.3), opacity .2s ease;
+  }
+  .zz-player-panel > button{
+    border-left: 2px solid var(--p-black);
+  }
+
   .zz-player button .ic-pause,
   .zz-player.is-playing .ic-play{ display: none; }
   .zz-player.is-playing .ic-pause{ display: block; }
@@ -862,6 +903,7 @@
     gap: 2px;
     min-width: 0;
     background: var(--p-black);
+    border-left: 2px solid var(--p-black);
   }
   .zz-player .info .k{
     font-family: var(--p-mono);
@@ -906,6 +948,7 @@
     .zz-player .info{ padding: 4px 10px; }
     .zz-player .info .v{ max-width: 90px; font-size: 10px; }
     .zz-player .info .k{ font-size: 8px; }
+    .zz-player-panel{ max-width: 260px; }
   }
   @media (max-width: 380px){
     .zz-player .info{ display: none; }
@@ -961,6 +1004,14 @@
       <path d="M16 9 C 18 11, 18 13, 16 15" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="square"/>
       <path d="M18 6 C 22 10, 22 14, 18 18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="square"/>
     </symbol>
+    <symbol id="icon-music" viewBox="0 0 24 24">
+      <path d="M9 18 L9 6 L19 4 L19 16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+      <circle cx="7" cy="18" r="2.5" stroke="currentColor" stroke-width="2.5" fill="none"/>
+      <circle cx="17" cy="16" r="2.5" stroke="currentColor" stroke-width="2.5" fill="none"/>
+    </symbol>
+    <symbol id="icon-chevron-left" viewBox="0 0 24 24">
+      <path d="M15 5 L8 12 L15 19" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -972,22 +1023,29 @@
   <span class="txt">Back to Portfolio</span>
 </a>
 
-<!-- ===== MUSIC PLAYER (fixed bottom-left, permaloop) ===== -->
-<div class="zz-player is-muted" id="zzPlayer" role="region" aria-label="Music player">
-  <audio id="zzAudio" src="../img/Para/Sakura_Drift.mp3" preload="auto"></audio></audio>
+<!-- ===== MUSIC PLAYER (fixed bottom-left, collapsible) ===== -->
+<div class="zz-player" id="zzPlayer" role="region" aria-label="Music player">
+  <audio id="zzAudio" src="../img/Para/Sakura_Drift.mp3" preload="auto"></audio>
 
-  <button type="button" id="zzPlayBtn" aria-label="Play or pause track">
-    <svg class="ic-play"  viewBox="0 0 24 24"><use href="#icon-play"/></svg>
-    <svg class="ic-pause" viewBox="0 0 24 24"><use href="#icon-pause"/></svg>
-  </button>
-  <button type="button" id="zzMuteBtn" class="icon-stroke" aria-label="Mute or unmute">
-    <svg class="ic-mute"   viewBox="0 0 24 24"><use href="#icon-volume-on"/></svg>
-    <svg class="ic-unmute" viewBox="0 0 24 24"><use href="#icon-volume"/></svg>
+  <button type="button" id="zzToggleBtn" class="zz-player-toggle" aria-label="Open music player" aria-expanded="false" aria-controls="zzPlayerPanel">
+    <svg class="ic-open"  viewBox="0 0 24 24"><use href="#icon-music"/></svg>
+    <svg class="ic-close" viewBox="0 0 24 24"><use href="#icon-chevron-left"/></svg>
+    <span class="pulse" aria-hidden="true"></span>
   </button>
 
-  <div class="info">
-    <span class="k">Now playing</span>
-    <span class="v">Sakura Drift</span>
+  <div class="zz-player-panel" id="zzPlayerPanel">
+    <button type="button" id="zzPlayBtn" aria-label="Play or pause track">
+      <svg class="ic-play"  viewBox="0 0 24 24"><use href="#icon-play"/></svg>
+      <svg class="ic-pause" viewBox="0 0 24 24"><use href="#icon-pause"/></svg>
+    </button>
+    <button type="button" id="zzMuteBtn" class="icon-stroke" aria-label="Mute or unmute">
+      <svg class="ic-mute"   viewBox="0 0 24 24"><use href="#icon-volume-on"/></svg>
+      <svg class="ic-unmute" viewBox="0 0 24 24"><use href="#icon-volume"/></svg>
+    </button>
+    <div class="info">
+      <span class="k">Now playing</span>
+      <span class="v">Sakura Drift</span>
+    </div>
   </div>
 </div>
 
@@ -1027,8 +1085,9 @@
     <!-- decorative spacing -->
 
     <p class="zz-info-text">
-      <span class="lead">A self-published independent manga artist</span>
-      "Born from the balance of professional deadlines and loud coffees. I create independent manga that captures the pulse of daily life. From client work to my own self-published chapters, my art is a continuous journey through ink and caffeine."
+      <span class="lead">A self-published independent manga series</span>
+      by Dave Rindo Rindo. Drawn between client work and louder coffees —
+      a quiet horror you can hold in your hands.
     </p>
 
     <div class="zz-info-meta">
@@ -1094,10 +1153,15 @@
     <div class="right">
       <p>
         <span class="lead">Parasite_Manga is my creative side-project</span> —
-       a self-published space where I get to draw whatever I want, free from briefs, deadlines, and brand guidelines. It started as a sketchbook habit and slowly grew into its own world of recurring characters, ink studies, and short-form stories.
+        a self-published space where I get to draw whatever I want, free from briefs,
+        deadlines and brand guidelines. It started as a sketchbook habit and slowly
+        grew into its own world of recurring characters, ink studies and short-form
+        stories.
       </p>
       <p>
-        Each piece is hand-drawn, mostly in black ink with the occasional bleed of red. The work lives somewhere between manga, editorial illustration, and personal diary — a quiet space you can hold in your hands.
+        Each piece is hand-drawn, mostly in black ink with the occasional bleed of red.
+        The work lives somewhere between manga, editorial illustration and personal
+        diary — a quiet horror you can hold in your hands.
       </p>
       <div class="tags">
         <span>Manga</span>
@@ -1277,37 +1341,83 @@
   // MUSIC PLAYER — muted autoplay + smooth volume fade
   // =====================================================================
   (function initPlayer(){
-    const player   = document.getElementById('zzPlayer');
-    const audio    = document.getElementById('zzAudio');
-    const playBtn  = document.getElementById('zzPlayBtn');
-    const muteBtn  = document.getElementById('zzMuteBtn');
+    const player    = document.getElementById('zzPlayer');
+    const audio     = document.getElementById('zzAudio');
+    const playBtn   = document.getElementById('zzPlayBtn');
+    const muteBtn   = document.getElementById('zzMuteBtn');
+    const toggleBtn = document.getElementById('zzToggleBtn');
+    const panel     = document.getElementById('zzPlayerPanel');
     if (!player || !audio) return;
 
     const TARGET_VOLUME = 0.6;
     const FADE_MS       = 1200;
 
-    // Start silent so browsers allow autoplay; we fade via volume, not the muted flag
-    audio.muted  = false;
-    audio.volume = 0;
+    // --- Expand / collapse ---
+    function setExpanded(open){
+      player.classList.toggle('is-collapsed', !open);
+      if (toggleBtn){
+        toggleBtn.setAttribute('aria-expanded', String(open));
+        toggleBtn.setAttribute('aria-label', open ? 'Close music player' : 'Open music player');
+      }
+      if (panel){
+        panel.setAttribute('aria-hidden', String(!open));
+      }
+    }
+    // Initial state is expanded; sync aria
+    setExpanded(true);
 
-    // Attempt autoplay (silent, so browsers permit it)
+    if (toggleBtn){
+      toggleBtn.addEventListener('click', () => {
+        setExpanded(player.classList.contains('is-collapsed'));
+      });
+    }
+
+    // Browsers block audio with sound before any user interaction.
+    // Strategy: start muted (always allowed), then on the FIRST click/touch
+    // anywhere on the page unmute and fade in — feels instant to the user.
+    audio.muted  = true;
+    audio.volume = 0;
+    player.classList.add('is-muted');
+
+    // Start playback (muted — always permitted)
     const tryAutoplay = () => {
       const p = audio.play();
       if (p && typeof p.then === 'function'){
         p.then(() => {
           player.classList.add('is-playing');
         }).catch(() => {
-          // Fallback: some browsers still block — set muted flag as last resort
-          audio.muted = true;
-          audio.play().then(() => {
-            player.classList.add('is-playing');
-          }).catch(() => {
-            player.classList.remove('is-playing');
-          });
+          // Fully blocked (rare) — user must press Play manually
+          player.classList.remove('is-playing');
         });
       }
     };
     tryAutoplay();
+
+    // First interaction anywhere → unmute + fade in
+    let unlocked = false;
+    function unlockAudio(){
+      if (unlocked) return;
+      unlocked = true;
+      audio.muted = false;
+      player.classList.remove('is-muted');
+      // If paused for some reason, resume first
+      if (audio.paused){
+        audio.play().then(() => {
+          player.classList.add('is-playing');
+          didStartFade = true;
+          fadeTo(TARGET_VOLUME, TRACK_FADE_MS);
+        }).catch(()=>{});
+      } else {
+        didStartFade = true;
+        fadeTo(TARGET_VOLUME, TRACK_FADE_MS);
+      }
+      document.removeEventListener('click',     unlockAudio, true);
+      document.removeEventListener('touchstart', unlockAudio, true);
+      document.removeEventListener('keydown',   unlockAudio, true);
+    }
+    document.addEventListener('click',     unlockAudio, { capture: true, once: true });
+    document.addEventListener('touchstart', unlockAudio, { capture: true, once: true });
+    document.addEventListener('keydown',   unlockAudio, { capture: true, once: true });
 
     // --- Fade engine ---
     let fadeRaf = null;
