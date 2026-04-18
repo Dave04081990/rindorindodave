@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style data-omelette-injected>html,body{background:transparent}</style><script data-omelette-injected>(()=>{var W=["https://claude.ai","https://preview.claude.ai","https://eap-omelette.claude.ai"];var Y=30000;document.addEventListener("DOMContentLoaded",()=>{const D="transform-react-jsx-source";document.querySelectorAll('script[type="text/babel"],script[type="text/jsx"]').forEach((C,F)=>{const Q=C.getAttribute("data-plugins")||"";if(Q.indexOf(D)<0){C.setAttribute("data-plugins",Q?`${Q},${D}`:D)}if(!C.hasAttribute("data-filename")){C.setAttribute("data-filename",C.getAttribute("src")||`inline-${F}`)}})});var K=window.parent;if(K&&K!==window){const D=(k,f)=>{try{K.postMessage({__omelette_log:true,type:k,data:f},"*")}catch{}};["log","warn","error"].forEach((k)=>{const f=console[k];console[k]=(...w)=>{const z=w.map((h)=>{try{return typeof h==="object"?JSON.stringify(h):String(h)}catch{try{return String(h)}catch{return"[unstringifiable]"}}}).join(" ");D(k,z);f.apply(console,w)}});window.addEventListener("error",(k)=>{const f=k.target;if(f&&f!==window&&f.tagName){const w=f.src||f.href||"";D("resource_error",`${f.tagName} failed to load: ${w}`)}else{D("error",`${k.message||"Unknown error"} at ${k.filename||"?"}:${k.lineno||0}:${k.colno||0}`)}},true);window.addEventListener("unhandledrejection",(k)=>{const f=k.reason;const w=f instanceof Error?`${f.message} ${f.stack}`:String(f);D("error",`Unhandled rejection: ${w}`)});const C=()=>{try{K.postMessage({type:"omelette:height",height:document.documentElement.scrollHeight},"*")}catch{}};if(document.readyState==="complete")C();else window.addEventListener("load",C);if(window.ResizeObserver)new ResizeObserver(C).observe(document.documentElement);const F={};let Q=0;window.claude={complete(k){return new Promise((f,w)=>{if(!W.length){w(new Error("claude.complete: no parent origin"));return}const z=`c${++Q}`;const h=()=>setTimeout(()=>{delete F[z];w(new Error(`claude.complete: no data for ${Y/1000}s`))},Y);const J=h();F[z]={resolve:f,reject:w,text:"",t:J,arm:h};try{for(const V of W){K.postMessage({__om_api:true,id:z,body:k},V)}}catch(V){clearTimeout(J);delete F[z];w(V)}})}};const X=(k)=>{try{return JSON.stringify(k)}catch{return JSON.stringify(String(k))}};window.addEventListener("message",(k)=>{if(W.indexOf(k.origin)<0)return;if(k.source!==K)return;const f=k.data;if(!f)return;if(f.__om_api_r){const h=F[f.id];if(!h)return;if(f.error!=null){clearTimeout(h.t);delete F[f.id];h.reject(new Error(f.error));return}if(f.chunk!=null){clearTimeout(h.t);h.t=h.arm();h.text+=f.chunk;return}if(f.done){clearTimeout(h.t);delete F[f.id];h.resolve(f.text!=null?f.text:h.text);return}return}if(!f.__om_eval)return;const w=f;const z=(h)=>{k.source.postMessage({...h,__om_eval_r:1,id:w.id},k.origin)};try{const h=(0,eval)(w.code);if(h&&typeof h.then==="function"){h.then((J)=>z({ok:1,v:X(J)}),(J)=>z({ok:0,e:String(J)}))}else{z({ok:1,v:X(h)})}}catch(h){z({ok:0,e:String(h)})}})}})();
-</script>
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -68,53 +66,7 @@
   img{display:block; max-width:100%;}
   ::selection{ background: var(--p-orange); color: var(--p-black); }
 
-  /* =====================================================================
-     FLOATING CTA — fixed, always visible even when scrolling
-     ===================================================================== */
-  .zz-cta-floating{
-    position: fixed;
-    top: 22px;
-    right: var(--p-pad);
-    z-index: 150;
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 22px;
-    background: var(--p-orange);
-    color: var(--p-black);
-    font-family: var(--p-display);
-    font-size: 13px; letter-spacing: .06em;
-    text-transform: uppercase;
-    border: 2px solid var(--p-black);
-    box-shadow: 5px 5px 0 var(--p-black);
-    transition: transform .15s, box-shadow .15s, background .15s;
-  }
-  .zz-cta-floating:hover{
-    background: var(--p-orange-2);
-    transform: translate(-2px,-2px);
-    box-shadow: 7px 7px 0 var(--p-black);
-  }
-  .zz-cta-floating .arr{
-    display: inline-grid; place-items: center;
-    width: 18px; height: 18px; line-height: 1;
-  }
-  .zz-cta-floating .arr svg{
-    width: 100%; height: 100%;
-    stroke: currentColor; stroke-width: 2.5;
-    fill: none; stroke-linecap: square; stroke-linejoin: miter;
-  }
-  @media (max-width: 600px){
-    .zz-cta-floating{
-      top: 14px;
-      padding: 0;
-      width: 48px; height: 48px;
-      gap: 0;
-      box-shadow: 3px 3px 0 var(--p-black);
-      display: grid; place-items: center;
-    }
-    .zz-cta-floating:hover{ box-shadow: 5px 5px 0 var(--p-black); }
-    .zz-cta-floating .arr{ width: 22px; height: 22px; }
-    .zz-cta-floating .arr svg{ stroke-width: 3.5; }
-    .zz-cta-floating .txt{ display: none; }
-  }
+
 
   /* =====================================================================
      HERO — full-bleed viewport
@@ -1138,14 +1090,6 @@
   </defs>
 </svg>
 
-<!-- ===== FLOATING CTA (persistent, always on top) ===== -->
-<a href="../index.html" class="zz-cta-floating" aria-label="Back to Portfolio">
-  <span class="arr" aria-hidden="true">
-    <svg viewBox="0 0 24 24"><use href="#icon-arrow-left"/></svg>
-  </span>
-  <span class="txt">Back to Portfolio</span>
-</a>
-
 <!-- ===== MUSIC PLAYER (fixed bottom-left, collapsible) ===== -->
 <div class="zz-player" id="zzPlayer" role="region" aria-label="Music player">
   <audio id="zzAudio" src="../img/Para/Sakura_Drift.mp3" preload="auto"></audio>
@@ -1237,7 +1181,9 @@
       <div class="mdiv"></div>
       <div class="col">
         <span class="k">Cologne, DE</span>
-        <span class="v">Hand-drawn</span>
+        <span class="v">DIGITAL</span>
+        <span class="v">MIXED MEDIA</span>
+        <span class="v">ILLUSTRATION</span>
       </div>
     </div>
 
@@ -1374,7 +1320,7 @@
         </span>
         <span class="arr"><svg width="18" height="18" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 0V41H27.333V23.9141L10.6396 40.6074L0.976562 30.9434L18.2529 13.667H0V0H41Z" fill="currentColor"/></svg></span>
       </a>
-      <a class="zz-social-link" href="/cdn-cgi/l/email-protection#2d494c5b485f444349425f444349426d4a42424a4148404c4441034e4240">
+      <a class="zz-social-link" href="mailto:daverindorindo@googlemail.com">
         <span class="ico"><img src="../img/social/icons8-gmail-logo-128.png" alt="Email"></span>
         <span class="info">
           <span class="platform">Email</span>
@@ -1397,7 +1343,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // =====================================================================
   // MASONRY GALLERY — random order
   // =====================================================================
