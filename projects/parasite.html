@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Parasite_Manga — Dave Rindo Rindo</title>
@@ -65,53 +66,7 @@
   img{display:block; max-width:100%;}
   ::selection{ background: var(--p-orange); color: var(--p-black); }
 
-  /* =====================================================================
-     FLOATING CTA — fixed, always visible even when scrolling
-     ===================================================================== */
-  .zz-cta-floating{
-    position: fixed;
-    top: 22px;
-    right: var(--p-pad);
-    z-index: 150;
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 22px;
-    background: var(--p-orange);
-    color: var(--p-black);
-    font-family: var(--p-display);
-    font-size: 13px; letter-spacing: .06em;
-    text-transform: uppercase;
-    border: 2px solid var(--p-black);
-    box-shadow: 5px 5px 0 var(--p-black);
-    transition: transform .15s, box-shadow .15s, background .15s;
-  }
-  .zz-cta-floating:hover{
-    background: var(--p-orange-2);
-    transform: translate(-2px,-2px);
-    box-shadow: 7px 7px 0 var(--p-black);
-  }
-  .zz-cta-floating .arr{
-    display: inline-grid; place-items: center;
-    width: 18px; height: 18px; line-height: 1;
-  }
-  .zz-cta-floating .arr svg{
-    width: 100%; height: 100%;
-    stroke: currentColor; stroke-width: 2.5;
-    fill: none; stroke-linecap: square; stroke-linejoin: miter;
-  }
-  @media (max-width: 600px){
-    .zz-cta-floating{
-      top: 14px;
-      padding: 0;
-      width: 48px; height: 48px;
-      gap: 0;
-      box-shadow: 3px 3px 0 var(--p-black);
-      display: grid; place-items: center;
-    }
-    .zz-cta-floating:hover{ box-shadow: 5px 5px 0 var(--p-black); }
-    .zz-cta-floating .arr{ width: 22px; height: 22px; }
-    .zz-cta-floating .arr svg{ stroke-width: 3.5; }
-    .zz-cta-floating .txt{ display: none; }
-  }
+
 
   /* =====================================================================
      HERO — full-bleed viewport
@@ -125,13 +80,130 @@
     background: var(--p-black);
     border-bottom: 3px solid var(--p-orange);
   }
-  .zz-hero-img{
-    position: absolute; inset: 0;
-    background-image: url('../img/Para/Nihoon2.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
+  /* ===== PARASITE HERO — ANIMATED 2.5D ===== */
+  .zz-hero-img{ position:absolute; inset:0; }
+
+  .zz-hero-img .zh-bg{
+    position:absolute;inset:0;
+    background:radial-gradient(140% 90% at 50% 55%, #0f1826 0%, #080c14 55%, #03060b 100%);
   }
+  .zz-hero-img .zh-fog{
+    position:absolute;inset:-10%;
+    background:
+      radial-gradient(60% 40% at 30% 70%, rgba(255,107,31,.06), transparent 70%),
+      radial-gradient(50% 35% at 70% 30%, rgba(90,130,200,.05), transparent 70%);
+    filter:blur(30px);mix-blend-mode:screen;pointer-events:none;
+    animation:zhFogDrift 18s ease-in-out infinite alternate;
+  }
+  @keyframes zhFogDrift{
+    0%{transform:translate(-2%,1%) scale(1.02)}
+    100%{transform:translate(3%,-2%) scale(1.06)}
+  }
+  .zz-hero-img .zh-sun{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+  }
+  .zz-hero-img .zh-sun::before{
+    content:"";width:44%;aspect-ratio:1/1;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,120,80,.55) 0%, rgba(255,107,31,.35) 40%, rgba(160,50,30,.15) 70%, transparent 85%);
+    filter:blur(22px);transform:translateY(-4%);
+    animation:zhSunBreathe 7s ease-in-out infinite;
+  }
+  @keyframes zhSunBreathe{
+    0%,100%{transform:translateY(-4%) scale(1);opacity:.9}
+    50%{transform:translateY(-3%) scale(1.03);opacity:1}
+  }
+  .zz-hero-img .zh-horizon{
+    position:absolute;left:0;right:0;top:62%;height:1px;z-index:3;
+    background:linear-gradient(90deg,transparent, rgba(255,180,140,.15) 20%, rgba(255,107,31,.45) 50%, rgba(255,180,140,.15) 80%, transparent);
+    animation:zhHorizonShimmer 6s ease-in-out infinite;
+  }
+  @keyframes zhHorizonShimmer{0%,100%{opacity:.6}50%{opacity:1}}
+  .zz-hero-img .zh-charGlow{
+    position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;
+    pointer-events:none;animation:zhFloat 6.5s ease-in-out infinite;
+  }
+  .zz-hero-img .zh-charGlow::before{
+    content:"";width:34%;aspect-ratio:1/1;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,230,200,.28), rgba(255,180,140,.08) 45%, transparent 70%);
+    filter:blur(18px);transform:translateY(4%);
+    animation:zhRim 5s ease-in-out infinite;
+  }
+  @keyframes zhRim{
+    0%,100%{opacity:.8;transform:translateY(4%) scale(1)}
+    50%{opacity:1;transform:translateY(3%) scale(1.04)}
+  }
+  .zz-hero-img .zh-char{
+    position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;
+    pointer-events:none;
+  }
+  .zz-hero-img .zh-char img{
+    height:150%;width:auto;display:block;
+    filter:drop-shadow(0 30px 40px rgba(0,0,0,.55));
+    animation:zhFloat 6.5s ease-in-out infinite, zhBreath 4.2s ease-in-out infinite;
+    transform:translateY(4%);
+  }
+  @keyframes zhFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-1.2%)}
+  }
+  @keyframes zhBreath{
+    0%,100%{filter:drop-shadow(0 30px 40px rgba(0,0,0,.55))}
+    50%{filter:drop-shadow(0 36px 50px rgba(0,0,0,.65))}
+  }
+  .zz-hero-img .zh-flare{
+    position:absolute;left:48%;top:52%;width:14%;aspect-ratio:1/1;
+    transform:translate(-50%,-50%);z-index:6;pointer-events:none;
+    animation:zhFlare 3.5s ease-in-out infinite;
+  }
+  .zz-hero-img .zh-flare::before,
+  .zz-hero-img .zh-flare::after{content:"";position:absolute;inset:0}
+  .zz-hero-img .zh-flare::before{
+    background:radial-gradient(circle, rgba(255,240,220,.9) 0%, rgba(255,200,160,.55) 20%, rgba(255,160,110,.18) 45%, transparent 65%);
+    filter:blur(2px);
+  }
+  .zz-hero-img .zh-flare::after{
+    background:linear-gradient(90deg, transparent 0%, rgba(255,220,190,.7) 48%, rgba(255,220,190,.9) 50%, rgba(255,220,190,.7) 52%, transparent 100%);
+    height:3px;top:50%;transform:translateY(-50%) scaleX(4);filter:blur(1.2px);
+  }
+  @keyframes zhFlare{
+    0%,100%{opacity:.9;transform:translate(-50%,-50%) scale(1)}
+    50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+  }
+  .zz-hero-img .zh-wisps{position:absolute;inset:0;z-index:7;pointer-events:none}
+  .zz-hero-img .zh-wisps span{
+    position:absolute;
+    background:linear-gradient(90deg, transparent, rgba(230,230,235,.5) 40%, rgba(230,230,235,.18) 70%, transparent);
+    height:1.5px;border-radius:2px;filter:blur(.4px);transform-origin:left center;
+  }
+  .zz-hero-img .zh-wisps .w1{top:34%;left:48%;width:9%;transform:rotate(-8deg);animation:zhWisp 5.5s ease-in-out infinite}
+  .zz-hero-img .zh-wisps .w2{top:36%;left:46%;width:12%;transform:rotate(-12deg);opacity:.7;animation:zhWisp 6.2s ease-in-out -1s infinite}
+  .zz-hero-img .zh-wisps .w3{top:30%;left:50%;width:7%;transform:rotate(-4deg);opacity:.5;animation:zhWisp 4.8s ease-in-out -2s infinite}
+  .zz-hero-img .zh-wisps .w4{top:40%;left:47%;width:10%;transform:rotate(-14deg);opacity:.4;animation:zhWisp 7s ease-in-out -.5s infinite}
+  @keyframes zhWisp{
+    0%,100%{transform:rotate(var(--r,-8deg)) translateX(0)}
+    50%{transform:rotate(calc(var(--r,-8deg) - 2deg)) translateX(-3%)}
+  }
+  .zz-hero-img .zh-dust{position:absolute;inset:0;z-index:8;overflow:hidden;pointer-events:none}
+  .zz-hero-img .zh-dust span{
+    position:absolute;bottom:-5%;width:2px;height:2px;border-radius:50%;
+    background:rgba(255,220,190,.6);filter:blur(.4px);
+    animation:zhRise linear infinite;
+  }
+  @keyframes zhRise{
+    0%{transform:translateY(0) translateX(0);opacity:0}
+    10%{opacity:.8}90%{opacity:.6}
+    100%{transform:translateY(-110vh) translateX(var(--dx,20px));opacity:0}
+  }
+  .zz-hero-img .zh-vignette{
+    position:absolute;inset:0;z-index:9;pointer-events:none;
+    background:
+      radial-gradient(140% 100% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.25), transparent 18%, transparent 80%, rgba(0,0,0,.45));
+  }
+  @media (prefers-reduced-motion: reduce){
+    .zz-hero-img *, .zz-hero-img *::before, .zz-hero-img *::after{animation:none!important}
+  }
+  /* ===== /PARASITE HERO ===== */
 
   .zz-side-katakana{
     position:absolute; top:30px; left: var(--p-pad); z-index: 3;
@@ -154,6 +226,7 @@
     font-family: var(--p-display);
     font-size: 14px; letter-spacing: .1em;
     box-shadow: 5px 5px 0 var(--p-black);
+    border-radius: 20px;  /* ← das hier wurde hinzugefügt */
   }
   @media (max-width: 640px){
     .zz-badge{ font-size: 11px; padding: 8px 14px; top: 84px; }
@@ -165,12 +238,14 @@
     animation: stickerFloat 4.5s ease-in-out infinite;
     filter: drop-shadow(4px 6px 0 rgba(0,0,0,.5));
     transform-origin: center center;
+    border-radius: 10px;  /* ← das hier wurde hinzugefügt */
   }
   .zz-bubble img{
     display:block;
     width: 100%;
     height: auto;
     transform: rotate(-3deg);
+    border-radius: 10px;  /* ← das hier wurde hinzugefügt */
   }
   @keyframes stickerFloat{
     0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -1015,14 +1090,6 @@
   </defs>
 </svg>
 
-<!-- ===== FLOATING CTA (persistent, always on top) ===== -->
-<a href="../index.html" class="zz-cta-floating" aria-label="Back to Portfolio">
-  <span class="arr" aria-hidden="true">
-    <svg viewBox="0 0 24 24"><use href="#icon-arrow-left"/></svg>
-  </span>
-  <span class="txt">Back to Portfolio</span>
-</a>
-
 <!-- ===== MUSIC PLAYER (fixed bottom-left, collapsible) ===== -->
 <div class="zz-player" id="zzPlayer" role="region" aria-label="Music player">
   <audio id="zzAudio" src="../img/Para/Sakura_Drift.mp3" preload="auto"></audio>
@@ -1051,7 +1118,23 @@
 
 <!-- ===== HERO (full-bleed) ===== -->
 <section class="zz-hero">
-  <div class="zz-hero-img"></div>
+  <div class="zz-hero-img">
+    <div class="zh-bg"></div>
+    <div class="zh-fog"></div>
+    <div class="zh-sun"></div>
+    <div class="zh-horizon"></div>
+    <div class="zh-charGlow"></div>
+    <div class="zh-char"><img src="../img/Para/nihoon_cut.png" alt="Parasite Manga — Nihoon"></div>
+    <div class="zh-flare"></div>
+    <div class="zh-wisps">
+      <span class="w1" style="--r:-8deg"></span>
+      <span class="w2" style="--r:-12deg"></span>
+      <span class="w3" style="--r:-4deg"></span>
+      <span class="w4" style="--r:-14deg"></span>
+    </div>
+    <div class="zh-dust" id="zh-dust"></div>
+    <div class="zh-vignette"></div>
+  </div>
 
   <div class="zz-side-katakana">パラ<br>サイト</div>
 
@@ -1098,7 +1181,9 @@
       <div class="mdiv"></div>
       <div class="col">
         <span class="k">Cologne, DE</span>
-        <span class="v">Hand-drawn</span>
+        <span class="v">DIGITAL</span>
+        <span class="v">MIXED MEDIA</span>
+        <span class="v">ILLUSTRATION</span>
       </div>
     </div>
 
@@ -1589,6 +1674,27 @@
     });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // =====================================================================
+  // HERO DUST PARTICLES
+  // =====================================================================
+  (function(){
+    var dust = document.getElementById('zh-dust');
+    if(!dust) return;
+    for(var i=0;i<40;i++){
+      var s=document.createElement('span');
+      var dur=8+Math.random()*14;
+      var size=1+Math.random()*2.5;
+      s.style.left=(Math.random()*100)+'%';
+      s.style.width=size+'px';
+      s.style.height=size+'px';
+      s.style.opacity=(.3+Math.random()*.6).toFixed(2);
+      s.style.animationDuration=dur+'s';
+      s.style.animationDelay=(-Math.random()*dur)+'s';
+      s.style.setProperty('--dx',((Math.random()-.5)*60)+'px');
+      dust.appendChild(s);
+    }
+  })();
 </script>
 </body>
 </html>
