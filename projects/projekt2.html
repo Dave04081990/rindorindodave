@@ -14,6 +14,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.pb-source {
+  padding: 2.5rem 2rem;
+  border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+.pb-source .source-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+.pb-source .source-label {
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .4;
+  font-family: 'Geist Mono', monospace;
+  white-space: nowrap;
+}
+.pb-source .source-link {
+  font-size: .88rem;
+  opacity: .65;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  word-break: break-all;
+}
+.pb-source .source-link:hover { opacity: 1; }
+</style>
 </head>
 <body class="project">
 
@@ -115,7 +144,27 @@
       <div class="caption">Keyvisual</div>
     </div>
 
+    <div class="pb-image">
+      <div style="position:relative;width:100%;padding-top:56.25%;overflow:hidden;border-radius:inherit;">
+        <iframe
+          src="https://www.youtube.com/embed/lELE_VH9Rek"
+          title="Ahoj Brause — Brausergames"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <div class="caption">Video</div>
+    </div>
   </article>
+
+  <section class="pb-source">
+    <div class="source-inner">
+      <span class="source-label">Quelle</span>
+      <a class="source-link" href="" target="_blank" rel="noopener">— Link eintragen —</a>
+    </div>
+  </section>
 
   <section class="pb-next">
     <div>
@@ -147,5 +196,22 @@
 </main>
 
 <script src="../assets/js/site.js"></script>
+<script>
+(function(){
+  var burger = document.getElementById("burger");
+  var menu   = document.getElementById("navMobile");
+  if (!burger || !menu) return;
+  burger.addEventListener("click", function(){
+    var open = menu.classList.toggle("is-open");
+    burger.setAttribute("aria-expanded", open);
+  });
+  menu.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      menu.classList.remove("is-open");
+      burger.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
+</script>
 </body>
 </html>

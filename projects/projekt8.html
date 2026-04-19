@@ -200,5 +200,22 @@
 </main>
 
 <script src="../assets/js/site.js"></script>
+<script>
+(function(){
+  var burger = document.getElementById("burger");
+  var menu   = document.getElementById("navMobile");
+  if (!burger || !menu) return;
+  burger.addEventListener("click", function(){
+    var open = menu.classList.toggle("is-open");
+    burger.setAttribute("aria-expanded", open);
+  });
+  menu.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      menu.classList.remove("is-open");
+      burger.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
+</script>
 </body>
 </html>
