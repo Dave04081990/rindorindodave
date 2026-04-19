@@ -17,7 +17,50 @@
 
 <style>
   .parasite-pill .pavatar{ background: url('img/Profilbild02.png') center/cover, var(--red); }
-  .about-img{ background: url('img/Dave3.png') center/cover; }
+  .about-img{
+    background: url('img/Dave3.png') top center / cover;
+    align-self: start;
+  }
+
+  /* Social icons — single centered row, compact pill buttons */
+  .contact .socials,
+  section .socials{
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 14px !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .contact .socials a,
+  section .socials a{
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    letter-spacing: .04em !important;
+    opacity: .8;
+    transition: opacity .2s, transform .2s;
+    text-decoration: none;
+    border: 1px solid currentColor !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+  }
+  .contact .socials a:hover{ opacity: 1; transform: translateY(-2px); }
+  .contact .socials a .soc-img{
+    width: 18px !important;
+    height: 18px !important;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
 
   /* Client marquee: grayscale by default, full color on hover */
   .clients-marquee .marquee-track img{
@@ -135,6 +178,7 @@
       <div class="about-stats">
         <div><div class="n">07+</div><div class="l">Years</div></div>
         <div><div class="n">100+</div><div class="l">Projects</div></div>
+        <div><div class="n">30+</div><div class="l">Clients</div></div>
         <div><div class="n">20+</div><div class="l">Brands</div></div>
       </div>
     </div>
@@ -252,17 +296,15 @@
 
     <div class="socials">
       <a href="https://www.linkedin.com/in/dave-rindorindo-25547a145/" target="_blank" rel="noopener">
-        <span class="ico"><svg><use href="#i-linkedin"/></svg></span>
+        <img class="soc-img" src="img/icons/icons8-linkedin-100.png" alt="LinkedIn">
         <span>LinkedIn</span>
-        <span class="ico"><svg><use href="#i-arrow-up-right"/></svg></span>
       </a>
       <a href="https://www.xing.com/profile/Dave_RindoRindo4/web_profiles" target="_blank" rel="noopener">
-        <span class="ico"><svg><use href="#i-xing"/></svg></span>
+        <img class="soc-img" src="img/icons/icons8-xing-96.png" alt="Xing">
         <span>Xing</span>
-        <span class="ico"><svg><use href="#i-arrow-up-right"/></svg></span>
       </a>
       <a href="mailto:daverindorindo@googlemail.com">
-        <span class="ico"><svg><use href="#i-mail"/></svg></span>
+        <img class="soc-img" src="img/icons/icons8-gmail-logo-128.png" alt="Email">
         <span>Email</span>
       </a>
     </div>
