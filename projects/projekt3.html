@@ -14,109 +14,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="../assets/css/site.css">
-
-<style>
-  /* ---------- Screenshot-Raster für lvm-gaming.de ---------- */
-  .pb-gallery{
-    display:grid;
-    grid-template-columns:repeat(12, 1fr);
-    gap:16px;
-    margin:24px 0 8px;
-    align-items:start; /* Zellen nicht auf gleiche Höhe strecken */
-  }
-  .pb-gallery figure{
-    margin:0;
-    position:relative;
-    background:var(--surface, #0f0f0f);
-    border-radius:4px;
-    overflow:hidden;
-  }
-
-  /* Screenshots komplett zeigen — nicht zuschneiden */
-  .pb-gallery figure img,
-  .pb-gallery figure video{
-    display:block;
-    width:100%;
-    height:auto;         /* natürliche Höhe statt erzwungene 100% */
-    object-fit:contain;  /* nichts wegschneiden */
-    background:#111;
-  }
-
-  .pb-gallery figure figcaption{
-    position:absolute;
-    left:10px;
-    bottom:10px;
-    font-family:"Geist Mono", ui-monospace, monospace;
-    font-size:10px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    padding:4px 8px;
-    background:rgba(0,0,0,0.55);
-    color:#fff;
-    border-radius:2px;
-    backdrop-filter:blur(4px);
-  }
-
-  /* Spalten-Spans im 12er-Grid — keine festen aspect-ratios mehr */
-  .pb-gallery .g-full       { grid-column: span 12; }
-  .pb-gallery .g-half       { grid-column: span 6;  }
-  .pb-gallery .g-third      { grid-column: span 4;  }
-  .pb-gallery .g-two-thirds { grid-column: span 8;  }
-
-  /* Optional: Hero-Screenshot nicht riesig werden lassen */
-  .pb-gallery .g-full img{
-    max-height: 80vh;
-    width: auto;
-    margin: 0 auto;
-  }
-
-  /* CTA-Link zur Live-Seite */
-  .pb-live-link{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    margin-top:16px;
-    padding:10px 14px;
-    border:1px solid var(--rule, rgba(255,255,255,0.15));
-    border-radius:999px;
-    font-family:"Geist Mono", ui-monospace, monospace;
-    font-size:11px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:inherit;
-    text-decoration:none;
-    transition:background .2s ease, border-color .2s ease;
-  }
-  .pb-live-link:hover{
-    background:var(--rule, rgba(255,255,255,0.08));
-  }
-  .pb-live-link::after{ content:"↗"; }
-
-  /* Kleines Live-Label über dem Raster */
-  .pb-eyebrow{
-    font-family:"Geist Mono", ui-monospace, monospace;
-    font-size:11px;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    opacity:0.65;
-    margin:0 0 6px;
-  }
-
-  /* Mobile: 1-spaltig stapeln */
-  @media (max-width: 720px){
-    .pb-gallery{ grid-template-columns:1fr; gap:12px; }
-    .pb-gallery .g-full,
-    .pb-gallery .g-half,
-    .pb-gallery .g-third,
-    .pb-gallery .g-two-thirds{
-      grid-column: span 1;
-    }
-    .pb-gallery .g-full img{
-      max-height:none;
-      width:100%;
-    }
-  }
-</style>
 </head>
 <body class="project">
 
@@ -210,60 +107,8 @@
 
     <div class="pb-image">
       <img src="../img/Portfolio_18.jpg" alt="">
+      
     </div>
-
-    <!-- ============================================================= -->
-    <!-- lvm-gaming.de — Evolution der ersten Idee                      -->
-    <!-- ============================================================= -->
-    <section class="pb-intro" style="padding-top:40px; border-top:1px solid var(--rule);">
-      <div class="left">
-        <h2>From Pitch to Platform —<br>lvm-gaming.de.</h2>
-        <a class="pb-live-link" href="https://lvm-gaming.de/" target="_blank" rel="noopener">
-          Visit lvm-gaming.de
-        </a>
-      </div>
-      <div class="right">
-        <p>Aus der ersten Storyboard-Idee für „LVM — Dein Carry“ ist über die Jahre eine eigenständige Gaming-Plattform geworden: <strong>lvm-gaming.de</strong>. Was als Skizze für einen Spot und eine Figur begann, lebt heute als digitaler Hub für die deutsche Gaming- und E-Sports-Community weiter — mit Larry als wiederkehrendem Maskottchen, eigenen Content-Formaten und einer Markenwelt, die konsequent aus der ursprünglichen Werte-Erzählung (Sicherheit · Vertrauen · Verantwortung) gewachsen ist.</p>
-        <p>Es ist beeindruckend zu sehen, wie weit sich die erste Idee entwickelt hat: vom handgezeichneten Frame im Pitch-Deck über TV-Spots und Matchweek-Analysen im LEC-Broadcast bis hin zu einer dedizierten Plattform, auf der die Community Larry nicht mehr nur sieht, sondern sie besucht.</p>
-
-        <div class="lang-divider">English</div>
-
-        <p>What started as a single storyboard idea for „LVM — Dein Carry“ has grown into a dedicated gaming platform: <strong>lvm-gaming.de</strong>. The initial pitch frames and character sketches evolved into TV spots, LEC broadcast formats, and finally a digital home for the German gaming community — with Larry as the recurring mascot and the brand values (safety · trust · responsibility) still at the core.</p>
-
-        <div class="tags">
-          <span>Brand Evolution</span>
-          <span>Digital Platform</span>
-          <span>Case Study</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Screenshot-Raster: 12-Spalten-Grid, gemischte Größen -->
-    <p class="pb-eyebrow">Screenshots — lvm-gaming.de</p>
-    <div class="pb-gallery">
-
-      <!-- Hero-Shot, volle Breite -->
-      <figure class="g-full">
-        <img src="../img/lvm-gaming_02_larry.png"
-             alt="lvm-gaming.de — Startseite / Hero">
-      </figure>
-
-      <!-- Zweite Sektion -->
-      <figure class="g-half">
-        <img src="../img/LVMxG2-xs.webp"
-             alt="lvm-gaming.de — Larry Character Sektion">
-        <figcaption>01 · Screenshots</figcaption>
-      </figure>
-
-         <figure class="g-half">
-        <img src="../img/lvm-gaming_03_larry.png"
-             alt="lvm-gaming.de — Larry Character Sektion">
-        
-      </figure>
-
-    </div>
-    <!-- ============================================================= -->
-
   </article>
 
   <section class="pb-next">
@@ -296,5 +141,22 @@
 </main>
 
 <script src="../assets/js/site.js"></script>
+<script>
+(function(){
+  var burger = document.getElementById("burger");
+  var menu   = document.getElementById("navMobile");
+  if (!burger || !menu) return;
+  burger.addEventListener("click", function(){
+    var open = menu.classList.toggle("is-open");
+    burger.setAttribute("aria-expanded", open);
+  });
+  menu.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      menu.classList.remove("is-open");
+      burger.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
+</script>
 </body>
 </html>
