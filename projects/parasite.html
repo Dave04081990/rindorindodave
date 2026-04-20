@@ -12,7 +12,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@100;200;300&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
   /* =====================================================================
@@ -137,10 +137,15 @@
     pointer-events:none;
   }
   .zz-hero-img .zh-char img{
-    height:150%;width:auto;display:block;
-    filter:drop-shadow(0 30px 40px rgba(0,0,0,.55));
-    animation:zhFloat 6.5s ease-in-out infinite, zhBreath 4.2s ease-in-out infinite;
-    transform:translateY(4%);
+    /* Skaliert an der Hero-Höhe, aber nie breiter als 90% der Viewport-Breite
+       → verhindert unproportionales Hochschießen auf schmalen/hohen Viewports */
+    height: 150%;
+    width: auto;
+    max-width: 90vw;
+    display: block;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,.55));
+    animation: zhFloat 6.5s ease-in-out infinite, zhBreath 4.2s ease-in-out infinite;
+    transform: translateY(4%);
   }
   @keyframes zhFloat{
     0%,100%{transform:translateY(0)}
@@ -200,20 +205,227 @@
       radial-gradient(140% 100% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%),
       linear-gradient(180deg, rgba(0,0,0,.25), transparent 18%, transparent 80%, rgba(0,0,0,.45));
   }
+
+  /* =====================================================================
+     HERO OPENER — Fade-in + letter-spacing reveal (centered)
+     "PARASITE  MANGA" — filigrane, weit gesperrte Typo
+     ===================================================================== */
+  .zz-hero-opener{
+    position:absolute;
+    inset:0;
+    z-index:15;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+    padding: 0 clamp(16px, 4vw, 60px);
+  }
+  .zz-hero-opener .zho-title{
+    position: relative;
+    font-family: "Inter", "Helvetica Neue", "Neue Haas Grotesk", Arial, sans-serif;
+    font-weight: 100;
+    font-size: clamp(23px, 3.12vw, 47px);
+    color: var(--p-white);
+    text-transform: uppercase;
+    white-space: nowrap;
+    /* Start: collapsed & invisible */
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transform: translateY(6px);
+    /* Float after reveal */
+    animation:
+      zhoReveal 2.8s cubic-bezier(.22,.61,.36,1) 0.35s forwards,
+      zhoFloat 6s ease-in-out 3.4s infinite;
+    /* Schwarzer Schatten-Hintergrund für Lesbarkeit — dezenter */
+    text-shadow:
+      0 0 14px rgba(0,0,0,.75),
+      0 0 28px rgba(0,0,0,.55),
+      0 2px 4px rgba(0,0,0,.7);
+    will-change: letter-spacing, opacity, transform;
+  }
+  /* Dunkler Halo hinter dem Logo — reduziert */
+  .zz-hero-opener .zho-title::before{
+    content: "";
+    position: absolute;
+    inset: -60% -8%;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0,0,0,.45) 0%,
+      rgba(0,0,0,.28) 35%,
+      rgba(0,0,0,.12) 60%,
+      transparent 82%
+    );
+    filter: blur(16px);
+    pointer-events: none;
+    opacity: 0;
+    animation: zhoHalo 2.8s cubic-bezier(.22,.61,.36,1) 0.35s forwards;
+  }
+  .zz-hero-opener .zho-title .zho-gap{
+    /* extra space between "PARASITE" and "MANGA" */
+    display: inline-block;
+    width: 1.2em;
+  }
+  @keyframes zhoReveal{
+    0%{
+      opacity: 0;
+      letter-spacing: 0.05em;
+      transform: translateY(6px);
+      filter: blur(4px);
+    }
+    35%{
+      opacity: 1;
+      filter: blur(0);
+    }
+    100%{
+      opacity: 1;
+      letter-spacing: 1.2em;           /* auseinandergezogen über die Breite */
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+  @keyframes zhoHalo{
+    0%{ opacity: 0; }
+    35%{ opacity: .7; }
+    100%{ opacity: .65; }
+  }
+  @keyframes zhoFloat{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-4px); }
+  }
+  @media (max-width: 720px){
+    .zz-hero-opener .zho-title{
+      font-size: clamp(17px, 4.16vw, 23px);
+    }
+    @keyframes zhoReveal{
+      0%{ opacity:0; letter-spacing:0.05em; transform:translateY(6px); filter:blur(4px); }
+      35%{ opacity:1; filter:blur(0); }
+      100%{ opacity:1; letter-spacing:0.7em; transform:translateY(0); filter:blur(0); }
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .zz-hero-opener .zho-title{
+      animation: none;
+      opacity: 1;
+      letter-spacing: 0.6em;
+      transform: none;
+      filter: none;
+    }
+    .zz-hero-opener .zho-title::before{
+      animation: none;
+      opacity: .85;
+    }
+  }
   @media (prefers-reduced-motion: reduce){
     .zz-hero-img *, .zz-hero-img *::before, .zz-hero-img *::after{animation:none!important}
   }
   /* ===== /PARASITE HERO ===== */
 
+  /* =====================================================================
+     SAY HELLO — persistent floating CTA (top-right, position: fixed)
+     Black pill with white type + bold white arrow glyph, orange offset
+     shadow echoes the music player.
+     ===================================================================== */
+  .zz-hello{
+    position: fixed;
+    top: 22px;
+    right: var(--p-pad);
+    z-index: 150;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 18px 12px 20px;
+    background: var(--p-black);
+    color: var(--p-white);
+    border: 2px solid var(--p-black);
+    box-shadow: 5px 5px 0 var(--p-orange);
+    font-family: var(--p-display);
+    font-size: 14px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition:
+      transform .3s cubic-bezier(.34, 1.56, .64, 1),
+      box-shadow .25s ease,
+      background-color .25s ease;
+    animation: helloFloat 5s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .zz-hello .arrow{
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    display: block;
+    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .zz-hello .arrow path{ fill: var(--p-white); }
+
+  /* Hover — shadow deepens, arrow kicks up-right, whole thing pops */
+  .zz-hello:hover{
+    animation: helloBubble .6s cubic-bezier(.34, 1.56, .64, 1) forwards;
+    background: var(--p-black-2);
+    box-shadow: 7px 7px 0 var(--p-orange);
+  }
+  .zz-hello:hover .arrow{
+    transform: translate(3px, -3px) scale(1.1);
+  }
+  .zz-hello:hover .arrow path{ fill: var(--p-orange); }
+  .zz-hello:active{
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0 var(--p-orange);
+    transition: transform .1s ease, box-shadow .1s ease;
+  }
+  .zz-hello:focus-visible{
+    outline: 3px solid var(--p-orange);
+    outline-offset: 4px;
+  }
+
+  @keyframes helloFloat{
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+  @keyframes helloBubble{
+    0%   { transform: translateY(0)    scale(1)    rotate(0deg); }
+    30%  { transform: translateY(-6px) scale(1.06) rotate(-1.5deg); }
+    55%  { transform: translateY(-2px) scale(.98)  rotate(1deg); }
+    78%  { transform: translateY(-4px) scale(1.03) rotate(-.5deg); }
+    100% { transform: translateY(-3px) scale(1.02) rotate(0deg); }
+  }
+
+  /* Mobile */
+  @media (max-width: 600px){
+    .zz-hello{
+      top: 14px;
+      right: 14px;
+      padding: 10px 14px 10px 16px;
+      font-size: 12px;
+      gap: 10px;
+      box-shadow: 3px 3px 0 var(--p-orange);
+    }
+    .zz-hello .arrow{ width: 13px; height: 13px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .zz-hello{ animation: none; }
+    .zz-hello:hover{ animation: none; transform: translateY(-2px); }
+  }
+
   .zz-side-katakana{
     position:absolute; top:30px; left: var(--p-pad); z-index: 3;
     writing-mode: vertical-rl;
     font-family: var(--p-display);
-    font-size: clamp(34px, 5vw, 64px);
+    font-weight: 900;
+    font-size: clamp(40px, 5.8vw, 76px);
     color: var(--p-orange);
-    letter-spacing: .1em;
+    letter-spacing: .08em;
     line-height: 1;
-    text-shadow: 2px 2px 0 var(--p-black);
+    text-shadow:
+      3px 3px 0 var(--p-black),
+      -1px -1px 0 var(--p-black),
+      0 0 12px rgba(0,0,0,.6);
+    -webkit-text-stroke: 1px var(--p-black);
   }
 
   .zz-badge{
@@ -292,6 +504,25 @@
     100%{ transform: scaleY(0); transform-origin: bottom; }
   }
   @media (max-width: 720px){ .zz-scroll{ display:none; } }
+
+  /* =====================================================================
+     TABLET / PORTRAIT — Zwischen-Breakpoint
+     Verhindert, dass das Char-Bild auf schmalen, hohen Viewports überproportional hoch wirkt
+     ===================================================================== */
+  @media (min-width: 721px) and (max-width: 1024px){
+    .zz-hero-img .zh-char img{
+      height: auto;
+      width: min(95vw, 680px);
+      max-width: 95vw;
+    }
+  }
+  /* Bei sehr schmalen Desktop-Fenstern (z.B. geteiltem Bildschirm) ebenfalls auf Breite skalieren */
+  @media (min-width: 1025px) and (max-aspect-ratio: 4/5){
+    .zz-hero-img .zh-char img{
+      height: auto;
+      width: 85vw;
+    }
+  }
 
   /* =====================================================================
      MOBILE HERO FIX — proportional character scaling
@@ -1151,6 +1382,14 @@
   </div>
 </div>
 
+<!-- ===== SAY HELLO — persistent floating CTA ===== -->
+<a class="zz-hello" href="mailto:daverindorindo@googlemail.com" aria-label="Say hello — send an email">
+  <span>Say Hello</span>
+  <svg class="arrow" viewBox="0 0 117 117" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M116.891 0L116.89 116.89H77.9268V68.1777L30.334 115.771L2.7832 88.2188L52.0391 38.9629H0V0H116.891Z"/>
+  </svg>
+</a>
+
 <!-- ===== HERO (full-bleed) ===== -->
 <section class="zz-hero">
   <div class="zz-hero-img">
@@ -1169,6 +1408,11 @@
     </div>
     <div class="zh-dust" id="zh-dust"></div>
     <div class="zh-vignette"></div>
+  </div>
+
+  <!-- ===== HERO OPENER — Fade + Letter-Spacing Reveal ===== -->
+  <div class="zz-hero-opener" aria-hidden="true">
+    <div class="zho-title">PARASITE<span class="zho-gap"></span>MANGA</div>
   </div>
 
   <div class="zz-side-katakana">パラ<br>サイト</div>
