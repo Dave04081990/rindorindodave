@@ -14,6 +14,71 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="../assets/css/site.css">
+
+<style>
+  /* ---------- Premiere-Galerie ---------- */
+  .pb-eyebrow{
+    font-family:"Geist Mono", ui-monospace, monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    opacity:0.65;
+    margin:48px 0 6px;
+  }
+
+  .pb-gallery{
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    gap:16px;
+    margin:16px 0 8px;
+    align-items:start;
+  }
+  .pb-gallery figure{
+    margin:0;
+    position:relative;
+    background:var(--surface, #0f0f0f);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .pb-gallery figure img{
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    background:#111;
+  }
+  .pb-gallery figure figcaption{
+    position:absolute;
+    left:10px;
+    bottom:10px;
+    font-family:"Geist Mono", ui-monospace, monospace;
+    font-size:10px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:4px 8px;
+    background:rgba(0,0,0,0.55);
+    color:#fff;
+    border-radius:2px;
+    backdrop-filter:blur(4px);
+  }
+
+  /* Spalten-Spans */
+  .pb-gallery .g-full       { grid-column: span 12; }
+  .pb-gallery .g-half       { grid-column: span 6;  }
+  .pb-gallery .g-third      { grid-column: span 4;  }
+  .pb-gallery .g-two-thirds { grid-column: span 8;  }
+
+  /* Mobile: alles 1-spaltig */
+  @media (max-width: 720px){
+    .pb-gallery{ grid-template-columns:1fr; gap:12px; }
+    .pb-gallery .g-full,
+    .pb-gallery .g-half,
+    .pb-gallery .g-third,
+    .pb-gallery .g-two-thirds{
+      grid-column: span 1;
+    }
+  }
+</style>
 </head>
 <body class="project">
 
@@ -139,6 +204,98 @@
       <img src="../img/Amsterdam_A_Klasse_Render_low_res.jpg" alt="A-Class Keyvisual Render">
       <div class="caption">Keyvisual</div>
     </div>
+
+    <!-- ============================================================= -->
+    <!-- GALERIE: Weltpremiere Kromhouthal, Amsterdam                   -->
+    <!-- ============================================================= -->
+
+    <p class="pb-eyebrow">World Premiere — Kromhouthal, Amsterdam</p>
+    <div class="pb-gallery">
+
+      <!-- 01 · Arrival -->
+      <figure class="g-full">
+        <img src="../img/18C0095_001.jpg" alt="Arrival — Selfie vor der Event-Fassade in Amsterdam">
+        <figcaption>01 · Arrival</figcaption>
+      </figure>
+
+      <!-- 02 · Welcome Desk  -  03 · Press Garage -->
+      <figure class="g-half">
+        <img src="../img/18C0095_018.jpg" alt="Welcome Desk — World Premiere of the New A-Class">
+        <figcaption>02 · Welcome</figcaption>
+      </figure>
+      <figure class="g-half">
+        <img src="../img/18C0095_063.jpg" alt="Press Garage — Prototyp mit Tarnfolie">
+        <figcaption>03 · Press Garage</figcaption>
+      </figure>
+
+      <!-- 04 · Reveal (hero shot) -->
+      <figure class="g-full">
+        <img src="../img/18C0095_038.jpg" alt="Reveal — Enthüllung der neuen A-Klasse vor Publikum und Presse">
+        <figcaption>04 · Reveal</figcaption>
+      </figure>
+
+      <!-- 05 · Stage · Red & White  /  06 · AMG Line Front -->
+      <figure class="g-two-thirds">
+        <img src="../img/18C0095_030.jpg" alt="Stage — The New Mercedes-Benz A-Class in Rot und Weiß">
+        <figcaption>05 · Stage</figcaption>
+      </figure>
+      <figure class="g-third">
+        <img src="../img/18C0095_031.jpg" alt="AMG Line — Frontansicht der roten A-Klasse">
+        <figcaption>06 · AMG Line</figcaption>
+      </figure>
+
+      <!-- 07 · Studio Shot · Mountain Grey -->
+      <figure class="g-full">
+        <img src="../img/18C0095_050.jpg" alt="Studio Shot — A-Klasse in Mountain Grey Magno">
+        <figcaption>07 · Studio Shot</figcaption>
+      </figure>
+
+      <!-- 08 · A-Garage  /  09 · Engineering Wall -->
+      <figure class="g-half">
+        <img src="../img/18C0095_059.jpg" alt="A-Garage — Technik-Präsentation mit Prototyp">
+        <figcaption>08 · A-Garage</figcaption>
+      </figure>
+      <figure class="g-half">
+        <img src="../img/18C0095_060.jpg" alt="Engineering Wall — Motor und Antrieb im Detail">
+        <figcaption>09 · Engineering</figcaption>
+      </figure>
+
+      <!-- 10 · Camouflage Prototype -->
+      <figure class="g-full">
+        <img src="../img/18C0095_061.jpg" alt="Camouflage Prototype — A-Klasse im Tarnkleid">
+        <figcaption>10 · Prototype</figcaption>
+      </figure>
+
+      <!-- 11 · Travel Agency (breit)  /  12 · AMG Line Materials -->
+      <figure class="g-two-thirds">
+        <img src="../img/18C0095_070.jpg" alt="Travel Agency — A-Class Around the World, Präsentation">
+        <figcaption>11 · Travel Agency</figcaption>
+      </figure>
+      <figure class="g-third">
+        <img src="../img/18C0095_072.jpg" alt="AMG Line Material Board — Lenkräder und Farb-/Stoffmuster">
+        <figcaption>12 · Materials</figcaption>
+      </figure>
+
+      <!-- 13 · A-Couture -->
+      <figure class="g-full">
+        <img src="../img/18C0095_074.jpg" alt="A-Couture — Fashion Installation mit Mannequins">
+        <figcaption>13 · A-Couture</figcaption>
+      </figure>
+
+      <!-- 14 · Trim Wall  /  15 · Hotel Details -->
+      <figure class="g-two-thirds">
+        <img src="../img/18C0095_157.jpg" alt="Trim Wall — AMG Line Color & Trim Display im Detail">
+        <figcaption>14 · Trim Wall</figcaption>
+      </figure>
+      <figure class="g-third">
+        <img src="../img/18C0095_159.jpg" alt="Hotel Details — Stillleben mit Elch-Figur am Fenster">
+        <figcaption>15 · Details</figcaption>
+      </figure>
+
+    </div>
+    <!-- ============================================================= -->
+    <!-- ENDE Galerie                                                   -->
+    <!-- ============================================================= -->
 
   </article>
 

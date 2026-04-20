@@ -294,41 +294,6 @@
   @media (max-width: 720px){ .zz-scroll{ display:none; } }
 
   /* =====================================================================
-     MOBILE HERO FIX — proportional character scaling
-     ===================================================================== */
-  @media (max-width: 720px){
-    .zz-hero{
-      height: 100vh;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-    /* Character: anchor to bottom, fill screen width proportionally */
-    .zz-hero-img .zh-char{
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .zz-hero-img .zh-char img{
-      height: auto;
-      width: 117%; /* ~30% larger than 90% */
-      max-width: none;
-      transform: translateY(0);
-      animation: zhFloat 6.5s ease-in-out infinite, zhBreath 4.2s ease-in-out infinite;
-    }
-    /* Hide overlapping elements */
-    .zz-side-katakana { display: none; }
-    .zz-bubble        { display: none; }
-    .zz-icons         { display: none; }
-    /* Badge bottom-centered */
-    .zz-badge{
-      top: auto;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-    }
-  }
-
-  /* =====================================================================
      INFO BLOCK — with new 4-arrow cluster as visual anchor
      ===================================================================== */
   .zz-info{
