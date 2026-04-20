@@ -14,6 +14,95 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="../assets/css/site.css">
+
+<style>
+  /* ---------- Screenshot-Raster für lvm-gaming.de ---------- */
+  .pb-gallery{
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    gap:16px;
+    margin:24px 0 8px;
+  }
+  .pb-gallery figure{
+    margin:0;
+    position:relative;
+    background:var(--surface, #0f0f0f);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .pb-gallery figure img,
+  .pb-gallery figure video{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    background:#111;
+  }
+  .pb-gallery figure figcaption{
+    position:absolute;
+    left:10px;
+    bottom:10px;
+    font-family:"Geist Mono", ui-monospace, monospace;
+    font-size:10px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:4px 8px;
+    background:rgba(0,0,0,0.55);
+    color:#fff;
+    border-radius:2px;
+    backdrop-filter:blur(4px);
+  }
+
+  /* Raster-Varianten: Spalten-Spans über ein 12-Spalten-Grid */
+  .pb-gallery .g-full  { grid-column: span 12; aspect-ratio: 16 / 7; }
+  .pb-gallery .g-half  { grid-column: span 6;  aspect-ratio: 4 / 3;  }
+  .pb-gallery .g-third { grid-column: span 4;  aspect-ratio: 3 / 4;  }
+  .pb-gallery .g-two-thirds { grid-column: span 8; aspect-ratio: 4 / 3; }
+
+  /* CTA-Link zur Live-Seite */
+  .pb-live-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:16px;
+    padding:10px 14px;
+    border:1px solid var(--rule, rgba(255,255,255,0.15));
+    border-radius:999px;
+    font-family:"Geist Mono", ui-monospace, monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:inherit;
+    text-decoration:none;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .pb-live-link:hover{
+    background:var(--rule, rgba(255,255,255,0.08));
+  }
+  .pb-live-link::after{ content:"↗"; }
+
+  /* Kleines Live-Label über dem Raster */
+  .pb-eyebrow{
+    font-family:"Geist Mono", ui-monospace, monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    opacity:0.65;
+    margin:0 0 6px;
+  }
+
+  /* Mobile: alles 1-spaltig stapeln */
+  @media (max-width: 720px){
+    .pb-gallery{ grid-template-columns:1fr; gap:12px; }
+    .pb-gallery .g-full,
+    .pb-gallery .g-half,
+    .pb-gallery .g-third,
+    .pb-gallery .g-two-thirds{
+      grid-column: span 1;
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>
 </head>
 <body class="project">
 
@@ -109,6 +198,91 @@
       <img src="../img/Portfolio_18.jpg" alt="">
       
     </div>
+
+    <!-- ============================================================= -->
+    <!-- NEUER ABSCHNITT: lvm-gaming.de — Evolution der ersten Idee     -->
+    <!-- ============================================================= -->
+    <section class="pb-intro" style="padding-top:40px; border-top:1px solid var(--rule);">
+      <div class="left">
+        <h2>From Pitch to Platform —<br>lvm-gaming.de.</h2>
+        <a class="pb-live-link" href="https://lvm-gaming.de/" target="_blank" rel="noopener">
+          Visit lvm-gaming.de
+        </a>
+      </div>
+      <div class="right">
+        <p>Aus der ersten Storyboard-Idee für „LVM — Dein Carry“ ist über die Jahre eine eigenständige Gaming-Plattform geworden: <strong>lvm-gaming.de</strong>. Was als Skizze für einen Spot und eine Figur begann, lebt heute als digitaler Hub für die deutsche Gaming- und E-Sports-Community weiter — mit Larry als wiederkehrendem Maskottchen, eigenen Content-Formaten und einer Markenwelt, die konsequent aus der ursprünglichen Werte-Erzählung (Sicherheit · Vertrauen · Verantwortung) gewachsen ist.</p>
+        <p>Es ist beeindruckend zu sehen, wie weit sich die erste Idee entwickelt hat: vom handgezeichneten Frame im Pitch-Deck über TV-Spots und Matchweek-Analysen im LEC-Broadcast bis hin zu einer dedizierten Plattform, auf der die Community Larry nicht mehr nur sieht, sondern sie besucht.</p>
+
+        <div class="lang-divider">English</div>
+
+        <p>What started as a single storyboard idea for „LVM — Dein Carry“ has grown into a dedicated gaming platform: <strong>lvm-gaming.de</strong>. The initial pitch frames and character sketches evolved into TV spots, LEC broadcast formats, and finally a digital home for the German gaming community — with Larry as the recurring mascot and the brand values (safety · trust · responsibility) still at the core.</p>
+
+        <div class="tags">
+          <span>Brand Evolution</span>
+          <span>Digital Platform</span>
+          <span>Case Study</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshot-Raster: 12-Spalten-Grid, gemischte Größen -->
+    <p class="pb-eyebrow">Screenshots — lvm-gaming.de</p>
+    <div class="pb-gallery">
+
+      <!-- Hero-Shot, volle Breite -->
+      <figure class="g-full">
+        <img src="../img/LVM_04.png"
+             alt="lvm-gaming.de — Startseite / Hero">
+        <figcaption>01 · Hero</figcaption>
+      </figure>
+
+      <!-- Zweispaltig: zwei Sektionen nebeneinander -->
+      <figure class="g-half">
+        <img src="../img/imgi_51_vertrauensleute 2.jpg"
+             alt="lvm-gaming.de — Larry Character Sektion">
+        <figcaption>02 · Add</figcaption>
+      </figure>
+      <figure class="g-half">
+        <img src="../img/LVM_05.png"
+             alt="lvm-gaming.de — Content Formate">
+        <figcaption>03 · Content</figcaption>
+      </figure>
+
+      <!-- Dreispaltig: Detail-Shots (z. B. Mobile Views, UI-Details) -->
+      <figure class="g-third">
+        <img src="../img/imgi_15_level4-front.jpg"
+             alt="lvm-gaming.de — Mobile Ansicht Home">
+        <figcaption>04 · Larry</figcaption>
+      </figure>
+      <figure class="g-third">
+        <img src="../img/imgi_12_level2-front.jpg"
+             alt="lvm-gaming.de — Mobile Ansicht Detail">
+        <figcaption>05 · Larry</figcaption>
+      </figure>
+      <figure class="g-third">
+        <img src="../img/imgi_26_level13-front.jpg"
+             alt="lvm-gaming.de — Mobile Ansicht Footer">
+        <figcaption>06 · Larry</figcaption>
+      </figure>
+
+      <!-- Abschluss: volle Breite für Footer/Outro-Shot -->
+      <figure class="g-full">
+        <img src="../img/LVM_02.png"
+             alt="lvm-gaming.de — Footer / Outro Sektion">
+        <figcaption>09 · Team</figcaption>
+      </figure>
+
+         <figure class="g-full">
+        <img src="../img/LVM_03.png"
+             alt="lvm-gaming.de — Footer / Outro Sektion">
+        <figcaption>09 · Details</figcaption>
+      </figure>
+
+    </div>
+    <!-- ============================================================= -->
+    <!-- ENDE neuer Abschnitt                                           -->
+    <!-- ============================================================= -->
+
   </article>
 
   <section class="pb-next">

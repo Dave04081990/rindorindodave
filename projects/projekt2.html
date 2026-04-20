@@ -15,33 +15,55 @@
 
 <link rel="stylesheet" href="../assets/css/site.css">
 <style>
-.pb-source {
-  padding: 2.5rem 2rem;
-  border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+.pb-credits {
+  padding: 5rem 2rem;
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
 }
-.pb-source .source-inner {
+.pb-credits .credits-inner {
   max-width: 900px;
   margin: 0 auto;
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
 }
-.pb-source .source-label {
+.pb-credits .credits-label {
+  font-size: .7rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .45;
+  margin-bottom: 2rem;
+  font-family: 'Geist Mono', monospace;
+}
+.pb-credits .credits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .1px;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+.pb-credits .credits-col {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  padding: 1.1rem 1.4rem;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+.pb-credits .ck {
   font-size: .68rem;
-  letter-spacing: .12em;
+  letter-spacing: .1em;
   text-transform: uppercase;
   opacity: .4;
   font-family: 'Geist Mono', monospace;
-  white-space: nowrap;
 }
-.pb-source .source-link {
-  font-size: .88rem;
-  opacity: .65;
+.pb-credits .cv {
+  font-size: .92rem;
+  line-height: 1.5;
+}
+.pb-credits .cv a {
   text-decoration: underline;
   text-underline-offset: 3px;
-  word-break: break-all;
+  opacity: .7;
 }
-.pb-source .source-link:hover { opacity: 1; }
+.pb-credits .cv a:hover { opacity: 1; }
+@media (max-width: 600px) {
+  .pb-credits .credits-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body class="project">
@@ -143,29 +165,8 @@
       <img src="../img/Portfolio_03.png" alt="">
       <div class="caption">Keyvisual</div>
     </div>
-
-    <div class="pb-image">
-      <div style="position:relative;width:100%;padding-top:56.25%;overflow:hidden;border-radius:inherit;">
-        <iframe
-          src="https://www.youtube.com/embed/lELE_VH9Rek"
-          title="Ahoj Brause — Brausergames"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      </div>
-      <div class="caption">Video</div>
-    </div>
   </article>
-
-  <section class="pb-source">
-    <div class="source-inner">
-      <span class="source-label">Quelle</span>
-      <a class="source-link" href="" target="_blank" rel="noopener">— Link eintragen —</a>
-    </div>
-  </section>
-
+  
   <section class="pb-next">
     <div>
       <div class="label">Next Project</div>
