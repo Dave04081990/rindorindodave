@@ -207,6 +207,199 @@
   }
 
   /* =====================================================================
+     PARALLAX HERO + OPENER VIDEO
+     Replaces the animated 2.5D layers above. The Hero-Opener title,
+     Katakana, Bubble, Social-Icons and Scroll-Indicator remain on top.
+     ===================================================================== */
+  .zz-parallax{
+    position:absolute; inset:0;
+    background: var(--p-black);
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* Opener video — sits above the parallax scene, fades out at the end */
+  .zz-opener{
+    position:absolute; inset:0;
+    z-index: 11;
+    background: var(--p-black);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 3s ease;
+  }
+  .zz-opener.is-visible{ opacity: 1; }
+  .zz-opener.is-fading { opacity: 0; transition: opacity 2.5s ease; }
+  .zz-opener video{
+    width: 100%; height: 100%;
+    object-fit: cover;
+    background: var(--p-black);
+    display: block;
+  }
+
+  /* Parallax scene — fades in as the video fades out */
+  .zz-scene{
+    position:absolute; inset:0;
+    z-index: 10;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 2.5s ease;
+  }
+  .zz-scene.is-visible{ opacity: 1; }
+
+  /* Stage preserves the original 4096×1714 aspect ratio.
+     JS sets --stage-w / --stage-h on resize so the image always fits. */
+  /* Stage fills the hero completely. Layers use background-size: cover
+     so the image fills the area without distortion (overflow is cropped). */
+  .zz-stage{
+    position:absolute;
+    inset: 0;
+  }
+
+  .zz-layer{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    width: 115%;
+    height: 115%;
+    transform: translate(-50%, -50%);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    will-change: transform;
+  }
+
+  .zz-layer--bg        { background-image: url('../img/Para/Background.png'); z-index: 1; }
+  .zz-layer--character { background-image: url('../img/Para/Character.png');  z-index: 2; mix-blend-mode: screen; }
+  .zz-layer--glow      { background-image: url('../img/Para/Glow_VFX.png');   z-index: 3; mix-blend-mode: screen; animation: zzGlowPulse 3.4s ease-in-out infinite; }
+  .zz-layer--mid       { background-image: url('../img/Para/Midground.png');  z-index: 4; mix-blend-mode: screen; }
+
+  @keyframes zzGlowPulse{
+    0%, 100% { opacity: 0.75; filter: brightness(1); }
+    50%      { opacity: 1;    filter: brightness(1.25); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .zz-layer--glow{ animation: none; }
+  }
+
+  /* Overlay elements (Title, Katakana, Bubble, Icons, Scroll) need to sit
+     above the video opener (z-index 11) and parallax scene (z-index 10).
+     Original z-indexes were 3-15 from the old animated hero.
+     They stay visible from the start — over the video AND the parallax. */
+  .zz-hero > .zz-side-katakana{ z-index: 13; }
+  .zz-hero > .zz-bubble       { z-index: 13; }
+  .zz-hero > .zz-icons        { z-index: 13; }
+  .zz-hero > .zz-scroll       { z-index: 13; }
+  /* .zz-hero-opener already uses z-index:15, no override needed */
+
+  /* =====================================================================
+     MOBILE OVERRIDES — keep Katakana, Sticker and Social Icons visible
+     The original parasite.html hides them under 720px; we re-enable and
+     resize them so the hero feels complete on phones too.
+     The Katakana also moves to the RIGHT side on mobile.
+     ===================================================================== */
+  @media (max-width: 720px){
+    /* Katakana — left side, top-aligned with the Say Hello CTA */
+    .zz-hero .zz-side-katakana{
+      display: block !important;
+      top: 22px;                       /* matches .zz-hello top */
+      left: var(--p-pad);
+      right: auto;
+      font-size: clamp(28px, 8vw, 44px);
+      letter-spacing: .06em;
+      text-shadow:
+        2px 2px 0 var(--p-black),
+        -1px -1px 0 var(--p-black),
+        0 0 10px rgba(0,0,0,.6);
+    }
+
+    /* Sticker / Bubble — left side, scaled down */
+    .zz-hero .zz-bubble{
+      display: block !important;
+      left: var(--p-pad);
+      right: auto;
+      bottom: 110px;
+      max-width: clamp(140px, 38vw, 200px);
+      width: 38vw;
+    }
+
+    /* Social Icons — right side, vertically centered with the music player */
+    .zz-hero .zz-icons{
+      display: flex !important;
+      right: var(--p-pad);
+      left: auto;
+      bottom: 22px;                 /* matches .zz-player bottom */
+      gap: 10px;
+    }
+    .zz-hero .zz-icons a{
+      width: 44px;
+      height: 44px;
+    }
+    .zz-hero .zz-icons a img{
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  /* CTA jumps to top:14px at ≤600px — match the Katakana */
+  @media (max-width: 600px){
+    .zz-hero .zz-side-katakana{ top: 14px; }
+    /* Music player shrinks to 40px buttons + bottom:14px at this width.
+       Match the social icons to keep them centered to the player. */
+    .zz-hero .zz-icons{ bottom: 14px; }
+    .zz-hero .zz-icons a{ width: 40px; height: 40px; }
+    .zz-hero .zz-icons a img{ width: 22px; height: 22px; }
+  }
+
+  /* Very narrow phones — extra tightening so nothing overlaps */
+  @media (max-width: 380px){
+    .zz-hero .zz-side-katakana{
+      font-size: clamp(24px, 7vw, 34px);
+      top: 14px;                        /* matches .zz-hello top on small screens */
+    }
+    .zz-hero .zz-bubble{
+      max-width: 130px;
+      width: 34vw;
+      bottom: 100px;
+    }
+    /* keep icons aligned with the player at ≤600px sizing */
+    .zz-hero .zz-icons{ gap: 8px; }
+  }
+
+  /* =====================================================================
+     AMBIENT DUST — particles softly drifting in place
+     Pure CSS, runs over the parallax scene and the video opener.
+     ===================================================================== */
+  .zz-falling-dust{
+    position: absolute;
+    inset: 0;
+    z-index: 12;            /* over video (11) & scene (10), under overlays (13+) */
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .zz-falling-dust span{
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: rgba(255, 230, 200, .65);
+    filter: blur(.5px);
+    animation: zzDrift ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+  @keyframes zzDrift{
+    0%   { transform: translate(0, 0)                              scale(1);    opacity: var(--op, .6); }
+    25%  { transform: translate(var(--dx1, 12px), var(--dy1, -8px)) scale(1.1); opacity: calc(var(--op, .6) * 0.6); }
+    50%  { transform: translate(var(--dx2, -6px), var(--dy2, 14px)) scale(0.95); opacity: var(--op, .6); }
+    75%  { transform: translate(var(--dx3, 8px), var(--dy3, -4px)) scale(1.05); opacity: calc(var(--op, .6) * 0.7); }
+    100% { transform: translate(var(--dx4, -10px), var(--dy4, 6px)) scale(1);    opacity: var(--op, .6); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .zz-falling-dust span{ animation: none; }
+  }
+
+  /* =====================================================================
      HERO OPENER — Fade-in + letter-spacing reveal (centered)
      "PARASITE  MANGA" — filigrane, weit gesperrte Typo
      ===================================================================== */
@@ -466,11 +659,13 @@
   @media (max-width: 720px){ .zz-bubble{ display:none; } }
 
   .zz-icons{
-    position:absolute; right: var(--p-pad); bottom: 40px; z-index:4;
-    display:flex; gap: 8px;
+    /* Vertically centered with the music player (bottom:22px, height:44px → centerline 44px from bottom).
+       Icons at 44px → bottom must be 44 − 22 = 22px to share centerline. */
+    position:absolute; right: var(--p-pad); bottom: 22px; z-index:4;
+    display:flex; gap: 10px;
   }
   .zz-icons a{
-    width:34px; height:34px; border-radius:50%;
+    width:44px; height:44px; border-radius:50%;
     background: var(--p-orange);
     color: var(--p-black);
     display:grid; place-items:center;
@@ -1392,23 +1587,23 @@
 
 <!-- ===== HERO (full-bleed) ===== -->
 <section class="zz-hero">
-  <div class="zz-hero-img">
-    <div class="zh-bg"></div>
-    <div class="zh-fog"></div>
-    <div class="zh-sun"></div>
-    <div class="zh-horizon"></div>
-    <div class="zh-charGlow"></div>
-    <div class="zh-char"><img src="../img/Para/nihoon_cut.png" alt="Parasite Manga — Nihoon"></div>
-    <div class="zh-flare"></div>
-    <div class="zh-wisps">
-      <span class="w1" style="--r:-8deg"></span>
-      <span class="w2" style="--r:-12deg"></span>
-      <span class="w3" style="--r:-4deg"></span>
-      <span class="w4" style="--r:-14deg"></span>
+  <!-- Parallax + opener video (replaces the original animated 2.5D hero) -->
+  <div class="zz-hero-img zz-parallax" id="zzParallax">
+    <div class="zz-scene" id="zzScene">
+      <div class="zz-stage" id="zzStage">
+        <div class="zz-layer zz-layer--bg"        data-depth="0.030"></div>
+        <div class="zz-layer zz-layer--character" data-depth="0.070"></div>
+        <div class="zz-layer zz-layer--glow"      data-depth="0.090"></div>
+        <div class="zz-layer zz-layer--mid"       data-depth="0.150"></div>
+      </div>
     </div>
-    <div class="zh-dust" id="zh-dust"></div>
-    <div class="zh-vignette"></div>
+    <div class="zz-opener" id="zzOpener">
+      <video id="zzOpenerVideo" src="../img/Para/Hero_Opener.mp4" muted playsinline preload="auto"></video>
+    </div>
   </div>
+
+  <!-- Falling dust effect — over scene & video, under overlays -->
+  <div class="zz-falling-dust" id="zzFallingDust" aria-hidden="true"></div>
 
   <!-- ===== HERO OPENER — Fade + Letter-Spacing Reveal ===== -->
   <div class="zz-hero-opener" aria-hidden="true">
@@ -1955,7 +2150,147 @@
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   // =====================================================================
-  // HERO DUST PARTICLES
+  // HERO PARALLAX + OPENER VIDEO
+  // =====================================================================
+  (function(){
+    var parallax = document.getElementById('zzParallax');
+    if (!parallax) return;
+
+    var stage  = document.getElementById('zzStage');
+    var scene  = document.getElementById('zzScene');
+    var opener = document.getElementById('zzOpener');
+    var video  = document.getElementById('zzOpenerVideo');
+    var layers = stage.querySelectorAll('.zz-layer');
+
+    var FADE_OUT_LEAD = 10;       // seconds before video end to start crossfade
+
+    // ---------- Opener video → scene crossfade ----------
+    var crossfadeStarted = false;
+    function startCrossfade(){
+      if (crossfadeStarted) return;
+      crossfadeStarted = true;
+      // Reveal the parallax scene
+      scene.classList.add('is-visible');
+      // Fade the video out
+      opener.classList.remove('is-visible');
+      opener.classList.add('is-fading');
+      // Remove video element after fade completes (frees memory)
+      setTimeout(function(){
+        if (opener && opener.parentNode) opener.parentNode.removeChild(opener);
+      }, 2700);
+    }
+
+    if (video){
+      video.addEventListener('timeupdate', function(){
+        if (!video.duration) return;
+        if (video.currentTime >= video.duration - FADE_OUT_LEAD){
+          startCrossfade();
+        }
+      });
+      video.addEventListener('ended', startCrossfade);
+
+      // Fade the video container in as soon as the first frame is ready,
+      // independent of when play() resolves.
+      var fadedIn = false;
+      function fadeInVideo(){
+        if (fadedIn) return;
+        fadedIn = true;
+        requestAnimationFrame(function(){ opener.classList.add('is-visible'); });
+      }
+      // 'playing' fires the moment the first frame is actually rendered;
+      // 'loadeddata' as a fallback for environments that delay 'playing'.
+      video.addEventListener('playing',    fadeInVideo, { once: true });
+      video.addEventListener('loadeddata', fadeInVideo, { once: true });
+
+      // Kick off playback immediately. Muted autoplay is allowed in modern browsers.
+      var p = video.play();
+      if (p && typeof p.catch === 'function'){
+        p.catch(function(){
+          // Autoplay blocked → skip straight to scene
+          startCrossfade();
+        });
+      }
+
+      // Final fallback: if no frame ever arrives (file missing, codec, etc.)
+      setTimeout(function(){
+        if (!crossfadeStarted && !fadedIn) startCrossfade();
+      }, 4000);
+    } else {
+      // No video element → show scene immediately
+      scene.classList.add('is-visible');
+    }
+
+    // ---------- Mouse parallax ----------
+    var targetX = 0, targetY = 0;
+    var currentX = 0, currentY = 0;
+
+    parallax.addEventListener('mousemove', function(e){
+      var rect = parallax.getBoundingClientRect();
+      targetX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
+      targetY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+    });
+    parallax.addEventListener('mouseleave', function(){
+      targetX = 0; targetY = 0;
+    });
+    window.addEventListener('deviceorientation', function(e){
+      if (e.gamma == null || e.beta == null) return;
+      targetX = Math.max(-1, Math.min(1, e.gamma / 25));
+      targetY = Math.max(-1, Math.min(1, e.beta  / 25));
+    });
+
+    function tick(){
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      for (var i = 0; i < layers.length; i++){
+        var layer = layers[i];
+        var depth = parseFloat(layer.dataset.depth);
+        var tx = -currentX * depth * 100;
+        var ty = -currentY * depth * 100;
+        var rot = currentX * depth * 2;
+        layer.style.transform =
+          'translate(calc(-50% + ' + tx + 'px), calc(-50% + ' + ty + 'px)) rotate(' + rot + 'deg)';
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+
+  // =====================================================================
+  // AMBIENT DUST — particles distributed throughout the hero, drifting softly
+  // =====================================================================
+  (function(){
+    var dust = document.getElementById('zzFallingDust');
+    if (!dust) return;
+    var COUNT = 70;
+    function rand(min, max){ return min + Math.random() * (max - min); }
+    for (var i = 0; i < COUNT; i++){
+      var s = document.createElement('span');
+      var dur  = rand(6, 14);                   // 6–14s drift cycle
+      var size = rand(1, 3);                    // 1–3px
+      var op   = rand(0.25, 0.75);              // base opacity
+      // Distribute across the entire hero, not just the top
+      s.style.left = rand(0, 100) + '%';
+      s.style.top  = rand(0, 100) + '%';
+      s.style.width  = size + 'px';
+      s.style.height = size + 'px';
+      s.style.animationDuration = dur.toFixed(2) + 's';
+      s.style.animationDelay    = (-rand(0, dur)).toFixed(2) + 's';
+      // Random drift offsets — small, organic movement in all directions
+      s.style.setProperty('--op',  op.toFixed(2));
+      s.style.setProperty('--dx1', rand(-25, 25).toFixed(1) + 'px');
+      s.style.setProperty('--dy1', rand(-25, 25).toFixed(1) + 'px');
+      s.style.setProperty('--dx2', rand(-25, 25).toFixed(1) + 'px');
+      s.style.setProperty('--dy2', rand(-25, 25).toFixed(1) + 'px');
+      s.style.setProperty('--dx3', rand(-25, 25).toFixed(1) + 'px');
+      s.style.setProperty('--dy3', rand(-25, 25).toFixed(1) + 'px');
+      s.style.setProperty('--dx4', rand(-25, 25).toFixed(1) + 'px');
+      s.style.setProperty('--dy4', rand(-25, 25).toFixed(1) + 'px');
+      dust.appendChild(s);
+    }
+  })();
+
+  // =====================================================================
+  // HERO DUST PARTICLES (legacy — element no longer exists, no-op)
   // =====================================================================
   (function(){
     var dust = document.getElementById('zh-dust');
@@ -1974,6 +2309,7 @@
       dust.appendChild(s);
     }
   })();
+
 </script>
 </body>
 </html>
