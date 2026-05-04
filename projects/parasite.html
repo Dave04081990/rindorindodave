@@ -943,6 +943,141 @@
   }
 
   /* =====================================================================
+     VELOCITY GALLERY — scroll-reactive horizontal image rows
+     ===================================================================== */
+  .zz-velocity{
+    background: var(--p-black);
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .zz-velocity::before,
+  .zz-velocity::after{
+    content:""; position:absolute; left:0; right:0; z-index:4; pointer-events:none;
+  }
+  .zz-velocity::before{
+    top:0; height: 80px;
+    background: linear-gradient(180deg, var(--p-black), transparent);
+  }
+  .zz-velocity::after{
+    bottom:0; height: 80px;
+    background: linear-gradient(0deg, var(--p-black), transparent);
+  }
+
+  .zz-vel-row{
+    display: flex;
+    gap: 12px;
+    padding: 6px 0;
+    will-change: transform;
+  }
+  .zz-vel-row .vel-img{
+    flex: 0 0 auto;
+    height: clamp(160px, 18vw, 260px);
+    overflow: hidden;
+    position: relative;
+    transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease;
+    cursor: zoom-in;
+  }
+  .zz-vel-row .vel-img:hover{
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 0 2px var(--p-orange), 8px 8px 0 var(--p-black);
+    z-index: 3;
+  }
+  .zz-vel-row .vel-img img{
+    height: 100%;
+    width: auto;
+    display: block;
+    object-fit: cover;
+    filter: saturate(.85) contrast(1.05);
+    transition: filter .3s;
+  }
+  .zz-vel-row .vel-img:hover img{
+    filter: saturate(1) contrast(1.1);
+  }
+
+  /* Velocity label overlay */
+  .zz-vel-label{
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    font-family: var(--p-display);
+    font-size: clamp(48px, 8vw, 120px);
+    color: var(--p-orange);
+    text-transform: uppercase;
+    letter-spacing: -.03em;
+    line-height: .88;
+    pointer-events: none;
+    text-shadow:
+      0 0 40px rgba(255,107,31,.4),
+      0 0 80px rgba(255,107,31,.15);
+    opacity: .12;
+    white-space: nowrap;
+    mix-blend-mode: screen;
+  }
+
+  /* ----- Tablet (721–1024px): 4 rows, medium height ----- */
+  @media (max-width: 1024px){
+    .zz-vel-row .vel-img{
+      height: clamp(130px, 22vw, 200px);
+    }
+    .zz-vel-row{ gap: 10px; }
+    .zz-vel-row:nth-child(6){ display: none; }  /* hide row 5 (nth-child offset by label) */
+    .zz-velocity::before,
+    .zz-velocity::after{ height: 60px; }
+  }
+
+  /* ----- Mobile landscape / large phone (481–720px): 3 rows ----- */
+  @media (max-width: 720px){
+    .zz-vel-row .vel-img{
+      height: clamp(100px, 26vw, 150px);
+    }
+    .zz-vel-row{ gap: 8px; padding: 4px 0; }
+    /* hide rows 4 & 5 */
+    .zz-vel-row:nth-child(5),
+    .zz-vel-row:nth-child(6){ display: none; }
+    .zz-velocity::before,
+    .zz-velocity::after{ height: 40px; }
+    .zz-vel-label{
+      font-size: clamp(36px, 12vw, 64px);
+    }
+    /* disable hover scale on touch — causes layout jank */
+    .zz-vel-row .vel-img:hover{
+      transform: none !important;
+      box-shadow: none;
+    }
+  }
+
+  /* ----- Small phone (≤480px): 3 rows, compact ----- */
+  @media (max-width: 480px){
+    .zz-vel-row .vel-img{
+      height: clamp(80px, 24vw, 120px);
+    }
+    .zz-vel-row{ gap: 6px; padding: 3px 0; }
+    .zz-velocity::before,
+    .zz-velocity::after{ height: 28px; }
+    .zz-vel-label{
+      font-size: clamp(28px, 10vw, 48px);
+      opacity: .08;
+    }
+  }
+
+  /* Reduced motion: stop auto-scroll, show static grid */
+  @media (prefers-reduced-motion: reduce){
+    .zz-vel-row{
+      animation: none !important;
+      transform: none !important;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px var(--p-pad);
+    }
+    .zz-vel-row .vel-img{
+      height: 140px;
+    }
+  }
+
+  /* =====================================================================
      GALLERY (cream)
      ===================================================================== */
   .zz-paper{
@@ -1691,6 +1826,16 @@
   </div>
 </div>
 
+<!-- ===== VELOCITY GALLERY — scroll-reactive horizontal rows ===== -->
+<section class="zz-velocity" id="zzVelocity">
+  <div class="zz-vel-label" aria-hidden="true">PARASITE</div>
+  <div class="zz-vel-row" id="velRow0"></div>
+  <div class="zz-vel-row" id="velRow1"></div>
+  <div class="zz-vel-row" id="velRow2"></div>
+  <div class="zz-vel-row" id="velRow3"></div>
+  <div class="zz-vel-row" id="velRow4"></div>
+</section>
+
 <!-- ===== GALLERY ===== -->
 <section class="zz-paper" id="works">
 
@@ -1819,13 +1964,176 @@
 
 <script>
   // =====================================================================
+  // VELOCITY GALLERY — scroll-reactive horizontal image rows
+  // Responsive: skips CSS-hidden rows, supports touch velocity
+  // =====================================================================
+  (function(){
+    const IMAGES = [
+      'Para015.png','Obelix.jpg','Para013.png','Para010.png','Para014.jpg',
+      'Para06.jpg','Para01.jpg','Para02.png','Para03.jpg','Para07.png',
+      'Para09.jpg','Para05.jpg','Para011.jpg','Para08.png',
+      'Illustration_Project-color.jpg','Manga_Illustration_EVE.png',
+      'Panda.png','Sunset-mood.png','Unbenanntes_Projekt 2.png','ProjectEvE_three.png',
+      'BnS_LiteEve.png','Cables.png','Characterdesign001.png','Characterdesign003.png',
+      'EVE_awakend.png','Eve_illustration.png','Lighting_lessons.png',
+      'Mini-Mizoah-and-cats.png','Professors-little-evie_.png','Sketch.png','Sleepy.png'
+    ];
+
+    const ROW_COUNT = 5;
+    const IMAGES_PER_ROW = 10;
+    const rows = [];
+
+    // Distribute images across rows, cycling if needed
+    for (let r = 0; r < ROW_COUNT; r++){
+      const rowEl = document.getElementById('velRow' + r);
+      const rowImages = [];
+      for (let i = 0; i < IMAGES_PER_ROW; i++){
+        rowImages.push(IMAGES[(r * IMAGES_PER_ROW + i) % IMAGES.length]);
+      }
+      const makeItems = (imgs) => imgs.map(name =>
+        `<div class="vel-img" data-src="${name}" style="cursor:zoom-in"><img src="../img/Para/${name}" alt="" loading="lazy"></div>`
+      ).join('');
+      rowEl.innerHTML = makeItems(rowImages) + makeItems(rowImages);
+      rows.push({
+        el: rowEl,
+        direction: r % 2 === 0 ? -1 : 1,
+        baseSpeed: 0.3 + (r % 3) * 0.12,
+        x: 0,
+        width: 0
+      });
+    }
+
+    // Measure half-width (one set of images) for seamless wrapping
+    function measureRows(){
+      rows.forEach(row => {
+        // Only measure visible rows
+        if (row.el.offsetParent !== null || getComputedStyle(row.el).display !== 'none'){
+          row.width = row.el.scrollWidth / 2;
+        }
+      });
+    }
+    measureRows();
+
+    // Re-measure on resize (debounced)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(measureRows, 200);
+    });
+
+    // ----- Scroll velocity tracking (mouse wheel / desktop) -----
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+
+    window.addEventListener('scroll', () => {
+      const newScrollY = window.scrollY;
+      scrollVelocity = newScrollY - lastScrollY;
+      lastScrollY = newScrollY;
+    }, { passive: true });
+
+    // ----- Touch velocity tracking (mobile swipe) -----
+    let touchStartY = 0;
+    let touchVelocity = 0;
+    let lastTouchY = 0;
+    let lastTouchTime = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      touchStartY = t.clientY;
+      lastTouchY = t.clientY;
+      lastTouchTime = performance.now();
+      touchVelocity = 0;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      const now = performance.now();
+      const dt = now - lastTouchTime;
+      if (dt > 0){
+        touchVelocity = (lastTouchY - t.clientY) / (dt / 16); // normalise to ~frame
+      }
+      lastTouchY = t.clientY;
+      lastTouchTime = now;
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      // touchVelocity decays naturally in the animation loop
+    }, { passive: true });
+
+    // ----- Reduced motion check -----
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ----- Animation loop -----
+    function tick(){
+      if (prefersReduced){ return; } // stop loop entirely
+
+      // Combine scroll + touch velocities, decay smoothly
+      scrollVelocity *= 0.92;
+      touchVelocity *= 0.90;
+      const combinedVelocity = scrollVelocity + touchVelocity;
+
+      rows.forEach(row => {
+        // Skip CSS-hidden rows
+        if (getComputedStyle(row.el).display === 'none') return;
+        if (row.width <= 0) return;
+
+        const velocityBoost = combinedVelocity * 0.35;
+        const speed = (row.baseSpeed + Math.abs(velocityBoost) * 0.08) * row.direction;
+        const directedBoost = velocityBoost * row.direction * 0.15;
+
+        row.x += speed + directedBoost;
+
+        // Seamless wrap in both directions
+        if (row.x <= -row.width) row.x += row.width;
+        if (row.x > 0) row.x -= row.width;
+
+        row.el.style.transform = 'translate3d(' + row.x.toFixed(1) + 'px, 0, 0)';
+      });
+
+      requestAnimationFrame(tick);
+    }
+
+    // Initialize starting positions (stagger rows)
+    rows.forEach((row, i) => {
+      if (row.direction < 0){
+        row.x = -(Math.random() * row.width * 0.5);
+      } else {
+        row.x = -(row.width * 0.5 + Math.random() * row.width * 0.3);
+      }
+    });
+
+    // Click handler — open lightbox for clicked image
+    const velSection = document.getElementById('zzVelocity');
+    velSection.addEventListener('click', (e) => {
+      const velImg = e.target.closest('.vel-img');
+      if (!velImg) return;
+      const src = velImg.getAttribute('data-src');
+      if (!src) return;
+      if (window._openLbDirect){
+        window._openLbDirect(src);
+      } else {
+        requestAnimationFrame(() => {
+          if (window._openLbDirect) window._openLbDirect(src);
+        });
+      }
+    });
+
+    if (!prefersReduced) tick();
+  })();
+</script>
+
+<script>
+  // =====================================================================
   // MASONRY GALLERY — random order
   // =====================================================================
   const galleryImages = [
     'Para015.png','Obelix.jpg','Para013.png','Para010.png','Para014.jpg',
     'Para06.jpg','Para01.jpg','Para02.png','Para03.jpg','Para07.png',
     'Para09.jpg','Para05.jpg','Para011.jpg','Para08.png','Illustration_Project-color.jpg',
-    'Manga_Illustration_EVE.png','Panda.png','Sunset-mood.png','Unbenanntes_Projekt 2.png','ProjectEvE_three.png'
+    'Manga_Illustration_EVE.png','Panda.png','Sunset-mood.png','Unbenanntes_Projekt 2.png','ProjectEvE_three.png',
+    'BnS_LiteEve.png','Cables.png','Characterdesign001.png','Characterdesign003.png',
+    'EVE_awakend.png','Eve_illustration.png','Lighting_lessons.png',
+    'Mini-Mizoah-and-cats.png','Professors-little-evie_.png','Sketch.png','Sleepy.png'
   ];
   for (let i = galleryImages.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -1850,15 +2158,46 @@
   const lbCount  = document.getElementById('zzLbCounter');
 
   let currentIdx = 0;
+  let lbMode = 'masonry'; // 'masonry' or 'velocity'
+  let lbVelSrc = '';
 
   function openLb(idx){
+    lbMode = 'masonry';
     currentIdx = idx;
     lbImg.src = `../img/Para/${galleryImages[idx]}`;
     lbCount.textContent = `${String(idx + 1).padStart(2,'0')} / ${String(galleryImages.length).padStart(2,'0')}`;
+    lbPrev.style.display = '';
+    lbNext.style.display = '';
+    lbCount.style.display = '';
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden','false');
     document.body.classList.add('lightbox-open');
   }
+
+  // Open lightbox directly with a filename (used by velocity gallery)
+  function openLbDirect(filename){
+    lbMode = 'velocity';
+    lbVelSrc = filename;
+    // Find index in galleryImages if possible, for prev/next
+    const idx = galleryImages.indexOf(filename);
+    if (idx !== -1){
+      currentIdx = idx;
+      lbMode = 'masonry'; // use masonry nav if image is in array
+    }
+    lbImg.src = `../img/Para/${filename}`;
+    lbCount.textContent = lbMode === 'masonry'
+      ? `${String(currentIdx + 1).padStart(2,'0')} / ${String(galleryImages.length).padStart(2,'0')}`
+      : '';
+    // Show/hide nav arrows based on mode
+    lbPrev.style.display = lbMode === 'masonry' ? '' : 'none';
+    lbNext.style.display = lbMode === 'masonry' ? '' : 'none';
+    lbCount.style.display = lbMode === 'masonry' ? '' : 'none';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden','false');
+    document.body.classList.add('lightbox-open');
+  }
+  // Expose for velocity gallery
+  window._openLbDirect = openLbDirect;
   function closeLb(){
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden','true');
