@@ -60,7 +60,7 @@
 <main>
 
   <section class="project-hero">
-    <video class="bg-video" autoplay muted loop playsinline poster="../img/LG-UltraGear-LoL-edition-27GR95QL.jpg">
+    <video class="bg-video" autoplay muted loop playsinline poster="../img/Puma-porsche-vexx3.png">
       <source src="../img/porsche_puma_gamescom_56b0a9bb49.mp4" type="video/mp4">
     </video>
     <div class="bg-overlay"></div>
@@ -169,22 +169,5 @@
 </main>
 
 <script src="../assets/js/site.js"></script>
-<script>
-(function(){
-  var burger = document.getElementById("burger");
-  var menu   = document.getElementById("navMobile");
-  if (!burger || !menu) return;
-  burger.addEventListener("click", function(){
-    var open = menu.classList.toggle("is-open");
-    burger.setAttribute("aria-expanded", open);
-  });
-  menu.querySelectorAll("a").forEach(function(a){
-    a.addEventListener("click", function(){
-      menu.classList.remove("is-open");
-      burger.setAttribute("aria-expanded", "false");
-    });
-  });
-})();
-</script>
 </body>
 </html>
