@@ -123,6 +123,296 @@
     opacity: 1;
     transform: scale(1.05);
   }
+
+  /* ═══════════════════════════════════════════════════════════════
+     GALLERY GRID — uses site design system (.card / .sec-head style)
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Grid — same padding as .work via site vars */
+  .ssg-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 340px;
+    grid-auto-flow: dense;
+    gap: 6px;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+  /* Bento spans */
+  .ssg-grid .ssg-item:nth-child(1){ grid-column: span 2; grid-row: span 2; }
+  .ssg-grid .ssg-item:nth-child(4){ grid-column: span 2; }
+  .ssg-grid .ssg-item:nth-child(7){ grid-column: span 2; }
+
+  @media (max-width: 1024px){
+    .ssg-grid{ grid-template-columns: repeat(2, 1fr); grid-auto-rows: 260px; }
+    .ssg-grid .ssg-item:nth-child(1){ grid-column: span 2; grid-row: span 1; }
+    .ssg-grid .ssg-item:nth-child(4),
+    .ssg-grid .ssg-item:nth-child(7){ grid-column: span 1; }
+  }
+  @media (max-width: 480px){
+    .ssg-grid{ grid-template-columns: 1fr; grid-auto-rows: 240px; gap: 4px; }
+    .ssg-grid .ssg-item:nth-child(1){ grid-column: span 1; grid-row: span 1; }
+  }
+
+  /* Item — matches .card from work-grid */
+  .ssg-item{
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--surface, #111);
+  }
+  .ssg-item img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .55s cubic-bezier(.25,.46,.45,.94);
+  }
+  .ssg-item:hover img{
+    transform: scale(1.04);
+  }
+
+  /* Info block — mirrors .card .info from work-grid */
+  .ssg-item .info{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 20px 22px;
+    background: linear-gradient(0deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 55%, transparent 100%);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .ssg-item:hover .info{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ssg-item .info .num{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent, #ff4d2d);
+    margin-bottom: 6px;
+  }
+  .ssg-item .info .title{
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(15px, 1.5vw, 20px);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+  }
+  .ssg-item .info .meta{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .04em;
+    color: rgba(255,255,255,.5);
+    margin-top: 5px;
+  }
+
+  /* Reveal animation */
+  .ssg-item{
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .7s cubic-bezier(.2,.7,.2,1),
+                transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .ssg-item.is-visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── LIGHTBOX ── */
+  .ssg-lightbox{
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s cubic-bezier(.22,1,.36,1);
+  }
+  .ssg-lightbox.open{
+    opacity: 1;
+    pointer-events: all;
+  }
+  .ssg-lb-backdrop{
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .ssg-lb-content{
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 0;
+    max-width: 1200px;
+    width: 92vw;
+    max-height: 88vh;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-2, #141414);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 40px 100px rgba(0,0,0,.6);
+    transform: scale(.92) translateY(30px);
+    transition: transform .5s cubic-bezier(.22,1,.36,1);
+  }
+  .ssg-lightbox.open .ssg-lb-content{
+    transform: scale(1) translateY(0);
+  }
+  @media (max-width: 860px){
+    .ssg-lb-content{
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+      max-height: 92vh;
+    }
+  }
+
+  .ssg-lb-close{
+    position: absolute;
+    top: 16px; right: 16px;
+    z-index: 5;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(0,0,0,.5);
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background .2s, border-color .2s, transform .2s;
+    backdrop-filter: blur(8px);
+  }
+  .ssg-lb-close:hover{
+    background: var(--accent, #ff4d2d);
+    border-color: var(--accent, #ff4d2d);
+    transform: rotate(90deg);
+  }
+
+  .ssg-lb-img-wrap{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    overflow: hidden;
+    min-height: 300px;
+  }
+  .ssg-lb-img-wrap img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 88vh;
+  }
+
+  /* Info panel */
+  .ssg-lb-info{
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+    border-left: 1px solid rgba(255,255,255,.06);
+  }
+  @media (max-width: 860px){
+    .ssg-lb-info{
+      border-left: none;
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 24px 20px 28px;
+    }
+  }
+  .ssg-lb-label{
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent, #ff4d2d);
+  }
+  .ssg-lb-title{
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+    color: var(--fg, #f5f5f5);
+    margin: 0;
+  }
+  .ssg-lb-meta{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ssg-lb-meta .row{
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .ssg-lb-meta .row .k{
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted, #8a8a8a);
+    min-width: 60px;
+    flex-shrink: 0;
+  }
+  .ssg-lb-meta .row .v{
+    color: var(--fg-2, #cfcfcf);
+  }
+
+  /* CTA Button */
+  .ssg-lb-cta{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 12px 24px;
+    background: var(--accent, #ff4d2d);
+    color: #fff;
+    border-radius: 999px;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform .25s, box-shadow .25s, background .25s;
+    width: fit-content;
+    position: relative;
+    overflow: hidden;
+  }
+  .ssg-lb-cta::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.2), transparent);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .ssg-lb-cta:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255,77,45,.35);
+  }
+  .ssg-lb-cta:hover::before{
+    opacity: 1;
+  }
+  .ssg-lb-cta svg{
+    transition: transform .3s;
+  }
+  .ssg-lb-cta:hover svg{
+    transform: translate(3px, -3px);
+  }
+
+  body.ssg-lb-open{
+    overflow: hidden;
+  }
 </style>
 </head>
 <body>
@@ -234,6 +524,12 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCROLL SYNC GALLERY — Opener to Works
+       Each column scrolls at different speeds for a cascading effect.
+       Click any image to open the lightbox with project details.
+       ═══════════════════════════════════════════════════════════════ -->
+  <!-- WORK GALLERY -->
   <div class="sec-head" id="work">
     <div class="left">
       <div class="num">03 / WORK</div>
@@ -242,83 +538,108 @@
     <div class="right">2018 — 2026<br>Brand · Campaign · 3D · Editorial</div>
   </div>
 
-  <section class="work">
-    <div class="work-grid">
+  <section class="ssg" id="gallery">
+    <div class="ssg-grid" id="ssgGrid">
 
-      <a class="card reveal" href="projects/projekt1.html">
-        <div class="img" style="background-image:url('img/A-Class_Teaser%20(1).jpg')"></div>
+      <div class="ssg-item" data-project="0">
+        <img src="img/Portfolio_01.png" alt="Mercedes A-Class" loading="lazy">
         <div class="info">
           <div class="num">001 / AUTOMOTIVE</div>
           <div class="title">Mercedes-Benz — A-Class</div>
-          <div class="meta">Art Direction · 3D</div>
+          <div class="meta">Art Direction · 3D · Exhibition</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="projects/projekt5.html">
-        <div class="img" style="background-image:url('img/gallery-Porsche3-1-750x417.jpg')"></div>
+      <div class="ssg-item" data-project="1">
+        <img src="img/Puma-porsche-vexx3.png" alt="Porsche × Puma × VEXX" loading="lazy">
         <div class="info">
           <div class="num">002 / GAMING × AUTO</div>
           <div class="title">Porsche × Puma × VEXX</div>
           <div class="meta">Brand Collab</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="projects/projekt6.html">
-        <div class="img" style="background-image:url('img/17C994_190.jpg')"></div>
+      <div class="ssg-item" data-project="2">
+        <img src="img/18C0280_317.jpg" alt="Mercedes Sprinter" loading="lazy">
         <div class="info">
           <div class="num">003 / AUTOMOTIVE</div>
-          <div class="title">Mercedes Sprinter &amp; Vans</div>
+          <div class="title">Mercedes Sprinter & Vans</div>
           <div class="meta">Campaign · Print</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="projects/projekt7.html">
-        <div class="img" style="background-image:url('img/Projekt010.png')"></div>
+      <div class="ssg-item" data-project="3">
+        <img src="img/Projekt010.png" alt="SAP Animation" loading="lazy">
         <div class="info">
           <div class="num">004 / MOTION</div>
           <div class="title">SAP — Intro Animation</div>
           <div class="meta">Animation · Storyboard</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="projects/projekt3.html">
-        <div class="img" style="background-image:url('img/Projekt02.png')"></div>
+      <div class="ssg-item" data-project="4">
+        <img src="img/Projekt02.png" alt="LVM Larry" loading="lazy">
         <div class="info">
           <div class="num">005 / CHARACTER</div>
           <div class="title">LVM — Larry dein Carry</div>
           <div class="meta">Illustration · Character</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="projects/projekt4.html">
-        <div class="img" style="background-image:url('img/LG-UltraGear-LoL-edition-27GR95QL.jpg')"></div>
+      <div class="ssg-item" data-project="5">
+        <img src="img/LG-UltraGear-LoL-edition-27GR95QL.jpg" alt="LEC × LG Ultragear" loading="lazy">
         <div class="info">
           <div class="num">006 / GAMING</div>
           <div class="title">LEC × LG Ultragear</div>
           <div class="meta">Esports · Launch</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="projects/projekt2.html">
-        <div class="img" style="background-image:url('img/Brausergames.png')"></div>
+      <div class="ssg-item" data-project="6">
+        <img src="img/Brausergames.png" alt="Ahoj Brause" loading="lazy">
         <div class="info">
           <div class="num">007 / GAMING × FMCG</div>
           <div class="title">Ahoj Brause — Brausergames</div>
           <div class="meta">Brand · Game</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="projects/projekt8.html">
-        <div class="img" style="background-image:url('img/IMG_8507.JPG')"></div>
+      <div class="ssg-item" data-project="7">
+        <img src="img/IMG_8507.JPG" alt="Digital & Analog" loading="lazy">
         <div class="info">
           <div class="num">008 / MIXED</div>
-          <div class="title">Digital &amp; Analog</div>
+          <div class="title">Digital & Analog</div>
           <div class="meta">Editorial · Illustration</div>
         </div>
-      </a>
+      </div>
 
     </div>
   </section>
+
+  <!-- LIGHTBOX -->
+  <div class="ssg-lightbox" id="ssgLightbox" aria-hidden="true">
+    <div class="ssg-lb-backdrop"></div>
+    <div class="ssg-lb-content">
+      <button class="ssg-lb-close" aria-label="Close">×</button>
+
+      <div class="ssg-lb-img-wrap">
+        <img id="ssgLbImg" src="" alt="">
+      </div>
+
+      <div class="ssg-lb-info" id="ssgLbInfo">
+        <div class="ssg-lb-label" id="ssgLbLabel"></div>
+        <h3 class="ssg-lb-title" id="ssgLbTitle"></h3>
+        <div class="ssg-lb-meta" id="ssgLbMeta"></div>
+        <a class="ssg-lb-cta" id="ssgLbCta" href="#">
+          <span>View Project</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- END WORK GALLERY -->
+
+  <div style="height: clamp(80px, 10vw, 140px);"></div>
 
   <!-- ENDLESS CLIENT MARQUEE -->
   <section class="clients-marquee" aria-label="Selected clients">
@@ -445,6 +766,178 @@
       burger.setAttribute("aria-expanded", "false");
     });
   });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GALLERY — Script (Lightbox + Reveal)
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  /* ── PROJECT DATA ── */
+  var PROJECTS = [
+    {
+      label: '001 / Exhibition',
+      title: 'Mercedes-Benz A-Class Premiere.',
+      client: 'Daimler · Mercedes-Benz / AMG',
+      year: 'Amsterdam',
+      role: 'Art Direction · 3D · Exhibition',
+      href: 'projects/projekt1.html'
+    },
+    {
+      label: '002 / Gaming × Auto',
+      title: 'Porsche Vision GT by VEXX.',
+      client: 'Porsche · Puma',
+      year: 'Gamescom 2022',
+      role: 'Brand Collab',
+      href: 'projects/projekt5.html'
+    },
+    {
+      label: '003 / Automotive',
+      title: 'Mercedes Sprinter Innovation Campus.',
+      client: 'Daimler · Mercedes-Benz Vans',
+      year: 'Stuttgart 2017',
+      role: 'Art Direction · Animation · Exhibition · Print',
+      href: 'projects/projekt6.html'
+    },
+    {
+      label: '004 / Motion',
+      title: 'SAP — Intro Animation.',
+      client: 'SAP',
+      year: 'A New Perspective',
+      role: 'Animation · Storyboard',
+      href: 'projects/projekt7.html'
+    },
+    {
+      label: '005 / Character',
+      title: 'LVM — Larry dein Carry.',
+      client: 'LVM Versicherung',
+      year: 'LEC Partnership',
+      role: 'Storyboard · Character Design',
+      href: 'projects/projekt3.html'
+    },
+    {
+      label: '006 / Gaming',
+      title: 'LEC × LG Ultragear.',
+      client: 'LG Ultragear · Riot Games · League of Legends',
+      year: '2023 Season Finals',
+      role: 'Esports · Launch',
+      href: 'projects/projekt4.html'
+    },
+    {
+      label: '007 / Twitch',
+      title: 'Ahoj Brause Brausergames.',
+      client: 'Katjes · Ahoj Brause',
+      year: 'Twitch Series',
+      role: 'Art Direction · 3D · Set & Pack',
+      href: 'projects/projekt2.html'
+    },
+    {
+      label: '008 / Mixed Media',
+      title: 'Digital & Analog.',
+      client: 'Generali · Bayer 04 · Mercedes-Benz · KIA',
+      year: '2020 — 2024',
+      role: 'Editorial · Illustration · Layout · Storyboard',
+      href: 'projects/projekt8.html'
+    }
+  ];
+
+  /* ── REVEAL ON SCROLL ── */
+  var items = document.querySelectorAll('.ssg-item');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+    items.forEach(function(item, i){
+      item.style.transitionDelay = (i % 3) * 0.1 + 's';
+      io.observe(item);
+    });
+  } else {
+    items.forEach(function(item){ item.classList.add('is-visible'); });
+  }
+
+  /* ── LIGHTBOX ── */
+  var lightbox = document.getElementById('ssgLightbox');
+  var lbImg    = document.getElementById('ssgLbImg');
+  var lbLabel  = document.getElementById('ssgLbLabel');
+  var lbTitle  = document.getElementById('ssgLbTitle');
+  var lbMeta   = document.getElementById('ssgLbMeta');
+  var lbCta    = document.getElementById('ssgLbCta');
+  var lbClose  = lightbox ? lightbox.querySelector('.ssg-lb-close') : null;
+  var lbBack   = lightbox ? lightbox.querySelector('.ssg-lb-backdrop') : null;
+
+  function openLightbox(item){
+    var idx = parseInt(item.dataset.project);
+    var proj = PROJECTS[idx];
+    if (!proj || !lightbox) return;
+
+    var img = item.querySelector('img');
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+
+    lbLabel.textContent = proj.label;
+    lbTitle.textContent = proj.title;
+
+    lbMeta.innerHTML =
+      '<div class="row"><span class="k">Client</span><span class="v">' + proj.client + '</span></div>' +
+      '<div class="row"><span class="k">Year</span><span class="v">' + proj.year + '</span></div>' +
+      '<div class="row"><span class="k">Role</span><span class="v">' + proj.role + '</span></div>';
+
+    lbCta.href = proj.href;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('ssg-lb-open');
+  }
+
+  function closeLightbox(){
+    if (!lightbox) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('ssg-lb-open');
+  }
+
+  items.forEach(function(item){
+    item.addEventListener('click', function(){ openLightbox(item); });
+  });
+
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lbBack) lbBack.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  /* ── CTA TRANSITION — clean fade out / in ── */
+  if (lbCta){
+    lbCta.addEventListener('click', function(e){
+      e.preventDefault();
+      var href = lbCta.href;
+
+      // Fade out the entire lightbox content smoothly
+      var content = lightbox.querySelector('.ssg-lb-content');
+      if (content) {
+        content.style.transition = 'opacity .5s ease, transform .5s ease';
+        content.style.opacity = '0';
+        content.style.transform = 'scale(0.97)';
+      }
+
+      // After content fades, fade the backdrop to solid black
+      setTimeout(function(){
+        var backdrop = lightbox.querySelector('.ssg-lb-backdrop');
+        if (backdrop) {
+          backdrop.style.transition = 'background .6s ease';
+          backdrop.style.background = 'rgba(0,0,0,1)';
+        }
+      }, 350);
+
+      // Navigate once fully black
+      setTimeout(function(){ window.location.href = href; }, 900);
+    });
+  }
 })();
 </script>
 </body>
