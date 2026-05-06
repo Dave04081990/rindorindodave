@@ -655,6 +655,16 @@
   }
 
   /* ── SMOOTH PAGE TRANSITION ── */
+  function createFade(){
+    var fade = document.createElement('div');
+    fade.className = 'page-transition-fade';
+    fade.style.cssText =
+      'position:fixed;inset:0;z-index:99999;background:#0a0a0a;' +
+      'opacity:0;transition:opacity .55s cubic-bezier(.4,0,.2,1);' +
+      'pointer-events:none;';
+    return fade;
+  }
+
   items.forEach(function(item){
     item.addEventListener('click', function(e){
       // ignore middle/cmd/ctrl clicks (open in new tab)
@@ -662,11 +672,7 @@
       e.preventDefault();
       var href = item.href;
 
-      var fade = document.createElement('div');
-      fade.style.cssText =
-        'position:fixed;inset:0;z-index:99999;background:#0a0a0a;' +
-        'opacity:0;transition:opacity .55s cubic-bezier(.4,0,.2,1);' +
-        'pointer-events:none;';
+      var fade = createFade();
       document.body.appendChild(fade);
 
       requestAnimationFrame(function(){
@@ -675,6 +681,16 @@
 
       setTimeout(function(){ window.location.href = href; }, 600);
     });
+  });
+
+  /* ── BACK-BUTTON / BFCACHE FIX ──
+     When the user navigates back, the browser may restore the page from
+     the back-forward cache with the black fade overlay still in the DOM.
+     We listen for pageshow (fires on both fresh loads and bfcache restores)
+     and remove any leftover fade overlays so the page is visible. */
+  window.addEventListener('pageshow', function(e){
+    var leftovers = document.querySelectorAll('.page-transition-fade');
+    leftovers.forEach(function(el){ el.remove(); });
   });
 })();
 </script>
