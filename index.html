@@ -167,6 +167,104 @@
     }
   }
 
+  /* ===========================================================
+     ABOUT CONTENT — clean left-aligned text, no indentation
+     =========================================================== */
+  .about-content{
+    text-align: left !important;
+  }
+  .about-content p{
+    text-align: left !important;
+    text-indent: 0 !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* ===========================================================
+     ABOUT STATS — proportional numbers filling content width
+     =========================================================== */
+  .about-stats{
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: clamp(16px, 3vw, 32px) !important;
+    width: 100% !important;
+  }
+  .about-stats > div{
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity .8s cubic-bezier(.2,.7,.2,1),
+      transform .9s cubic-bezier(.2,.7,.2,1);
+    will-change: opacity, transform;
+  }
+  .about-stats > div:nth-child(1){ transition-delay: 0s; }
+  .about-stats > div:nth-child(2){ transition-delay: .12s; }
+  .about-stats > div:nth-child(3){ transition-delay: .24s; }
+  .about-stats > div:nth-child(4){ transition-delay: .36s; }
+
+  .about-stats.is-visible > div{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .about-stats .n{
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 800 !important;
+    font-size: clamp(22px, 3.5vw, 48px) !important;
+    line-height: 0.9 !important;
+    letter-spacing: -0.04em !important;
+    white-space: nowrap;
+  }
+  .about-stats .l{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: clamp(9px, 0.9vw, 11px) !important;
+    letter-spacing: .18em !important;
+    text-transform: uppercase;
+    opacity: .55;
+    margin-top: 8px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px){
+    .about-stats{
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: clamp(20px, 5vw, 32px) !important;
+    }
+    .about-stats .n{
+      font-size: clamp(28px, 8vw, 48px) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .about-stats > div{
+      transition: opacity .4s ease;
+      transform: none;
+    }
+  }
+
+  /* Water-ripple: only on .n number elements */
+  .fluid-target{
+    cursor: default;
+    display: inline-block;
+  }
+  .fluid-target .char{
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+  .fluid-target .word{
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .fluid-target .char-space{
+    display: inline-block;
+    width: 0.28em;
+    will-change: transform, opacity;
+  }
+  .fluid-target .char.returning{
+    transition: transform 1.2s cubic-bezier(.05,.7,.2,1),
+                opacity 1s cubic-bezier(.05,.7,.2,1);
+  }
+
   /* View More button */
   .view-more-btn,
   .contact-mail{
@@ -352,6 +450,139 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
+     FAQ SECTION — full width below sec-head, matching site pattern
+     ═══════════════════════════════════════════════════════════════ */
+  /* ═══════════════════════════════════════════════════════════════
+     FAQ — 2-column: heading left sticky, accordion right (OAKSUN)
+     ═══════════════════════════════════════════════════════════════ */
+  .faq-wrap{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0 clamp(40px, 6vw, 100px);
+    width: 100%;
+    padding: 0 clamp(20px, 4vw, 48px) clamp(60px, 8vw, 100px);
+    align-items: start;
+  }
+  .faq-heading{
+    position: sticky;
+    top: clamp(80px, 10vw, 120px);
+    padding-top: 2px;
+  }
+  .faq-heading .num{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--brand-red, #e8281f);
+    margin-bottom: 14px;
+  }
+  .faq-heading h2{
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: clamp(28px, 3.5vw, 52px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--fg, #f5f5f5);
+    margin: 0;
+  }
+  .faq-list{
+    width: 100%;
+  }
+
+  .faq-item{
+    border-top: 1px solid var(--line, #262626);
+  }
+  .faq-item:last-child{
+    border-bottom: 1px solid var(--line, #262626);
+  }
+
+  .faq-question{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: clamp(18px, 2.5vw, 28px) 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--fg, #f5f5f5);
+    transition: color .25s ease;
+  }
+  .faq-question:hover{
+    color: var(--brand-red, #e8281f);
+  }
+
+  .faq-icon{
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    position: relative;
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .faq-icon::before,
+  .faq-icon::after{
+    content: '';
+    position: absolute;
+    background: var(--fg, #f5f5f5);
+    border-radius: 1px;
+    transition: transform .35s cubic-bezier(.4,0,.2,1),
+                background .25s ease;
+  }
+  .faq-icon::before{
+    top: 50%; left: 25%;
+    width: 50%; height: 2px;
+    transform: translateY(-50%);
+  }
+  .faq-icon::after{
+    top: 25%; left: 50%;
+    width: 2px; height: 50%;
+    transform: translateX(-50%);
+  }
+  .faq-question:hover .faq-icon::before,
+  .faq-question:hover .faq-icon::after{
+    background: var(--brand-red, #e8281f);
+  }
+
+  .faq-item.is-open .faq-icon{
+    transform: rotate(45deg);
+  }
+
+  .faq-answer{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s cubic-bezier(.4,0,.2,1),
+                opacity .3s ease;
+    opacity: 0;
+  }
+  .faq-item.is-open .faq-answer{
+    opacity: 1;
+  }
+  .faq-answer-inner{
+    padding: 0 0 clamp(18px, 2.5vw, 28px) 0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: clamp(14px, 1.3vw, 16px);
+    line-height: 1.7;
+    color: var(--fg-2, #999);
+  }
+
+  @media (max-width: 768px){
+    .faq-wrap{
+      grid-template-columns: 1fr;
+      gap: clamp(24px, 4vw, 40px) 0;
+    }
+    .faq-heading{
+      position: static;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
      GALLERY GRID — uses site design system (.card / .sec-head style)
      ═══════════════════════════════════════════════════════════════ */
 
@@ -453,6 +684,89 @@
     transform: translateY(0);
   }
 
+  /* ═══════════════════════════════════════════════════════════════
+     STATEMENT SECTION — "Wissen ist Design" between hero and about
+     ═══════════════════════════════════════════════════════════════ */
+  /* ═══════════════════════════════════════════════════════════════
+     STATEMENT SECTION — OAKSUN-style: left-aligned, full-bleed
+     ═══════════════════════════════════════════════════════════════ */
+  .statement-section{
+    position: relative;
+    width: 100%;
+    min-height: 90vh;
+    padding: clamp(80px, 12vw, 160px) clamp(20px, 4vw, 48px) clamp(60px, 8vw, 100px) 38.2%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  /* Soft brush glow — larger, more intense red */
+  .statement-section .cursor-glow{
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity .5s ease;
+    background: radial-gradient(circle,
+      rgba(232,40,31,.55) 0%,
+      rgba(232,40,31,.25) 30%,
+      rgba(232,40,31,.08) 60%,
+      transparent 75%);
+    filter: blur(45px);
+    z-index: 0;
+  }
+  .statement-section:hover .cursor-glow{
+    opacity: 1;
+  }
+
+  /* The statement text — positioned in golden ratio (bottom-left) */
+  .statement-text{
+    position: relative;
+    z-index: 1;
+    text-align: left;
+    width: 100%;
+    max-width: 720px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: clamp(22px, 3.2vw, 48px);
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--fg, #f5f5f5);
+    user-select: none;
+  }
+  .statement-text em{
+    font-style: normal;
+    color: var(--brand-red, #e8281f);
+  }
+
+  @media (max-width: 768px){
+    .statement-section{
+      min-height: 70vh;
+      padding-left: clamp(20px, 4vw, 48px);
+    }
+    .statement-text{
+      width: 100%;
+    }
+  }
+
+  /* Reveal animation */
+  .statement-text{
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s cubic-bezier(.2,.7,.2,1),
+                transform 1.1s cubic-bezier(.2,.7,.2,1);
+  }
+  .statement-text.is-visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
 </style>
 </head>
 <body>
@@ -523,45 +837,10 @@
     <div class="slider-progress"><div class="bar" id="bar"></div></div>
   </section>
 
-  <div class="sec-head" id="about">
-    <div class="left">
-      <div class="num">02 / ABOUT</div>
-      <h2>About Dave.</h2>
-    </div>
-    <div class="right">Cologne, Germany<br>50° 56' N · 6° 57' E</div>
-  </div>
-
-  <section class="about">
-    <div class="about-img reveal"></div>
-
-    <div class="about-content reveal">
-      <p>
-        I'm <strong>Dave Rindo Rindo</strong> — Art Director with 7+ years across design, illustration
-        and visual brand communication. From gaming and automotive to lifestyle, I craft concepts
-        with a strong sense for brand and audience.
-      </p>
-      <p>
-      After completing my studies in Product Design, I gained over six years of experience in art direction, graphic design, and project management for both national and international clients. My professional journey began at Oliver Schrott Kommunikation (OSK), where I worked, among others, for Daimler/Mercedes. There, I designed trade show and event architectures, illustrated storyboards, and produced high-quality renderings.
-      </p>
-      <p>
-        Before my sabbatical in 2024, I worked at <strong>Build a Rocket</strong> on campaigns for
-        KitKat, Porsche, LG and SAP. I'm fluent in Adobe CC, Cinema 4D, Blender, Figma and Procreate
-        — and integrate AI tools like ChatGPT, Midjourney and Runway into my workflows.
-      </p>
-
-      <div class="skills">
-        <span>Art Direction</span><span>Illustration</span><span>3D / C4D</span>
-        <span>Blender</span><span>Figma</span><span>Procreate</span>
-        <span>AI Workflows</span><span>Storyboarding</span>
-      </div>
-
-      <div class="about-stats">
-        <div><div class="n">07+</div><div class="l">Years</div></div>
-        <div><div class="n">100+</div><div class="l">Projects</div></div>
-        <div><div class="n">30+</div><div class="l">Clients</div></div>
-        <div><div class="n">20+</div><div class="l">Brands</div></div>
-      </div>
-    </div>
+  <!-- STATEMENT SECTION -->
+  <section class="statement-section" id="statementSection">
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <p class="statement-text fluid-target" id="statementText">Taking your brand to the next level — great design is never just one idea. It's the collision of <em>knowledge,</em> culture, craft and curiosity. <em>Where understanding ends, design begins.</em></p>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════
@@ -572,7 +851,7 @@
   <!-- WORK GALLERY -->
   <div class="sec-head" id="work">
     <div class="left">
-      <div class="num">03 / WORK</div>
+      <div class="num">02 / WORK</div>
       <h2>Selected Work.</h2>
     </div>
     <div class="right">2018 — 2026<br>Brand · Campaign · 3D · Editorial</div>
@@ -659,16 +938,175 @@
 
   <div style="height: clamp(80px, 10vw, 140px);"></div>
 
+  <!-- ABOUT SECTION -->
+  <div class="sec-head" id="about">
+    <div class="left">
+      <div class="num">03 / ABOUT</div>
+      <h2>About Dave.</h2>
+    </div>
+    <div class="right">Cologne, Germany<br>50° 56' N · 6° 57' E</div>
+  </div>
+
+  <section class="about">
+    <div class="about-img reveal"></div>
+
+    <div class="about-content reveal">
+      <p class="fluid-target">👋 Hello, I'm <strong>Dave Rindo Rindo</strong>, a Solo Art Director and Visual Designer with over 7 years of cross-disciplinary experience. I specialize in creating distinctive brand experiences that bridge beautiful concepts with strategic thinking — from automotive and tech to gaming and lifestyle. And yes, you can also catch me on a long hike whenever I leave the studio.</p>
+      <p class="fluid-target">What makes my approach unique is that all the art direction, 3D work, illustration and visual design you see is crafted by me personally. I work independently, taking projects from early sketches all the way through to final delivery — ensuring clients get my complete focus and dedication throughout the entire process. I don't believe in cookie-cutter solutions; every project is tailored to create unique experiences that reflect each client's vision.</p>
+      <p class="fluid-target">My goal? To help clients not just build a brand, but create a presence that stands out, engages their audience and delivers real impact. I focus on one project at a time, collaborating directly with clients to turn ideas into clear, considered work that travels well across every touchpoint.</p>
+
+      <div class="skills">
+        <span>Art Direction</span><span>Illustration</span><span>3D / C4D</span>
+        <span>Blender</span><span>Figma</span><span>Procreate</span>
+        <span>AI Workflows</span><span>Storyboarding</span>
+      </div>
+
+      <div class="about-stats">
+        <div><div class="n fluid-target">07+</div><div class="l">Years</div></div>
+        <div><div class="n fluid-target">100+</div><div class="l">Projects</div></div>
+        <div><div class="n fluid-target">30+</div><div class="l">Clients</div></div>
+        <div><div class="n fluid-target">20+</div><div class="l">Brands</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div style="height: clamp(80px, 10vw, 140px);"></div>
+
   <!-- BRANDS SECTION -->
   <section class="brands-section" id="brandsSection" aria-label="Selected clients">
     <div class="brands-label">Selected Clients</div>
     <div class="brands-row" id="brandsRow"></div>
   </section>
 
+  <div style="height: clamp(80px, 10vw, 140px);"></div>
+
+  <!-- FAQ SECTION -->
+  <div class="faq-wrap" id="faq">
+    <div class="faq-heading">
+      <div class="num">04 / FAQ</div>
+      <h2>Häufig gestellte <span class="accent">Fragen.</span></h2>
+    </div>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Was genau machst du?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Ich bin freiberuflicher Art Director und Visual Designer aus Köln — und ich arbeite nicht für dich, sondern mit dir. Gemeinsam entwickeln wir visuelle Konzepte, Illustrationen, 3D-Visuals und Markenkommunikation, von der ersten Idee bis zum fertigen Artwork. Ob Kampagne, Event, Produktlaunch oder komplette Brand Identity: Wir gestalten zusammen die Visuals, die den Unterschied machen.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>In welchen Branchen hast du gearbeitet?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">In den letzten 7+ Jahren haben wir gemeinsam mit Kunden aus Automotive (Mercedes-Benz, Porsche, Kia), Tech (SAP, LG), FMCG (KitKat, Ahoj Brause), Gaming & Esports sowie Lifestyle gearbeitet. Diese branchenübergreifende Erfahrung hilft uns dabei, uns schnell in jede Markenwelt einzufinden — und die richtigen Fragen zu stellen, bevor wir loslegen.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Wie sieht dein kreativer Prozess aus?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Wir starten gemeinsam mit Briefing und Recherche, gefolgt von Skizzen und Moodboards, die wir zusammen schärfen. Daraus entwickeln wir die visuelle Richtung — ob Storyboards, 3D-Mockups oder Layout-Konzepte. Ich arbeite iterativ und halte dich in jeder Phase mit im Loop, damit wir gemeinsam die beste Lösung finden — ohne Überraschungen.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Wie läuft es mit Revisionen und Feedback?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Ich zeige dir Designs und Prototypen laufend — nicht erst ganz am Ende. In der Regel erarbeiten wir gemeinsam 2–3 Korrekturschleifen, bis wir eine Richtung gefunden haben, hinter der wir beide stehen. Da du direkt mit mir arbeitest, ist unsere Kommunikation unkompliziert und auf Augenhöhe — kein Stille-Post, keine Zwischenstufen.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Wie lange dauert ein typisches Projekt?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Das hängt davon ab, was wir gemeinsam erreichen wollen. Ein fokussiertes Konzept oder Illustrationspaket können wir in 1–2 Wochen umsetzen. Für größere Kampagnen, 3D-Arbeiten oder komplette Brand Identities planen wir gemeinsam 4–8 Wochen ein. Du bekommst von mir vorab einen klaren Zeitplan, damit wir beide wissen, woran wir sind.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Arbeitest du mit Agenturen oder nur Direktkunden?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Beides — und in beiden Fällen arbeiten wir direkt zusammen. Mit Agenturen entwickle ich als eingebetteter Art Director gemeinsam mit den Teams Kampagnen und Pitches. Mit Marken und Startups bauen wir als echte Partner eine gemeinsame visuelle Sprache auf. Keine Übergaben, keine Zwischenstationen — nur wir beide.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Kannst du remote arbeiten?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Auf jeden Fall. Ich sitze in Köln, aber wir können ortsunabhängig zusammenarbeiten — deutschlandweit und international. Unsere Zusammenarbeit läuft über Slack, Figma, Google Meet oder was auch immer für dein Team am besten funktioniert. Bei größeren Projekten oder Kick-offs komme ich auch gerne persönlich vorbei.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Wie wichtig ist UI/UX in deinem Designprozess?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Extrem wichtig — und das merken wir schon im ersten Gespräch. Design und User Experience sind das, worüber wir gemeinsam am meisten nachdenken. Jede Animation, jede Interaktion, jedes Layout entscheiden wir bewusst — immer mit dem Ziel, das Erlebnis für deine Nutzer besser zu machen. Mein Hintergrund in Produktdesign und 3D hilft uns dabei, in Räumen, Flows und Nutzerbewegungen zu denken.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Kannst du auch vor Ort arbeiten?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Ja, absolut. Auch wenn wir vieles remote erledigen können, bin ich gerne persönlich dabei — bei Kick-offs, Pitches, Shootings oder kreativen Workshops. Ich bin mobil und komme zu dir, egal ob in Köln, im Rest Deutschlands oder auch international. Gemeinsam vor Ort entstehen oft die besten Ideen.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Wie sieht dein Arbeitsalltag aus?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Kein Tag ist wie der andere — und genau das macht gutes Design aus. Morgens starte ich mit einem klaren Kopf in konzeptionelle Arbeit: Skizzen, Moodboards, strategisches Denken. Nachmittags geht es ins Doing — 3D, Illustration, Layout, Bewegtbild. Dazwischen: enge Abstimmung mit dir, schnelles Feedback, iteratives Weiterentwickeln. Ich arbeite fokussiert, aber nie in einer Blase — dein Input ist fester Bestandteil meines Alltags.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Wie stellst du sicher, dass das Ergebnis zu meiner Marke passt?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Indem wir von Anfang an gemeinsam zuhören — deiner Marke, deiner Zielgruppe und dem, was du noch nicht ausgesprochen hast. Ich nehme mir bewusst Zeit, deine Welt zu verstehen, bevor ich anfange zu gestalten. Gutes Design entsteht nicht aus dem Nichts, sondern aus dem Zusammenspiel von Wissen, Kultur, Handwerk und Neugier. Wissen ist Design — und das spürst du im Ergebnis.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
   <section class="contact" id="contact">
     <div class="contact-inner">
       <div>
-        <div class="num">04 / CONTACT</div>
+        <div class="num">05 / CONTACT</div>
         <h2>Got a brief?<br>Let's <span class="accent">talk.</span></h2>
       </div>
       <div class="contact-right">
@@ -995,6 +1433,217 @@
     });
   }, { threshold: 0.1 });
   io.observe(section);
+})();
+</script>
+
+<!-- FAQ ACCORDION -->
+<script>
+(function(){
+  var items = document.querySelectorAll('.faq-item');
+  if (!items.length) return;
+
+  items.forEach(function(item){
+    var btn = item.querySelector('.faq-question');
+    var answer = item.querySelector('.faq-answer');
+    if (!btn || !answer) return;
+
+    btn.addEventListener('click', function(){
+      var isOpen = item.classList.contains('is-open');
+
+      // Close all others
+      items.forEach(function(other){
+        if (other !== item && other.classList.contains('is-open')){
+          other.classList.remove('is-open');
+          other.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+          other.querySelector('.faq-answer').style.maxHeight = '0';
+        }
+      });
+
+      // Toggle this one
+      if (isOpen){
+        item.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        answer.style.maxHeight = '0';
+      } else {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+</script>
+<!-- WATER RIPPLE — per-character displacement on stat numbers only -->
+<script>
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if ('ontouchstart' in window) return;
+
+  var RADIUS = 120;
+  var STRENGTH = 18;
+  var FLUTTER = 6;
+  var EASE = 0.06;
+
+  var targets = document.querySelectorAll('.about-stats .fluid-target, .about-content .fluid-target, .statement-text.fluid-target');
+  if (!targets.length) return;
+
+  function makeCharSpan(ch){
+    var span = document.createElement('span');
+    if (ch === ' '){
+      span.className = 'char char-space';
+      span.textContent = '\u00A0';
+    } else {
+      span.className = 'char';
+      span.textContent = ch;
+    }
+    return span;
+  }
+
+  function splitTextToWordSpans(text){
+    // Returns array of nodes: words (as .word spans containing .char children) and spaces (as .char-space chars)
+    var nodes = [];
+    var words = text.split(/(\s+)/); // keep separators
+    words.forEach(function(part){
+      if (!part) return;
+      if (/^\s+$/.test(part)){
+        // One char-space per space (collapse multiple)
+        nodes.push(makeCharSpan(' '));
+      } else {
+        var word = document.createElement('span');
+        word.className = 'word';
+        for (var i = 0; i < part.length; i++){
+          word.appendChild(makeCharSpan(part[i]));
+        }
+        nodes.push(word);
+      }
+    });
+    return nodes;
+  }
+
+  function splitChars(el){
+    if (el._charsSplit) return;
+    if (el.children.length === 0){
+      var text = el.textContent.trim().replace(/\s+/g, ' ');
+      el.textContent = '';
+      splitTextToWordSpans(text).forEach(function(n){ el.appendChild(n); });
+    } else {
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+      var textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      textNodes.forEach(function(node){
+        var raw = node.nodeValue;
+        if (!raw.trim()) return;
+        var text = raw.replace(/\s+/g, ' ');
+        var frag = document.createDocumentFragment();
+        splitTextToWordSpans(text).forEach(function(n){ frag.appendChild(n); });
+        node.parentNode.replaceChild(frag, node);
+      });
+    }
+    el._charsSplit = true;
+  }
+
+  targets.forEach(splitChars);
+
+  var allChars = [];
+  targets.forEach(function(el){
+    el.querySelectorAll('.char').forEach(function(c, idx){
+      allChars.push({ el: c, cx: 0, cy: 0, tx: 0, ty: 0, rot: 0, tRot: 0, op: 1, tOp: 1, phase: idx * 0.4 + Math.random() * 2, active: false });
+    });
+  });
+
+  var mouseX = -9999, mouseY = -9999;
+  var rafId = null, isActive = false, time = 0;
+
+  function onMove(e){ mouseX = e.clientX; mouseY = e.clientY; if (!isActive){ isActive = true; rafId = requestAnimationFrame(update); } }
+
+  function update(){
+    time += 0.035;
+    var anyActive = false;
+    for (var i = 0; i < allChars.length; i++){
+      var o = allChars[i];
+      var rect = o.el.getBoundingClientRect();
+      var charX = rect.left + rect.width / 2;
+      var charY = rect.top + rect.height / 2;
+      var dx = charX - mouseX, dy = charY - mouseY;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < RADIUS){
+        var t = dist / RADIUS;
+        var force = (1 - t * t) * STRENGTH;
+        var angle = Math.atan2(dy, dx);
+        var flutter = FLUTTER * (1 - t);
+        o.tx = Math.cos(angle) * force + Math.sin(time + o.phase) * flutter;
+        o.ty = Math.sin(angle) * force + Math.cos(time * 0.8 + o.phase * 1.3) * flutter;
+        o.tRot = Math.sin(time + o.phase * 0.7) * 6 * (1 - t);
+        o.tOp = 0.55 + t * 0.45;
+        o.active = true;
+        o.el.classList.remove('returning');
+      } else {
+        o.tx = 0; o.ty = 0; o.tRot = 0; o.tOp = 1;
+      }
+
+      o.cx += (o.tx - o.cx) * EASE;
+      o.cy += (o.ty - o.cy) * EASE;
+      o.rot += (o.tRot - o.rot) * EASE;
+      o.op += (o.tOp - o.op) * EASE;
+
+      var settled = Math.abs(o.cx) < 0.3 && Math.abs(o.cy) < 0.3 && Math.abs(o.rot) < 0.3 && Math.abs(o.op - 1) < 0.01;
+
+      if (!settled){
+        o.el.style.transform = 'translate(' + o.cx.toFixed(1) + 'px,' + o.cy.toFixed(1) + 'px) rotate(' + o.rot.toFixed(1) + 'deg)';
+        o.el.style.opacity = o.op.toFixed(2);
+        anyActive = true;
+      } else if (o.active){
+        o.cx = 0; o.cy = 0; o.rot = 0; o.op = 1; o.active = false;
+        o.el.classList.add('returning');
+        o.el.style.transform = '';
+        o.el.style.opacity = '';
+      }
+    }
+    if (anyActive){ rafId = requestAnimationFrame(update); } else { isActive = false; }
+  }
+
+  var trackSections = document.querySelectorAll('.about, .statement-section');
+  if (!trackSections.length) return;
+
+  trackSections.forEach(function(sec){
+    sec.addEventListener('mouseenter', function(){
+      document.addEventListener('mousemove', onMove);
+    });
+    sec.addEventListener('mouseleave', function(){
+      document.removeEventListener('mousemove', onMove);
+      mouseX = -9999; mouseY = -9999;
+      if (!isActive){ isActive = true; rafId = requestAnimationFrame(update); }
+    });
+  });
+})();
+</script>
+<!-- STATEMENT SECTION — cursor glow + scroll reveal -->
+<script>
+(function(){
+  var section = document.getElementById('statementSection');
+  var glow    = document.getElementById('cursorGlow');
+  var text    = document.getElementById('statementText');
+  if (!section || !glow || !text) return;
+
+  // Cursor glow follows mouse
+  section.addEventListener('mousemove', function(e){
+    var r = section.getBoundingClientRect();
+    glow.style.left = (e.clientX - r.left) + 'px';
+    glow.style.top  = (e.clientY - r.top)  + 'px';
+  });
+
+  // Scroll reveal
+  if (!('IntersectionObserver' in window)){
+    text.classList.add('is-visible');
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ text.classList.add('is-visible'); io.unobserve(text); }
+    });
+  }, { threshold: 0.2 });
+  io.observe(text);
 })();
 </script>
 </html>
