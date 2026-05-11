@@ -167,31 +167,188 @@
     }
   }
 
-  /* Client marquee: grayscale by default, full color on hover */
-  .clients-marquee{
+  /* View More button */
+  .view-more-btn,
+  .contact-mail{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: clamp(24px, 3vw, 36px);
+    padding: 14px 32px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid var(--brand-red, #e8281f);
+    border-radius: 999px;
+    background: var(--brand-red, #e8281f);
+    transition: border-color .3s, color .3s, transform .3s, background .3s, box-shadow .3s;
+  }
+  .view-more-btn:hover,
+  .contact-mail:hover{
+    background: transparent;
+    color: var(--brand-red, #e8281f);
+    border-color: var(--brand-red, #e8281f);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(232, 40, 31, .2);
+  }
+  .contact-mail .ico{
+    display: inline-flex;
+    align-items: center;
+  }
+  .contact-mail .ico svg{
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+    transition: transform .3s;
+  }
+  .contact-mail:hover .ico svg{
+    transform: translateX(2px);
+  }
+  .view-more-btn svg{
+    transition: transform .25s;
+  }
+  .view-more-btn:hover svg{
+    transform: translate(2px, -2px);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     BRANDS SECTION — single row, 6 visible, left→right swap
+     ═══════════════════════════════════════════════════════════════ */
+  .brands-section{
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     width: 100%;
+    padding: clamp(60px, 8vw, 120px) 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .9s cubic-bezier(.2,.7,.2,1),
+                transform 1s cubic-bezier(.2,.7,.2,1);
   }
-  .clients-marquee .label{
-    text-align: center;
-    width: 100%;
+  .brands-section.is-visible{
+    opacity: 1;
+    transform: translateY(0);
   }
-  .clients-marquee .marquee-track{
-    margin: 0 auto;
+
+  /* Label — matches .num from sec-head */
+  .brands-label{
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--brand-red, #e8281f);
+    margin-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  /* Single row of 7 logos */
+  .brands-row{
+    display: flex;
+    align-items: center;
     justify-content: center;
+    gap: clamp(32px, 5vw, 72px);
+    width: 100%;
+    max-width: 1300px;
+    padding: 0 clamp(20px, 4vw, 48px);
   }
-  .clients-marquee .marquee-track img{
-    filter: grayscale(100%) contrast(0.9);
-    opacity: 0.65;
-    transition: filter .35s ease, opacity .35s ease, transform .35s ease;
+
+  /* Each slot is a container for the swap animation */
+  .brands-slot{
+    position: relative;
+    width: clamp(64px, 9vw, 120px);
+    height: clamp(36px, 4.5vw, 52px);
+    overflow: hidden;
+    flex-shrink: 0;
   }
-  .clients-marquee .marquee-track img:hover{
+  .brands-slot img{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%) contrast(0.8);
+    opacity: 0.5;
+  }
+  .brands-slot img:not([class*="swap-"]){
+    transition: filter .4s ease, opacity .4s ease;
+  }
+  .brands-slot img:not([class*="swap-"]):hover{
     filter: grayscale(0%) contrast(1);
     opacity: 1;
-    transform: scale(1.05);
+  }
+  /* New images start fully hidden until animation kicks in */
+  .brands-slot img[class*="swap-in"]{
+    opacity: 0;
+  }
+
+  /* Swap animations — 4 directions */
+  @keyframes swapOutLeft{
+    0%{ transform: translateX(0); opacity: 0.5; }
+    100%{ transform: translateX(-110%); opacity: 0; }
+  }
+  @keyframes swapInLeft{
+    0%{ transform: translateX(110%); opacity: 0; }
+    100%{ transform: translateX(0); opacity: 0.5; }
+  }
+  @keyframes swapOutRight{
+    0%{ transform: translateX(0); opacity: 0.5; }
+    100%{ transform: translateX(110%); opacity: 0; }
+  }
+  @keyframes swapInRight{
+    0%{ transform: translateX(-110%); opacity: 0; }
+    100%{ transform: translateX(0); opacity: 0.5; }
+  }
+  @keyframes swapOutUp{
+    0%{ transform: translateY(0); opacity: 0.5; }
+    100%{ transform: translateY(-120%); opacity: 0; }
+  }
+  @keyframes swapInUp{
+    0%{ transform: translateY(120%); opacity: 0; }
+    100%{ transform: translateY(0); opacity: 0.5; }
+  }
+  @keyframes swapOutDown{
+    0%{ transform: translateY(0); opacity: 0.5; }
+    100%{ transform: translateY(120%); opacity: 0; }
+  }
+  @keyframes swapInDown{
+    0%{ transform: translateY(-120%); opacity: 0; }
+    100%{ transform: translateY(0); opacity: 0.5; }
+  }
+
+  .brands-slot img.swap-out-left  { animation: swapOutLeft  .45s cubic-bezier(.4,0,.2,1) forwards; }
+  .brands-slot img.swap-in-left   { animation: swapInLeft   .45s cubic-bezier(.4,0,.2,1) forwards; }
+  .brands-slot img.swap-out-right { animation: swapOutRight .45s cubic-bezier(.4,0,.2,1) forwards; }
+  .brands-slot img.swap-in-right  { animation: swapInRight  .45s cubic-bezier(.4,0,.2,1) forwards; }
+  .brands-slot img.swap-out-up    { animation: swapOutUp    .45s cubic-bezier(.4,0,.2,1) forwards; }
+  .brands-slot img.swap-in-up     { animation: swapInUp     .45s cubic-bezier(.4,0,.2,1) forwards; }
+  .brands-slot img.swap-out-down  { animation: swapOutDown  .45s cubic-bezier(.4,0,.2,1) forwards; }
+  .brands-slot img.swap-in-down   { animation: swapInDown   .45s cubic-bezier(.4,0,.2,1) forwards; }
+
+  /* Responsive: fewer logos on small screens */
+  @media (max-width: 1024px){
+    .brands-slot:nth-child(7){ display: none; }
+  }
+  @media (max-width: 900px){
+    .brands-slot:nth-child(6){ display: none; }
+  }
+  @media (max-width: 640px){
+    .brands-row{ gap: clamp(20px, 4vw, 36px); }
+    .brands-slot:nth-child(5){ display: none; }
+  }
+  @media (max-width: 480px){
+    .brands-slot:nth-child(4){ display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .brands-slot img{ animation: none !important; }
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -218,7 +375,7 @@
     .ssg-grid .ssg-item:nth-child(4),
     .ssg-grid .ssg-item:nth-child(7){ grid-column: span 1; }
   }
-  @media (max-width: 480px){
+  @media (max-width: 640px){
     .ssg-grid{ grid-template-columns: 1fr; grid-auto-rows: 240px; gap: 4px; }
     .ssg-grid .ssg-item:nth-child(1){ grid-column: span 1; grid-row: span 1; }
   }
@@ -502,10 +659,10 @@
 
   <div style="height: clamp(80px, 10vw, 140px);"></div>
 
-  <!-- ENDLESS CLIENT MARQUEE -->
-  <section class="clients-marquee" aria-label="Selected clients">
-    <div class="label">Trusted by</div>
-    <div class="marquee-track" id="marqueeTrack"></div>
+  <!-- BRANDS SECTION -->
+  <section class="brands-section" id="brandsSection" aria-label="Selected clients">
+    <div class="brands-label">Selected Clients</div>
+    <div class="brands-row" id="brandsRow"></div>
   </section>
 
   <section class="contact" id="contact">
@@ -521,7 +678,7 @@
         </p>
         <a class="contact-mail" href="mailto:daverindorindo@googlemail.com">
           <span class="ico"><svg><use href="#i-mail"/></svg></span>
-          <span>daverindorindo@googlemail.com</span>
+          <strong>Let's work!</strong>
         </a>
       </div>
     </div>
@@ -695,5 +852,149 @@
 })();
 </script>
 
-</body>
+<!-- ═══════════════════════════════════════════════════════════════
+     BRANDS — Single row, 5 visible, random directional swap, no dupes
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var allLogos = window.CLIENT_LOGOS || [];
+  if (allLogos.length < 8) return; // need more than 7 to swap
+
+  var VISIBLE = 7;
+  var SWAP_INTERVAL = 1200;   // ms between swap rounds
+  var ANIM_DURATION = 450;    // ms — matches CSS .45s
+  var directions = ['left','right','up','down'];
+
+  var row = document.getElementById('brandsRow');
+  if (!row) return;
+
+  // Shuffle helper (Fisher-Yates)
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  // State: which logo indices are currently visible, which are in the queue
+  var shuffled = shuffle(allLogos.map(function(_,i){ return i; }));
+  var visibleIndices = shuffled.slice(0, VISIBLE);
+  var queueIndices   = shuffled.slice(VISIBLE);
+
+  // Build 7 slots
+  var slots = [];
+  for (var i = 0; i < VISIBLE; i++){
+    var slot = document.createElement('div');
+    slot.className = 'brands-slot';
+
+    var img = document.createElement('img');
+    var logo = allLogos[visibleIndices[i]];
+    img.src = logo.src;
+    img.alt = logo.alt;
+    img.draggable = false;
+    slot.appendChild(img);
+    row.appendChild(slot);
+    slots.push(slot);
+  }
+
+  var slotBusy = []; // per-slot lock
+  for (var j = 0; j < VISIBLE; j++) slotBusy.push(false);
+
+  function swapSlot(slotIdx){
+    if (slotBusy[slotIdx]) return;
+    if (queueIndices.length === 0) return;
+    slotBusy[slotIdx] = true;
+
+    // Get the next logo from queue
+    var newLogoIdx = queueIndices.shift();
+    // Return the old one to the back of the queue
+    queueIndices.push(visibleIndices[slotIdx]);
+    visibleIndices[slotIdx] = newLogoIdx;
+
+    var slot = slots[slotIdx];
+    var oldImg = slot.querySelector('img:not([class*="swap-"])') || slot.querySelector('img');
+    var newLogo = allLogos[newLogoIdx];
+
+    // Create new image element
+    var newImg = document.createElement('img');
+    newImg.src = newLogo.src;
+    newImg.alt = newLogo.alt;
+    newImg.draggable = false;
+
+    // Pick random direction
+    var dir = directions[Math.floor(Math.random() * directions.length)];
+
+    // Animate: old exits, new enters from opposite side
+    oldImg.className = 'swap-out-' + dir;
+    newImg.className = 'swap-in-' + dir;
+    slot.appendChild(newImg);
+
+    // After animation completes, clean up
+    setTimeout(function(){
+      if (oldImg.parentNode) oldImg.parentNode.removeChild(oldImg);
+      newImg.className = '';
+      slotBusy[slotIdx] = false;
+    }, ANIM_DURATION + 50);
+  }
+
+  function doSwap(){
+    // Randomly swap 1–3 slots at once
+    var count = 1 + Math.floor(Math.random() * 3); // 1, 2 or 3
+
+    // Build list of available (not busy) slot indices
+    var available = [];
+    for (var i = 0; i < VISIBLE; i++){
+      if (!slotBusy[i]) available.push(i);
+    }
+    // Shuffle available and pick up to count
+    for (var i = available.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = available[i]; available[i] = available[j]; available[j] = t;
+    }
+    var toSwap = available.slice(0, Math.min(count, available.length));
+
+    for (var k = 0; k < toSwap.length; k++){
+      // Stagger slightly for a more organic feel (0–150ms offset)
+      (function(idx, delay){
+        setTimeout(function(){ swapSlot(idx); }, delay);
+      })(toSwap[k], Math.floor(Math.random() * 150));
+    }
+  }
+
+  // Start the loop once section is in view
+  var section = document.getElementById('brandsSection');
+  if (!section) return;
+
+  var intervalId = null;
+
+  function startSwapping(){
+    if (intervalId) return;
+    intervalId = setInterval(doSwap, SWAP_INTERVAL);
+  }
+  function stopSwapping(){
+    if (intervalId){ clearInterval(intervalId); intervalId = null; }
+  }
+
+  // Scroll-triggered reveal + start
+  if (!('IntersectionObserver' in window)){
+    section.classList.add('is-visible');
+    startSwapping();
+    return;
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        startSwapping();
+      } else {
+        stopSwapping();
+      }
+    });
+  }, { threshold: 0.1 });
+  io.observe(section);
+})();
+</script>
 </html>
