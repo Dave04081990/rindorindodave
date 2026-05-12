@@ -25,6 +25,8 @@
     --brand-red: #e8281f;       /* Logo red */
     --accent: var(--brand-red);
     --orange: var(--brand-red);
+    --sec-gap: clamp(80px, 9vw, 140px);   /* harmonic spacing between sections */
+    --sec-gap-sm: clamp(48px, 6vw, 90px); /* smaller harmonic gap (bandarole etc.) */
   }
 
   /* Light mode: text that was white/very light should be dark grey for contrast */
@@ -263,6 +265,17 @@
   .fluid-target .char.returning{
     transition: transform 1.2s cubic-bezier(.05,.7,.2,1),
                 opacity 1s cubic-bezier(.05,.7,.2,1);
+  }
+
+  /* Contact — "still got a question open?" headline */
+  .contact-question{
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(28px, 4vw, 56px);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+    color: var(--fg, #fff);
+    margin: 0 0 clamp(16px, 2vw, 28px) 0;
   }
 
   /* View More button */
@@ -586,51 +599,53 @@
      GALLERY GRID — uses site design system (.card / .sec-head style)
      ═══════════════════════════════════════════════════════════════ */
 
-  /* Grid — same padding as .work via site vars */
+  /* Grid — 2 columns, Studio Namma style arc gallery */
   .ssg-grid{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 340px;
-    grid-auto-flow: dense;
-    gap: 6px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(16px, 2.5vw, 32px);
     padding: 0 clamp(20px, 4vw, 48px);
+    perspective: 1400px;
+    justify-items: stretch;
+    align-items: start;
   }
-  /* Bento spans */
-  .ssg-grid .ssg-item:nth-child(1){ grid-column: span 2; grid-row: span 2; }
-  .ssg-grid .ssg-item:nth-child(4){ grid-column: span 2; }
-  .ssg-grid .ssg-item:nth-child(7){ grid-column: span 2; }
-
-  @media (max-width: 1024px){
-    .ssg-grid{ grid-template-columns: repeat(2, 1fr); grid-auto-rows: 260px; }
-    .ssg-grid .ssg-item:nth-child(1){ grid-column: span 2; grid-row: span 1; }
-    .ssg-grid .ssg-item:nth-child(4),
-    .ssg-grid .ssg-item:nth-child(7){ grid-column: span 1; }
-  }
-  @media (max-width: 640px){
-    .ssg-grid{ grid-template-columns: 1fr; grid-auto-rows: 240px; gap: 4px; }
-    .ssg-grid .ssg-item:nth-child(1){ grid-column: span 1; grid-row: span 1; }
+  /* Cards on same baseline — no vertical offset */
+  .ssg-grid .ssg-item:nth-child(even){
+    margin-top: 0;
   }
 
-  /* Item — matches .card from work-grid; now an <a> */
+  @media (max-width: 720px){
+    .ssg-grid{ grid-template-columns: 1fr; gap: 18px; }
+    .ssg-grid .ssg-item:nth-child(even){ margin-top: 0; }
+  }
+
+  /* Item — large, image-led cards */
   .ssg-item{
     position: relative;
-    border-radius: 4px;
+    border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
     background: var(--surface, #111);
     text-decoration: none;
     color: inherit;
     display: block;
+    aspect-ratio: 4 / 3;
+    transition: box-shadow .4s ease;
+    transform-origin: center bottom;
+    will-change: transform, opacity;
+  }
+  .ssg-item:hover{
+    box-shadow: 0 14px 40px rgba(0,0,0,.18);
   }
   .ssg-item img{
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform .55s cubic-bezier(.25,.46,.45,.94);
+    transition: transform .7s cubic-bezier(.25,.46,.45,.94);
   }
   .ssg-item:hover img{
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 
   /* Info block — mirrors .card .info from work-grid */
@@ -672,16 +687,37 @@
     margin-top: 5px;
   }
 
-  /* Reveal animation */
+  /* ═══════════════════════════════════════════════════════════════
+     ARC REVEAL — cards swoop in on a gentle curve.
+     No horizontal overshoot so cards never collide in the center.
+     Arc is created by Y + rotation only — smooth and seamless.
+     ═══════════════════════════════════════════════════════════════ */
   .ssg-item{
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity .7s cubic-bezier(.2,.7,.2,1),
-                transform .8s cubic-bezier(.2,.7,.2,1);
+    transform: translate3d(0, 100px, 0) rotate(0deg) scale(.9);
   }
-  .ssg-item.is-visible{
-    opacity: 1;
-    transform: translateY(0);
+  .ssg-item.in-left{
+    animation: ssgArcLeft 1.1s cubic-bezier(.16,.84,.44,1) forwards;
+  }
+  .ssg-item.in-right{
+    animation: ssgArcRight 1.1s cubic-bezier(.16,.84,.44,1) forwards;
+  }
+  @keyframes ssgArcLeft{
+    0%   { opacity: 0; transform: translate3d(-60px, 120px, 0) rotate(-5deg) scale(.9); }
+    45%  { opacity: 1; }
+    60%  { transform: translate3d(-4px, 12px, 0) rotate(.8deg) scale(.99); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  }
+  @keyframes ssgArcRight{
+    0%   { opacity: 0; transform: translate3d(60px, 120px, 0) rotate(5deg) scale(.9); }
+    45%  { opacity: 1; }
+    60%  { transform: translate3d(4px, 12px, 0) rotate(-.8deg) scale(.99); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  }
+  /* Respect motion preferences */
+  @media (prefers-reduced-motion: reduce){
+    .ssg-item{ opacity: 1; transform: none; }
+    .ssg-item.in-left, .ssg-item.in-right{ animation: none; }
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -755,17 +791,59 @@
     }
   }
 
-  /* Hero title — centered on mobile/tablet portrait */
+  /* Hero title — on mobile: stacked below the centered logo */
   @media (max-width: 1024px){
     .hero-content{
       text-align: center !important;
       align-items: center !important;
+      justify-content: center !important;
+      top: 58% !important;
+      bottom: auto !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translate(-50%, -50%) !important;
+      width: 90% !important;
+      padding: 0 !important;
     }
     .hero h1{
       text-align: center !important;
     }
     .hero-sub{
       text-align: center !important;
+    }
+    .hero-eyebrow{
+      justify-content: center !important;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     MOBILE LOGO — sits centered above hero text, snaps to top-left on scroll
+     Desktop unchanged.
+     ═══════════════════════════════════════════════════════ */
+  @media (max-width: 1024px){
+    /* The brand logo floats centered above the hero content */
+    .nav .nav-left{
+      position: fixed;
+      top: 30vh;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(2.2);
+      transition: top .55s cubic-bezier(.22,.61,.36,1),
+                  left .55s cubic-bezier(.22,.61,.36,1),
+                  transform .55s cubic-bezier(.22,.61,.36,1);
+      z-index: 1001;
+      pointer-events: auto;
+    }
+    /* On scroll — snap to top-left */
+    .nav.scrolled .nav-left,
+    body.scrolled .nav .nav-left{
+      top: 18px;
+      left: clamp(14px, 4vw, 24px);
+      transform: translate(0, 0) scale(1);
+    }
+    /* Hide logo when mobile menu is open */
+    body.menu-open .nav .nav-left{
+      opacity: 0;
+      pointer-events: none;
     }
   }
 
@@ -856,6 +934,22 @@
     <div class="cursor-glow" id="cursorGlow"></div>
     <p class="statement-text fluid-target" id="statementText">Taking your brand to the next level — great design is never just one idea. It's the collision of <em>knowledge,</em> culture, craft and curiosity. <em>Where understanding ends, design begins.</em></p>
   </section>
+
+  <!-- INFINITE BANDAROLE (between statement and work) -->
+  <div class="work-band" aria-hidden="true">
+    <div class="work-band-track">
+      <span>SELECTED WORK</span>
+      <span>DESIGN WORK</span>
+      <span>ART DIRECTION</span>
+      <span>VISUAL DESIGN</span>
+      <span>EXHIBITION</span>
+      <span>SELECTED WORK</span>
+      <span>DESIGN WORK</span>
+      <span>ART DIRECTION</span>
+      <span>VISUAL DESIGN</span>
+      <span>EXHIBITION</span>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
        SCROLL SYNC GALLERY — Opener to Works
@@ -950,7 +1044,372 @@
   </section>
   <!-- END WORK GALLERY -->
 
-  <div style="height: clamp(80px, 10vw, 140px);"></div>
+  <!-- ═══════════════════════════════════════════════════════
+       INFINITE BANDAROLE — Impact, uppercase, runs endlessly
+       ═══════════════════════════════════════════════════════ -->
+  <div class="work-band" aria-hidden="true">
+    <div class="work-band-track">
+      <span>SELECTED WORK</span>
+      <span>DESIGN WORK</span>
+      <span>ART DIRECTION</span>
+      <span>VISUAL DESIGN</span>
+      <span>EXHIBITION</span>
+      <span>SELECTED WORK</span>
+      <span>DESIGN WORK</span>
+      <span>ART DIRECTION</span>
+      <span>VISUAL DESIGN</span>
+      <span>EXHIBITION</span>
+    </div>
+  </div>
+  <style>
+    .work-band{
+      overflow: hidden;
+      width: 100%;
+      padding: clamp(20px, 3vw, 36px) 0;
+      margin: var(--sec-gap) 0;
+      pointer-events: none;
+      user-select: none;
+    }
+    .work-band-track{
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      animation: workBandScroll 24s linear infinite;
+      will-change: transform;
+      animation-play-state: running !important;
+    }
+    .work-band-track span{
+      font-family: Impact, 'Arial Narrow', 'Franklin Gothic Medium', sans-serif;
+      font-weight: 900;
+      font-size: clamp(72px, 12vw, 160px);
+      text-transform: uppercase;
+      letter-spacing: -.02em;
+      line-height: 1;
+      color: var(--fg, #fff);
+      padding: 0 clamp(20px, 3vw, 40px);
+      flex-shrink: 0;
+    }
+    @keyframes workBandScroll{
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+  </style>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SERVICES SECTION
+       ═══════════════════════════════════════════════════════ -->
+  <style>
+    /* ── Section header reuses existing .sec-head ── */
+
+    /* ── Services list ── */
+    .services-list{
+      list-style: none;
+      padding: 0 clamp(20px, 4vw, 48px);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .srv-item{
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    .srv-link{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(14px, 2vw, 28px);
+      width: 100%;
+      padding: clamp(18px, 3vw, 28px) 0;
+      text-decoration: none;
+      color: inherit;
+      cursor: default;
+      transition: color .25s ease;
+      position: relative;
+    }
+    .srv-link:hover{ color: var(--brand-red, #e8281f); }
+
+    .srv-num{ display: none; }
+
+    .srv-name{
+      font-family: 'Geist', sans-serif;
+      font-weight: 700;
+      font-size: clamp(26px, 5vw, 68px);
+      letter-spacing: -.02em;
+      line-height: 1;
+      text-transform: uppercase;
+      transition: letter-spacing .35s cubic-bezier(.22,.61,.36,1);
+    }
+    .srv-link:hover .srv-name{
+      letter-spacing: .04em;
+    }
+
+    .srv-tag{
+      font-family: 'Geist Mono', ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted, rgba(255,255,255,.35));
+      flex-shrink: 0;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity .25s ease, transform .25s ease, color .25s ease;
+    }
+    .srv-link:hover .srv-tag{
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--brand-red, #e8281f);
+    }
+
+    /* ── Floating preview card — fixed position, anchored left of hovered row ── */
+    .srv-preview{
+      position: fixed;
+      width: clamp(180px, 18vw, 260px);
+      aspect-ratio: 4/3;
+      border-radius: 6px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0;
+      transform: scale(.84) rotate(-3deg);
+      transition: opacity .3s cubic-bezier(.22,.61,.36,1),
+                  transform .35s cubic-bezier(.22,.61,.36,1);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      top: 0; left: 0;
+      will-change: transform, opacity;
+    }
+    .srv-preview.visible{
+      opacity: 1;
+      transform: scale(1) rotate(-1.5deg);
+    }
+    .srv-preview img{
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .srv-preview-label{
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 14px;
+      background: linear-gradient(0deg, rgba(0,0,0,.8) 0%, transparent 100%);
+      font-family: 'Geist Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+    }
+
+    @media (max-width: 640px){
+      .srv-name{ font-size: clamp(22px, 7vw, 36px); }
+      .srv-tag{ display: none; }
+      .srv-preview{ display: none; }
+    }
+  </style>
+
+  <!-- Section header -->
+  <div class="sec-head">
+    <div class="left">
+      <div class="num">04 / SERVICES</div>
+      <h2>What I do.</h2>
+    </div>
+    <div class="right">Full spectrum<br>Brand · Campaign · Digital</div>
+  </div>
+
+  <!-- Floating preview card (shared, moved by JS) -->
+  <div class="srv-preview" id="srvPreview" aria-hidden="true">
+    <img id="srvPreviewImg" src="" alt="">
+    <video id="srvPreviewVid" muted autoplay loop playsinline style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;"></video>
+    <div class="srv-preview-label" id="srvPreviewLabel"></div>
+  </div>
+
+  <section class="services-list-wrap">
+    <ul class="services-list" id="servicesList">
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/Kia_Storyboard-11.png"
+          data-label="Kia × LoL — Campaign">
+          <span class="srv-num">01</span>
+          <span class="srv-name">Advertising</span>
+          <span class="srv-tag">Campaign · Social</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/EVE_prompt.jpg"
+          data-label="AI Workflow">
+          <span class="srv-num">02</span>
+          <span class="srv-name">AI Workflow</span>
+          <span class="srv-tag">Midjourney · Runway</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/Brausergames.png"
+          data-label="Ahoj Brause — Campaign">
+          <span class="srv-num">03</span>
+          <span class="srv-name">Art Direction</span>
+          <span class="srv-tag">Concept · Campaign</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/gallery-Porsche3-1-750x417.jpg"
+          data-label="Porsche × Puma × VEXX">
+          <span class="srv-num">04</span>
+          <span class="srv-name">Automotive</span>
+          <span class="srv-tag">3D · Campaign</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/LECxUltragear02.webp"
+          data-label="LEC × LG Ultragear">
+          <span class="srv-num">05</span>
+          <span class="srv-name">Branding</span>
+          <span class="srv-tag">Identity · Collab</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/18C0095_030.jpg"
+          data-label="Mercedes A-Class — Exhibition">
+          <span class="srv-num">06</span>
+          <span class="srv-name">Exhibition / Booth</span>
+          <span class="srv-tag">Trade Show · 3D</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/Portfolio_06.png"
+          data-label="Illustration">
+          <span class="srv-num">07</span>
+          <span class="srv-name">Illustration</span>
+          <span class="srv-tag">Character · Print</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/IMG_8507.JPG"
+          data-label="Print & Digital">
+          <span class="srv-num">08</span>
+          <span class="srv-name">Print & Digital</span>
+          <span class="srv-tag">Editorial · Layout</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/Projekt05.png"
+          data-label="Social Media">
+          <span class="srv-num">09</span>
+          <span class="srv-name">Social Media</span>
+          <span class="srv-tag">Content · Brand</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/Projekt07.png"
+          data-label="SAP — Storyboard">
+          <span class="srv-num">10</span>
+          <span class="srv-name">Storyboarding</span>
+          <span class="srv-tag">Animation · Motion</span>
+        </div>
+      </li>
+
+      <li class="srv-item">
+        <div class="srv-link"
+          data-img="img/Kalt_Warm.jpg"
+          data-label="Visual Design">
+          <span class="srv-num">11</span>
+          <span class="srv-name">Visual Design</span>
+          <span class="srv-tag">Brand · Editorial</span>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <script>
+  (function(){
+    var preview    = document.getElementById('srvPreview');
+    var previewImg = document.getElementById('srvPreviewImg');
+    var previewVid = document.getElementById('srvPreviewVid');
+    var previewLbl = document.getElementById('srvPreviewLabel');
+    if (!preview) return;
+
+    function clamp(min, val, max){ return Math.min(Math.max(val, min), max); }
+
+    function positionCard(link) {
+      var ph = preview.offsetHeight || 195;
+      var margin = clamp(20, window.innerWidth * 0.04, 48);
+      var rect = link.getBoundingClientRect();
+      var midY = rect.top + rect.height / 2;
+      var top  = clamp(8, midY - ph / 2, window.innerHeight - ph - 8);
+      preview.style.left = margin + 'px';
+      preview.style.top  = top + 'px';
+    }
+
+    var links = document.querySelectorAll('.srv-link');
+    links.forEach(function(link){
+      link.addEventListener('mouseenter', function(){
+        var img   = link.getAttribute('data-img')   || '';
+        var vid   = link.getAttribute('data-video') || '';
+        var black = link.getAttribute('data-black') || '';
+        var lbl   = link.getAttribute('data-label') || '';
+
+        previewLbl.textContent = lbl;
+
+        /* Reset both media elements */
+        previewImg.style.display = 'none';
+        previewVid.style.display = 'none';
+        previewVid.pause();
+
+        if (black) {
+          /* AI Workflow: solid black card, no image */
+          preview.style.background = '#000';
+        } else if (vid) {
+          /* Video item */
+          preview.style.background = '#000';
+          previewVid.src = vid;
+          previewVid.style.display = 'block';
+          previewVid.play().catch(function(){});
+        } else if (img) {
+          preview.style.background = 'transparent';
+          previewImg.src = img;
+          previewImg.style.display = 'block';
+        }
+
+        positionCard(link);
+        preview.classList.add('visible');
+      });
+
+      link.addEventListener('mousemove', function(){
+        positionCard(link);
+      });
+
+      link.addEventListener('mouseleave', function(){
+        preview.classList.remove('visible');
+        previewVid.pause();
+      });
+    });
+  })();
+  </script>
+
+  <div style="height: var(--sec-gap);"></div>
 
   <!-- ABOUT SECTION -->
   <div class="sec-head" id="about">
@@ -965,15 +1424,9 @@
     <div class="about-img reveal"></div>
 
     <div class="about-content reveal">
-      <p class="fluid-target">👋 Hello, I'm <strong>Dave Rindo Rindo</strong>, a Solo Art Director and Visual Designer with over 7 years of cross-disciplinary experience. I specialize in creating distinctive brand experiences that bridge beautiful concepts with strategic thinking — from automotive and tech to gaming and lifestyle. And yes, you can also catch me on a long hike whenever I leave the studio.</p>
+      <p class="fluid-target">Hi, I'm <strong>Dave Rindo Rindo</strong>, a Solo Art Director and Visual Designer with over 7 years of cross-disciplinary experience. I specialize in creating distinctive brand experiences that bridge beautiful concepts with strategic thinking — from automotive and tech to gaming and lifestyle. And yes, you can also catch me on a long hike whenever I leave the studio.</p>
       <p class="fluid-target">What makes my approach unique is that all the art direction, 3D work, illustration and visual design you see is crafted by me personally. I work independently, taking projects from early sketches all the way through to final delivery — ensuring clients get my complete focus and dedication throughout the entire process. I don't believe in cookie-cutter solutions; every project is tailored to create unique experiences that reflect each client's vision.</p>
       <p class="fluid-target">My goal? To help clients not just build a brand, but create a presence that stands out, engages their audience and delivers real impact. I focus on one project at a time, collaborating directly with clients to turn ideas into clear, considered work that travels well across every touchpoint.</p>
-
-      <div class="skills">
-        <span>Art Direction</span><span>Illustration</span><span>3D / C4D</span>
-        <span>Blender</span><span>Figma</span><span>Procreate</span>
-        <span>AI Workflows</span><span>Storyboarding</span>
-      </div>
 
       <div class="about-stats">
         <div><div class="n fluid-target">07+</div><div class="l">Years</div></div>
@@ -984,7 +1437,7 @@
     </div>
   </section>
 
-  <div style="height: clamp(80px, 10vw, 140px);"></div>
+  <div style="height: var(--sec-gap);"></div>
 
   <!-- BRANDS SECTION -->
   <section class="brands-section" id="brandsSection" aria-label="Selected clients">
@@ -992,7 +1445,7 @@
     <div class="brands-row" id="brandsRow"></div>
   </section>
 
-  <div style="height: clamp(80px, 10vw, 140px);"></div>
+  <div style="height: var(--sec-gap);"></div>
 
   <!-- FAQ SECTION -->
   <div class="faq-wrap" id="faq">
@@ -1244,23 +1697,47 @@
      ═══════════════════════════════════════════════════════════════ -->
 <script>
 (function(){
-  /* ── REVEAL ON SCROLL ── */
+  /* ── ARC REVEAL ON SCROLL (Studio Namma style) ──
+     Cards in the left column fly in from bottom-left,
+     right column from bottom-right. Each row is staggered. */
   var items = document.querySelectorAll('.ssg-item');
+  if (!items.length) return;
+
+  function isMobile(){ return window.matchMedia('(max-width: 720px)').matches; }
+
   if ('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        if (e.isIntersecting){
-          e.target.classList.add('is-visible');
+        if (e.isIntersecting && !e.target.dataset.revealed){
+          var idx = parseInt(e.target.dataset.idx, 10) || 0;
+          var mobile = isMobile();
+          // On mobile (1 col): alternate sides for visual variety
+          // On desktop (2 col): even = left col, odd = right col
+          var goesLeft = mobile ? (idx % 2 === 0) : (idx % 2 === 0);
+          // Row stagger: each pair of cards delayed 140ms
+          var row = mobile ? idx : Math.floor(idx / 2);
+          // Within a row, right card delayed slightly after left
+          var withinRow = mobile ? 0 : (idx % 2) * 110;
+          var delay = row * 140 + withinRow;
+
+          e.target.style.animationDelay = delay + 'ms';
+          e.target.classList.add(goesLeft ? 'in-left' : 'in-right');
+          e.target.dataset.revealed = '1';
           io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
     items.forEach(function(item, i){
-      item.style.transitionDelay = (i % 3) * 0.1 + 's';
+      item.dataset.idx = i;
       io.observe(item);
     });
   } else {
-    items.forEach(function(item){ item.classList.add('is-visible'); });
+    // Fallback: just show everything
+    items.forEach(function(item){
+      item.style.opacity = '1';
+      item.style.transform = 'none';
+    });
   }
 
   /* ── SMOOTH PAGE TRANSITION ── */
@@ -1658,6 +2135,27 @@
     });
   }, { threshold: 0.2 });
   io.observe(text);
+})();
+</script>
+
+<script>
+/* Mobile logo — toggle .scrolled class on nav when user scrolls past threshold */
+(function(){
+  var nav = document.getElementById('nav');
+  if (!nav) return;
+  var threshold = 60;
+  var lastState = false;
+
+  function update(){
+    var scrolled = window.scrollY > threshold;
+    if (scrolled !== lastState){
+      nav.classList.toggle('scrolled', scrolled);
+      document.body.classList.toggle('scrolled', scrolled);
+      lastState = scrolled;
+    }
+  }
+  update();
+  window.addEventListener('scroll', update, { passive: true });
 })();
 </script>
 </html>
