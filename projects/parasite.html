@@ -54,13 +54,7 @@
     overflow-x: hidden;
   }
   body{ font-size: 14px; line-height: 1.5; position: relative; }
-  body::before{
-    content:""; position: fixed; inset:0; z-index: 200;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: .18;
-    mix-blend-mode: overlay;
-  }
+
 
   a{color:inherit; text-decoration:none;}
   img{display:block; max-width:100%;}
@@ -943,138 +937,112 @@
   }
 
   /* =====================================================================
-     VELOCITY GALLERY — scroll-reactive horizontal image rows
+     PROJECT MARQUEE — Azuki-style infinite scroll, 2 rows
+     Row 0 scrolls RIGHT, Row 1 scrolls LEFT
+     Square cards with rounded corners, no gradient overlay
      ===================================================================== */
   .zz-velocity{
     background: var(--p-black);
-    padding: 0;
+    padding: 60px 0 70px;
     overflow: hidden;
     position: relative;
   }
-  .zz-velocity::before,
-  .zz-velocity::after{
-    content:""; position:absolute; left:0; right:0; z-index:4; pointer-events:none;
-  }
-  .zz-velocity::before{
-    top:0; height: 80px;
-    background: linear-gradient(180deg, var(--p-black), transparent);
-  }
-  .zz-velocity::after{
-    bottom:0; height: 80px;
-    background: linear-gradient(0deg, var(--p-black), transparent);
+
+  /* Section heading */
+  .zz-vel-label{
+    font-family: var(--p-display);
+    font-size: clamp(36px, 5vw, 64px);
+    color: var(--p-white);
+    text-transform: uppercase;
+    letter-spacing: -.02em;
+    line-height: .9;
+    margin-bottom: 40px;
+    padding: 0 var(--p-pad);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 2;
+    opacity: 1;
+    mix-blend-mode: normal;
+    text-shadow: none;
+    white-space: normal;
+    pointer-events: auto;
+    top: auto; left: auto;
+    transform: none;
   }
 
   .zz-vel-row{
     display: flex;
-    gap: 12px;
-    padding: 6px 0;
+    gap: 16px;
+    padding: 8px 0;
     will-change: transform;
   }
+
   .zz-vel-row .vel-img{
     flex: 0 0 auto;
-    height: clamp(160px, 18vw, 260px);
+    width: clamp(200px, 20vw, 300px);
+    aspect-ratio: 5 / 4;
     overflow: hidden;
     position: relative;
-    transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease;
+    border-radius: 16px;
     cursor: zoom-in;
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease;
   }
   .zz-vel-row .vel-img:hover{
-    transform: scale(1.05) !important;
-    box-shadow: 0 0 0 2px var(--p-orange), 8px 8px 0 var(--p-black);
+    transform: translateY(-6px) scale(1.04) !important;
+    box-shadow: 0 16px 40px rgba(0,0,0,.5);
     z-index: 3;
   }
   .zz-vel-row .vel-img img{
+    width: 100%;
     height: 100%;
-    width: auto;
     display: block;
     object-fit: cover;
-    filter: saturate(.85) contrast(1.05);
-    transition: filter .3s;
+    filter: saturate(.9) contrast(1.05);
+    transition: filter .35s, transform .5s cubic-bezier(.2,.7,.2,1);
   }
   .zz-vel-row .vel-img:hover img{
     filter: saturate(1) contrast(1.1);
+    transform: scale(1.06);
   }
 
-  /* Velocity label overlay */
-  .zz-vel-label{
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
-    font-family: var(--p-display);
-    font-size: clamp(48px, 8vw, 120px);
-    color: var(--p-orange);
-    text-transform: uppercase;
-    letter-spacing: -.03em;
-    line-height: .88;
-    pointer-events: none;
-    text-shadow:
-      0 0 40px rgba(255,107,31,.4),
-      0 0 80px rgba(255,107,31,.15);
-    opacity: .12;
-    white-space: nowrap;
-    mix-blend-mode: screen;
-  }
-
-  /* ----- Tablet (721–1024px): 4 rows, medium height ----- */
+  /* ----- Tablet ----- */
   @media (max-width: 1024px){
-    .zz-vel-row .vel-img{
-      height: clamp(130px, 22vw, 200px);
-    }
-    .zz-vel-row{ gap: 10px; }
-    .zz-vel-row:nth-child(6){ display: none; }  /* hide row 5 (nth-child offset by label) */
-    .zz-velocity::before,
-    .zz-velocity::after{ height: 60px; }
+    .zz-vel-row .vel-img{ width: clamp(180px, 26vw, 250px); }
+    .zz-vel-row{ gap: 14px; }
+    .zz-velocity{ padding: 50px 0 60px; }
   }
 
-  /* ----- Mobile landscape / large phone (481–720px): 3 rows ----- */
+  /* ----- Mobile ----- */
   @media (max-width: 720px){
     .zz-vel-row .vel-img{
-      height: clamp(100px, 26vw, 150px);
+      width: clamp(150px, 40vw, 210px);
+      border-radius: 12px;
     }
-    .zz-vel-row{ gap: 8px; padding: 4px 0; }
-    /* hide rows 4 & 5 */
-    .zz-vel-row:nth-child(5),
-    .zz-vel-row:nth-child(6){ display: none; }
-    .zz-velocity::before,
-    .zz-velocity::after{ height: 40px; }
-    .zz-vel-label{
-      font-size: clamp(36px, 12vw, 64px);
-    }
-    /* disable hover scale on touch — causes layout jank */
+    .zz-vel-row{ gap: 12px; }
     .zz-vel-row .vel-img:hover{
       transform: none !important;
       box-shadow: none;
     }
+    .zz-velocity{ padding: 40px 0 50px; }
+    .zz-vel-label{ margin-bottom: 28px; }
   }
 
-  /* ----- Small phone (≤480px): 3 rows, compact ----- */
+  /* ----- Small phone ----- */
   @media (max-width: 480px){
     .zz-vel-row .vel-img{
-      height: clamp(80px, 24vw, 120px);
+      width: clamp(140px, 48vw, 190px);
+      border-radius: 10px;
     }
-    .zz-vel-row{ gap: 6px; padding: 3px 0; }
-    .zz-velocity::before,
-    .zz-velocity::after{ height: 28px; }
-    .zz-vel-label{
-      font-size: clamp(28px, 10vw, 48px);
-      opacity: .08;
-    }
+    .zz-vel-row{ gap: 10px; }
+    .zz-velocity{ padding: 32px 0 40px; }
+    .zz-vel-label{ font-size: clamp(28px, 8vw, 40px); margin-bottom: 20px; }
   }
 
-  /* Reduced motion: stop auto-scroll, show static grid */
+  /* Reduced motion */
   @media (prefers-reduced-motion: reduce){
-    .zz-vel-row{
-      animation: none !important;
-      transform: none !important;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px var(--p-pad);
-    }
-    .zz-vel-row .vel-img{
-      height: 140px;
-    }
+    .zz-vel-row .vel-img:hover img{ transform: none; }
   }
 
   /* =====================================================================
@@ -1086,13 +1054,7 @@
     padding: 60px var(--p-pad) 80px;
     position: relative;
   }
-  .zz-paper::before{
-    content:""; position:absolute; inset:0;
-    background-image: radial-gradient(var(--p-cream-3) 1px, transparent 1px);
-    background-size: 14px 14px;
-    opacity: .5;
-    pointer-events: none;
-  }
+
 
   .zz-paper-head{
     position: relative;
@@ -1236,7 +1198,7 @@
   /* MASONRY — clickable, opens lightbox */
   .zz-masonry{
     max-width: 1280px; margin: 0 auto;
-    column-count: 4; column-gap: 12px;
+    column-count: 3; column-gap: 12px;
     position: relative;
   }
   .zz-masonry .item{
@@ -1258,9 +1220,8 @@
     width: 100%; height: auto; display:block;
   }
 
-  @media (max-width: 1100px){ .zz-masonry{ column-count: 3; } }
   @media (max-width: 900px){  .zz-masonry{ column-count: 2; } }
-  @media (max-width: 768px){  .zz-masonry{ column-count: 1; } }
+  @media (max-width: 600px){  .zz-masonry{ column-count: 1; } }
 
   /* =====================================================================
      LIGHTBOX — opens on image click
@@ -1779,7 +1740,7 @@
     <p class="zz-info-text">
       <span class="lead">A self-published independent manga series</span>
       by Dave Rindo Rindo. Drawn between client work and louder coffees —
-      a quiet place you can hold in your hands.
+      a quiet horror you can hold in your hands.
     </p>
 
     <div class="zz-info-meta">
@@ -1826,14 +1787,11 @@
   </div>
 </div>
 
-<!-- ===== VELOCITY GALLERY — scroll-reactive horizontal rows ===== -->
+<!-- ===== PROJECT MARQUEE — Azuki-style infinite scroll, 2 rows ===== -->
 <section class="zz-velocity" id="zzVelocity">
-  <div class="zz-vel-label" aria-hidden="true">PARASITE</div>
+  <div class="zz-vel-label">WORKS</div>
   <div class="zz-vel-row" id="velRow0"></div>
   <div class="zz-vel-row" id="velRow1"></div>
-  <div class="zz-vel-row" id="velRow2"></div>
-  <div class="zz-vel-row" id="velRow3"></div>
-  <div class="zz-vel-row" id="velRow4"></div>
 </section>
 
 <!-- ===== GALLERY ===== -->
@@ -1865,7 +1823,7 @@
       <p>
         Each piece is hand-drawn, mostly in black ink with the occasional bleed of red.
         The work lives somewhere between manga, editorial illustration and personal
-        diary — a quiet place you can hold in your hands.
+        diary — a quiet horror you can hold in your hands.
       </p>
       <div class="tags">
         <span>Manga</span>
@@ -1964,8 +1922,9 @@
 
 <script>
   // =====================================================================
-  // VELOCITY GALLERY — scroll-reactive horizontal image rows
-  // Responsive: skips CSS-hidden rows, supports touch velocity
+  // PROJECT MARQUEE — Azuki-style infinite scroll
+  // Row 0 → scrolls RIGHT, Row 1 → scrolls LEFT
+  // Square cards, rounded corners, seamless loop
   // =====================================================================
   (function(){
     const IMAGES = [
@@ -1979,34 +1938,38 @@
       'Mini-Mizoah-and-cats.png','Professors-little-evie_.png','Sketch.png','Sleepy.png'
     ];
 
-    const ROW_COUNT = 5;
+    const ROW_COUNT = 2;
     const IMAGES_PER_ROW = 10;
     const rows = [];
 
-    // Distribute images across rows, cycling if needed
     for (let r = 0; r < ROW_COUNT; r++){
       const rowEl = document.getElementById('velRow' + r);
+      if (!rowEl) continue;
+
       const rowImages = [];
       for (let i = 0; i < IMAGES_PER_ROW; i++){
         rowImages.push(IMAGES[(r * IMAGES_PER_ROW + i) % IMAGES.length]);
       }
+
       const makeItems = (imgs) => imgs.map(name =>
         `<div class="vel-img" data-src="${name}" style="cursor:zoom-in"><img src="../img/Para/${name}" alt="" loading="lazy"></div>`
       ).join('');
+
+      // Duplicate for seamless loop
       rowEl.innerHTML = makeItems(rowImages) + makeItems(rowImages);
+
       rows.push({
         el: rowEl,
-        direction: r % 2 === 0 ? -1 : 1,
-        baseSpeed: 0.3 + (r % 3) * 0.12,
+        // Row 0 → right (+1), Row 1 → left (-1)
+        direction: r === 0 ? 1 : -1,
+        baseSpeed: 0.35,
         x: 0,
         width: 0
       });
     }
 
-    // Measure half-width (one set of images) for seamless wrapping
     function measureRows(){
       rows.forEach(row => {
-        // Only measure visible rows
         if (row.el.offsetParent !== null || getComputedStyle(row.el).display !== 'none'){
           row.width = row.el.scrollWidth / 2;
         }
@@ -2014,78 +1977,68 @@
     }
     measureRows();
 
-    // Re-measure on resize (debounced)
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(measureRows, 200);
     });
 
-    // ----- Scroll velocity tracking (mouse wheel / desktop) -----
+    // Scroll velocity for reactive speed boost
     let lastScrollY = window.scrollY;
     let scrollVelocity = 0;
-
     window.addEventListener('scroll', () => {
       const newScrollY = window.scrollY;
       scrollVelocity = newScrollY - lastScrollY;
       lastScrollY = newScrollY;
     }, { passive: true });
 
-    // ----- Touch velocity tracking (mobile swipe) -----
-    let touchStartY = 0;
+    // Touch velocity
     let touchVelocity = 0;
     let lastTouchY = 0;
     let lastTouchTime = 0;
-
     window.addEventListener('touchstart', (e) => {
-      const t = e.touches[0];
-      touchStartY = t.clientY;
-      lastTouchY = t.clientY;
+      lastTouchY = e.touches[0].clientY;
       lastTouchTime = performance.now();
       touchVelocity = 0;
     }, { passive: true });
-
     window.addEventListener('touchmove', (e) => {
       const t = e.touches[0];
       const now = performance.now();
       const dt = now - lastTouchTime;
-      if (dt > 0){
-        touchVelocity = (lastTouchY - t.clientY) / (dt / 16); // normalise to ~frame
-      }
+      if (dt > 0) touchVelocity = (lastTouchY - t.clientY) / (dt / 16);
       lastTouchY = t.clientY;
       lastTouchTime = now;
     }, { passive: true });
 
-    window.addEventListener('touchend', () => {
-      // touchVelocity decays naturally in the animation loop
-    }, { passive: true });
-
-    // ----- Reduced motion check -----
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ----- Animation loop -----
     function tick(){
-      if (prefersReduced){ return; } // stop loop entirely
+      if (prefersReduced) return;
 
-      // Combine scroll + touch velocities, decay smoothly
       scrollVelocity *= 0.92;
       touchVelocity *= 0.90;
       const combinedVelocity = scrollVelocity + touchVelocity;
 
       rows.forEach(row => {
-        // Skip CSS-hidden rows
         if (getComputedStyle(row.el).display === 'none') return;
         if (row.width <= 0) return;
 
-        const velocityBoost = combinedVelocity * 0.35;
-        const speed = (row.baseSpeed + Math.abs(velocityBoost) * 0.08) * row.direction;
-        const directedBoost = velocityBoost * row.direction * 0.15;
+        const velocityBoost = combinedVelocity * 0.25;
+        const speed = row.baseSpeed * row.direction;
+        const directedBoost = velocityBoost * row.direction * 0.12;
 
         row.x += speed + directedBoost;
 
-        // Seamless wrap in both directions
-        if (row.x <= -row.width) row.x += row.width;
-        if (row.x > 0) row.x -= row.width;
+        // Seamless wrap
+        if (row.direction > 0){
+          // Scrolling right: x goes positive, wrap when one set passed
+          if (row.x >= 0) row.x -= row.width;
+          if (row.x <= -row.width) row.x += row.width;
+        } else {
+          // Scrolling left: x goes negative
+          if (row.x <= -row.width) row.x += row.width;
+          if (row.x >= 0) row.x -= row.width;
+        }
 
         row.el.style.transform = 'translate3d(' + row.x.toFixed(1) + 'px, 0, 0)';
       });
@@ -2093,16 +2046,12 @@
       requestAnimationFrame(tick);
     }
 
-    // Initialize starting positions (stagger rows)
-    rows.forEach((row, i) => {
-      if (row.direction < 0){
-        row.x = -(Math.random() * row.width * 0.5);
-      } else {
-        row.x = -(row.width * 0.5 + Math.random() * row.width * 0.3);
-      }
+    // Initial positions
+    rows.forEach((row) => {
+      row.x = -(Math.random() * row.width * 0.4);
     });
 
-    // Click handler — open lightbox for clicked image
+    // Click → lightbox
     const velSection = document.getElementById('zzVelocity');
     velSection.addEventListener('click', (e) => {
       const velImg = e.target.closest('.vel-img');
