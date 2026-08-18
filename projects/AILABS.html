@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>AI Lab — Project EVE | Dave RindoRindo</title>
+<meta name="description" content="One avatar carried through a full AI production pipeline — concept, character sheet, material studies, motion, grade." />
+<meta name="theme-color" content="#000000" />
+<link rel="icon" href="../img/Flavicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/Flavicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   Tokens
+   ============================================================ */
+:root{
+  --pad-x: clamp(1.25rem, 4.5vw, 5rem);
+  --header-pt: clamp(1.25rem, 2.5vh, 2.5rem);
+  --gap-nav: clamp(1rem, 2.2vw, 2.25rem);
+  --section-gap: clamp(0.75rem, 1.5vh, 1.5rem);
+  --main-py: clamp(1.25rem, 4vh, 4rem);
+  --sec-py: clamp(4.5rem, 11vh, 10rem);
+
+  --logo: clamp(0.9rem, 0.7vw + 0.6rem, 1.35rem);
+  --nav: clamp(0.65rem, 0.35vw + 0.5rem, 0.875rem);
+  --headline: clamp(2.15rem, 4.5vw + 0.75rem, 5.25rem);
+  --headline-2: clamp(1.6rem, 2.6vw + 0.7rem, 3.4rem);
+  --body: clamp(0.7rem, 0.35vw + 0.55rem, 0.9rem);
+  --lead: clamp(0.85rem, 0.5vw + 0.65rem, 1.1rem);
+  --micro: clamp(0.55rem, 0.25vw + 0.45rem, 0.7rem);
+
+  --btn-px: clamp(1.15rem, 1.4vw, 1.75rem);
+  --btn-py: clamp(0.6rem, 0.9vh, 0.85rem);
+  --btn-gap: clamp(0.75rem, 1vw, 1.1rem);
+  --feature-pad: clamp(1rem, 1.5vw, 1.75rem);
+  --feature-min: clamp(13rem, 18vw, 20rem);
+  --globe: clamp(2.25rem, 2.5vw + 1rem, 3.25rem);
+  --checker-w: clamp(2.75rem, 4.5vw, 6.5rem);
+  --checker-h: clamp(1.35rem, 2.2vw, 3rem);
+  --corner: clamp(0.65rem, 0.4vw + 0.4rem, 0.95rem);
+  --radius: clamp(0.75rem, 1.1vw, 1.15rem);
+
+  --bg:#000; --ink:#fff;
+  --l08:rgba(255,255,255,.08);
+  --l16:rgba(255,255,255,.16);
+  --l40:rgba(255,255,255,.40);
+  --l55:rgba(255,255,255,.55);
+  --l70:rgba(255,255,255,.70);
+  --surface:#0b0b0b;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-press: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; background:var(--bg); }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+body.locked{ overflow:hidden; }
+::selection{ background:var(--ink); color:var(--bg); }
+img,video{ display:block; max-width:100%; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+a{ color:inherit; text-decoration:none; }
+:focus-visible{ outline:2px solid currentColor; outline-offset:3px; }
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+/* ============================================================
+   1 · HERO — Bild mit Typografie darueber
+   ============================================================ */
+.hero{
+  position:relative; isolation:isolate;
+  min-height:100svh; display:flex; align-items:center;
+  padding-inline:var(--pad-x);
+  padding-block:clamp(4rem,12vh,8rem);
+  overflow:hidden;
+}
+/* ------------------------------------------------------------
+   Hero-Hintergrund: zwei Bilder uebereinander. Das obere wird
+   durch eine weiche runde Maske freigelegt, die dem Mauszeiger
+   nachlaeuft. Darueber ein Raster, das leicht gegenlaeuft.
+
+   PLATZHALTER — hier spaeter die richtigen Motive eintragen:
+     --img-base    liegt immer
+     --img-reveal  erscheint im Lichtkegel
+   ------------------------------------------------------------ */
+.hero-media{
+  position:absolute; z-index:-2; background:#000;
+  top:-6svh; left:0; right:0; bottom:-10svh;
+  will-change:transform;
+
+  --img-base:   url('../img/AI/hero/Attaching_helmet_to_woman_2K_202608151824.jpeg');
+  --img-reveal: url('../img/AI/hero/Woman_staring_at_camera_2K_202608170927\ \(1\).jpeg');
+}
+.hero-layer{
+  position:absolute; inset:0;
+  background-size:cover; background-position:center center;
+  background-repeat:no-repeat;
+}
+/* Ab Desktop das ganze Bild zeigen (kein Beschnitt);
+   Mobil/Tablet bleiben formatfuellend. */
+@media (min-width:901px){
+  .hero-layer{ background-size:contain; }
+}
+@media (max-width:760px){ .hero-layer{ background-position:56% 20%; } }
+
+.hero-base{ background-image:var(--img-base); }
+
+.hero-reveal{
+  background-image:var(--img-reveal);
+  /* Maske kommt zur Laufzeit aus einem Canvas (siehe Script):
+     radialer Verlauf -> toDataURL -> mask-image. Optisch identisch
+     zum CSS-Verlauf, aber exakt nach den Prompt-Stops erzeugt. */
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+}
+
+/* Raster darueber, sehr zurueckgenommen */
+.hero-grid{
+  position:absolute; inset:0; width:100%; height:100%;
+  opacity:.10; pointer-events:none;
+}
+.hero-grid path{ stroke:#64748b; stroke-width:.6; fill:none; }
+
+/* Ringwellen, die der Zeiger hinterlaesst */
+.hero-ripple{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.hero-ripple .ripple-dot{
+  position:absolute; width:0; height:0; border-radius:999px;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(255,255,255,.5);
+  animation:heroRipple 1100ms cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes heroRipple{
+  0%   { width:8px;  height:8px;  opacity:.5; border-width:1.5px; }
+  100% { width:260px;height:260px;opacity:0;  border-width:.5px; }
+}
+
+/* Ohne feinen Zeiger (Touch) bleibt nur das Basisbild stehen */
+@media (hover:none), (pointer:coarse){
+  .hero-reveal,.hero-grid,.hero-ripple{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-ripple{ display:none; }
+}
+
+/* Eckwinkel und Merkmalsblock */
+.hero-corner{ width:var(--corner); height:var(--corner); flex:none; color:var(--l40); }
+.hero-corner path{ stroke:currentColor; stroke-width:1.5; fill:none; }
+
+.hero-feature{
+  position:absolute; z-index:1;
+  right:var(--pad-x); bottom:clamp(1.75rem,6vh,3.5rem);
+  width:min(30rem, 42vw);
+  padding:clamp(1.35rem,2vw,2.1rem);
+  display:flex; flex-direction:column; gap:clamp(1rem,1.8vh,1.5rem);
+  background:transparent;
+}
+/* Kopfzeile: Globus + Case-Zaehler */
+.hero-feature .hf-top{
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+}
+.hero-feature .globe{ width:var(--globe); height:var(--globe); color:var(--l55); }
+.hero-feature .globe circle,
+.hero-feature .globe ellipse,
+.hero-feature .globe line{ stroke:currentColor; stroke-width:1.2; fill:none; }
+.hero-feature .hf-idx{
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.24em; text-transform:uppercase;
+  color:var(--l55); text-shadow:0 1px 3px rgba(0,0,0,.9);
+}
+/* Textkoerper */
+.hero-feature .hf-body{ display:flex; flex-direction:column; gap:.7rem; }
+.hero-feature .hf-kicker{
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.26em; text-transform:uppercase;
+  color:var(--l55); text-shadow:0 1px 3px rgba(0,0,0,.9);
+}
+.hero-feature .hf-title{
+  margin:0; font-family:'Orbitron',sans-serif; font-weight:800;
+  text-transform:uppercase; letter-spacing:.06em; line-height:1.05;
+  font-size:clamp(1.6rem, 1.4vw + 1.1rem, 2.6rem);
+  text-shadow:0 2px 8px rgba(0,0,0,.9), 0 2px 30px rgba(0,0,0,.7);
+}
+.hero-feature .hf-lead{
+  margin:0; font-size:var(--body); line-height:1.7; color:var(--l70);
+  text-shadow:0 1px 3px rgba(0,0,0,.95), 0 1px 16px rgba(0,0,0,.7);
+}
+/* Aktionslink */
+.hero-feature .hf-cta{
+  align-self:flex-start;
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.65rem 1.2rem; border:1px solid var(--l40); border-radius:999px;
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.18em; text-transform:uppercase;
+  transition:background .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease);
+}
+.hero-feature .hf-cta:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.hero-feature .hf-cta svg{ transition:transform .4s var(--ease); }
+.hero-feature .hf-cta:hover svg{ transform:translate(2px,-2px); }
+
+/* Eckmarken des Blocks — vier Winkel */
+.hero-feature .c{
+  position:absolute; width:var(--corner); height:var(--corner);
+  border:1px solid var(--l40);
+}
+.hero-feature .c.tl{ top:0; left:0;  border-right:0; border-bottom:0; }
+.hero-feature .c.tr{ top:0; right:0; border-left:0;  border-bottom:0; }
+.hero-feature .c.bl{ bottom:0; left:0;  border-right:0; border-top:0; }
+.hero-feature .c.br{ bottom:0; right:0; border-left:0;  border-top:0; }
+
+/* Schmalere Viewports: Karte volle Breite unten */
+@media (max-width:900px){
+  .hero-feature{
+    position:absolute; left:var(--pad-x); right:var(--pad-x);
+    width:auto; bottom:clamp(1.25rem,5vh,2.5rem);
+  }
+}
+@media (max-width:560px){
+  .hero-feature .hf-lead{ display:none; }
+}
+/* Verlauf von links, damit die Schrift auf jedem Motiv liegt */
+.hero-shade{
+  position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:
+    linear-gradient(300deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.4) 30%, rgba(0,0,0,0) 62%),
+    linear-gradient(to top, rgba(0,0,0,.68) 0%, rgba(0,0,0,0) 42%);
+}
+@media (max-width:760px){
+  .hero-shade{
+    background:linear-gradient(to top, rgba(0,0,0,.92) 12%, rgba(0,0,0,.6) 45%, rgba(0,0,0,.25) 75%, rgba(0,0,0,.35) 100%);
+  }
+}
+/* (Headline/Lead in den Eckblock verschoben) */
+
+/* ============================================================
+   Fester Zurueck-Knopf, unten rechts
+   ============================================================ */
+.back-fab{
+  position:fixed; z-index:70;
+  right:clamp(1rem,2.5vw,2.25rem); bottom:clamp(1rem,2.5vw,2.25rem);
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.8rem 1.2rem; border-radius:999px;
+  border:1px solid var(--l16); background:rgba(0,0,0,.62); color:var(--ink);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.22em; text-transform:uppercase;
+  opacity:0; transform:translateY(14px) scale(.96); pointer-events:none;
+  transition:opacity .55s var(--ease), transform .55s var(--ease),
+             background .4s var(--ease), border-color .4s var(--ease);
+}
+.back-fab.on{ opacity:1; transform:none; pointer-events:auto; }
+.back-fab:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.back-fab svg{ transition:transform .45s var(--ease); }
+.back-fab:hover svg{ transform:translateX(-4px); }
+@media (max-width:560px){ .back-fab span{ display:none; } .back-fab{ padding:.85rem; } }
+
+/* ============================================================
+   Feste Kopfnavigation — Zurueck + die drei Cases
+   ============================================================ */
+.lab-nav{
+  position:fixed; z-index:80; top:0; left:0; right:0;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:clamp(.75rem,2vw,2rem);
+  padding:clamp(.7rem,1.6vh,1.1rem) var(--pad-x);
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.22em; text-transform:uppercase;
+  background:transparent; border-bottom:1px solid transparent;
+  transition:background .5s var(--ease), border-color .5s var(--ease),
+             backdrop-filter .5s var(--ease);
+}
+.lab-nav.solid{
+  background:rgba(0,0,0,.72); border-bottom-color:var(--l08);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+}
+.lab-back{
+  display:inline-flex; align-items:center; gap:.6rem; flex:none;
+  padding:.5rem .95rem .5rem .8rem; border-radius:999px;
+  border:1px solid var(--l16); color:var(--ink);
+  transition:background .4s var(--ease), color .4s var(--ease),
+             border-color .4s var(--ease);
+}
+.lab-back:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.lab-back svg{ flex:none; transition:transform .45s var(--ease); }
+.lab-back:hover svg{ transform:translateX(-4px); }
+
+.lab-cases{
+  display:flex; align-items:center; gap:clamp(.35rem,1.6vw,1.5rem);
+  min-width:0;
+}
+.lab-cases a{
+  display:inline-flex; align-items:baseline; gap:.5rem;
+  padding:.5rem .2rem; color:var(--l55); white-space:nowrap;
+  border-bottom:1px solid transparent;
+  transition:color .35s var(--ease), border-color .35s var(--ease);
+}
+.lab-cases a .n{
+  font-size:.85em; letter-spacing:.14em; color:var(--l40);
+  transition:color .35s var(--ease);
+}
+.lab-cases a:hover{ color:var(--ink); }
+.lab-cases a.is-active{ color:var(--ink); border-bottom-color:var(--ink); }
+.lab-cases a.is-active .n{ color:var(--ink); }
+
+/* Ziele nicht unter die Navigation scrollen lassen */
+section[id]{ scroll-margin-top:clamp(3.5rem,9vh,5.5rem); }
+
+@media (max-width:760px){
+  .lab-nav{ letter-spacing:.14em; }
+  .lab-back span{ display:none; }
+  .lab-back{ padding:.5rem; }
+  .lab-cases a .n{ display:none; }
+}
+
+.btn{
+  display:inline-flex; align-items:center; gap:var(--btn-gap);
+  border:1px solid var(--l40); border-radius:999px;
+  padding:var(--btn-py) var(--btn-px);
+  text-transform:uppercase; letter-spacing:.18em;
+  font-size:var(--body); font-weight:600;
+  background:rgba(255,255,255,.06); color:var(--ink);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  transition:background .5s var(--ease), color .5s var(--ease),
+             border-color .5s var(--ease), transform .3s var(--ease-press);
+}
+.btn svg{ transition:transform .5s var(--ease); }
+.btn:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.btn:hover svg{ transform:translate(3px,-3px); }
+.btn:active{ transform:scale(.985); }
+
+.framed{ position:relative; padding:var(--feature-pad); }
+.framed .c{ position:absolute; width:var(--corner); height:var(--corner); }
+.framed .c.tl{ top:0; left:0 } .framed .c.tr{ top:0; right:0 }
+.framed .c.bl{ bottom:0; left:0 } .framed .c.br{ bottom:0; right:0 }
+.feature{ min-width:var(--feature-min); display:flex; flex-direction:column; gap:.75rem; }
+.feature .tag{
+  font-weight:600; text-transform:uppercase; letter-spacing:.18em;
+  font-size:var(--body); line-height:1.6;
+}
+
+/* ============================================================
+   Sektionen
+   ============================================================ */
+.section{ padding-inline:var(--pad-x); padding-block:var(--sec-py); }
+.sec-label{
+  display:flex; align-items:baseline; gap:.75rem; flex-wrap:wrap;
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.28em; text-transform:uppercase;
+  color:var(--l55); margin-bottom:clamp(1rem,2.5vh,1.75rem);
+}
+.sec-label b{ color:var(--ink); font-weight:600; }
+.sec-head{
+  display:grid; grid-template-columns:1fr; gap:clamp(1.25rem,3vw,2.5rem);
+  border-top:1px solid var(--l16); padding-top:clamp(1rem,2.5vh,2rem);
+}
+@media (min-width:900px){ .sec-head{ grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); align-items:start; } }
+h2.hl{
+  margin:0; font-family:'Orbitron',sans-serif; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; line-height:1.1;
+  font-size:var(--headline-2);
+}
+.sl{ margin:0; font-size:var(--lead); line-height:1.75; color:var(--l70); max-width:48ch; }
+.sl strong{ color:var(--ink); font-weight:600; }
+
+/* ============================================================
+   2 · GALERIE 1 — Raster mit Filter und Lightbox
+   ============================================================ */
+.filters{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:clamp(1.5rem,4vh,2.5rem); }
+.chip{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.5rem 1rem; border-radius:999px;
+  border:1px solid var(--l16); color:var(--l70);
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.2em; text-transform:uppercase;
+  transition:background .4s var(--ease), color .4s var(--ease),
+             border-color .4s var(--ease), transform .3s var(--ease-press);
+}
+.chip:hover{ color:var(--ink); border-color:var(--l40); }
+.chip[aria-pressed="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.chip:active{ transform:scale(.96); }
+.chip .n{ opacity:.55; font-size:.85em; }
+
+.gallery{
+  margin-top:clamp(1.5rem,4vh,2.5rem);
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:clamp(.5rem,1.2vw,1rem);
+}
+@media (min-width:700px){ .gallery{ grid-template-columns:repeat(3,1fr); } }
+@media (min-width:1200px){ .gallery{ grid-template-columns:repeat(4,1fr); } }
+
+.tile{
+  position:relative; margin:0; overflow:hidden; padding:0;
+  aspect-ratio:1/1; border-radius:var(--radius);
+  background:var(--surface); cursor:pointer; display:block; width:100%;
+  opacity:0; transform:translateY(26px) scale(.96);
+  transition:opacity .8s var(--ease), transform .8s var(--ease);
+  will-change:transform, opacity;
+}
+.tile.in{ opacity:1; transform:none; }
+.tile.out{ opacity:0; transform:scale(.94); pointer-events:none; position:absolute; visibility:hidden; }
+.tile img{
+  width:100%; height:100%; object-fit:cover; transform:scale(1.02);
+  transition:transform 1.05s var(--ease); will-change:transform;
+}
+.tile:hover img,.tile:focus-visible img{ transform:scale(1.08); }
+.tile .cap{
+  position:absolute; inset:auto 0 0 0;
+  padding:clamp(.7rem,1.4vw,1.05rem);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:.75rem;
+  text-align:left;
+  background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.35) 55%, rgba(0,0,0,0));
+  opacity:0; transform:translateY(28%);
+  transition:opacity .55s var(--ease), transform .55s var(--ease);
+}
+.tile:hover .cap,.tile:focus-visible .cap{ opacity:1; transform:none; }
+.tile .name{
+  font-family:'Orbitron',sans-serif; font-weight:700; font-size:var(--body);
+  text-transform:uppercase; letter-spacing:.09em; line-height:1.3;
+}
+.tile .idx{
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.18em; color:var(--l55); white-space:nowrap;
+}
+.tile .zoom{
+  position:absolute; top:.6rem; right:.6rem;
+  width:2rem; height:2rem; border-radius:999px;
+  display:grid; place-items:center;
+  background:rgba(0,0,0,.5); border:1px solid var(--l16);
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+  opacity:0; transform:scale(.8);
+  transition:opacity .45s var(--ease), transform .45s var(--ease);
+}
+.tile:hover .zoom,.tile:focus-visible .zoom{ opacity:1; transform:none; }
+@media (hover:none){ .tile .cap{ opacity:1; transform:none; } .tile .zoom{ display:none; } }
+
+/* ---------- Lightbox ---------- */
+.lb{
+  position:fixed; inset:0; z-index:100;
+  display:grid; grid-template-rows:auto 1fr auto;
+  background:rgba(0,0,0,.94);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  opacity:0; pointer-events:none; transition:opacity .45s var(--ease);
+}
+.lb.on{ opacity:1; pointer-events:auto; }
+.lb-head{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:clamp(1rem,2.5vw,1.75rem) clamp(1rem,3vw,2.25rem); }
+.lb-count{ font-family:'Chakra Petch',sans-serif; font-size:var(--micro); letter-spacing:.24em; text-transform:uppercase; color:var(--l55); }
+.lb-close{
+  width:2.5rem; height:2.5rem; border-radius:999px; display:grid; place-items:center;
+  border:1px solid var(--l16);
+  transition:background .4s var(--ease), border-color .4s var(--ease), transform .3s var(--ease-press);
+}
+.lb-close:hover{ background:var(--l08); border-color:var(--l40); }
+.lb-close:active{ transform:scale(.94); }
+.lb-stage{ position:relative; display:grid; place-items:center; padding-inline:clamp(1rem,3vw,2.25rem); min-height:0; }
+.lb-img{
+  max-width:100%; max-height:100%; border-radius:var(--radius); object-fit:contain;
+  opacity:0; transform:scale(.97);
+  transition:opacity .5s var(--ease), transform .5s var(--ease);
+}
+.lb-img.shown{ opacity:1; transform:none; }
+.lb-nav{
+  position:absolute; top:50%; translate:0 -50%;
+  width:clamp(2.5rem,4vw,3.25rem); height:clamp(2.5rem,4vw,3.25rem);
+  border-radius:999px; display:grid; place-items:center;
+  background:rgba(0,0,0,.5); border:1px solid var(--l16);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  transition:background .4s var(--ease), border-color .4s var(--ease), transform .3s var(--ease-press);
+}
+.lb-nav:hover{ background:rgba(255,255,255,.12); border-color:var(--l40); }
+.lb-nav:active{ transform:scale(.92); }
+.lb-prev{ left:clamp(.5rem,2vw,1.5rem); }
+.lb-next{ right:clamp(.5rem,2vw,1.5rem); }
+@media (max-width:640px){ .lb-nav{ display:none; } }
+.lb-foot{ display:flex; flex-direction:column; gap:clamp(.75rem,2vh,1.25rem); padding:clamp(1rem,2.5vw,1.75rem) clamp(1rem,3vw,2.25rem) clamp(1.25rem,3vh,2rem); }
+.lb-meta{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+.lb-meta h3{ margin:0; font-family:'Orbitron',sans-serif; font-weight:700; font-size:clamp(.85rem,.9vw + .45rem,1.2rem); text-transform:uppercase; letter-spacing:.09em; }
+.lb-meta .stage{ font-family:'Chakra Petch',sans-serif; font-size:var(--micro); letter-spacing:.22em; text-transform:uppercase; color:var(--l55); }
+.lb-strip{ display:flex; gap:.5rem; overflow-x:auto; padding-bottom:.25rem; scrollbar-width:thin; scrollbar-color:var(--l16) transparent; }
+.lb-strip::-webkit-scrollbar{ height:3px; }
+.lb-strip::-webkit-scrollbar-thumb{ background:var(--l16); border-radius:2px; }
+.lb-thumb{
+  flex:none; width:clamp(3rem,5vw,4.25rem); aspect-ratio:1/1;
+  border-radius:calc(var(--radius) * .55); overflow:hidden;
+  opacity:.4; outline:2px solid transparent; outline-offset:2px;
+  transition:opacity .4s var(--ease), outline-color .4s var(--ease);
+}
+.lb-thumb img{ width:100%; height:100%; object-fit:cover; }
+.lb-thumb:hover{ opacity:.8; }
+.lb-thumb[aria-current="true"]{ opacity:1; outline-color:var(--ink); }
+
+
+/* ============================================================
+   2.5 · REVEAL — Video oeffnet beim Scrollen ins Vollbild,
+   scrubbt bis zum letzten Frame und schliesst wieder. Links und
+   rechts fliegen Schlagwoerter ein.
+
+   Aufbau: ein langer .sr-track gibt den Scrollweg vor. Darin
+   klebt .sr-stage (sticky, 100svh). Der Fortschritt 0..1 steuert
+   drei Phasen ueber die Variable --p:
+     OPEN_END   bis hier faehrt der Clip ins Vollbild auf
+     HOLD_*     dazwischen laeuft nur das Video (Scrub)
+     CLOSE_START ab hier faehrt der Rahmen wieder zu
+   ============================================================ */
+.sr-sec{ position:relative; background:var(--bg); }
+.sr-track{ height:360svh; }
+.sr-stage{
+  position:sticky; top:0; height:100svh; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  --p:0;
+}
+.sr-frame{
+  position:absolute; inset:0; background:#000;
+  clip-path:inset(var(--inset-y, 32vh) var(--inset-x, 32vw) round var(--inset-r, 20px));
+  will-change:clip-path;
+}
+.sr-frame video{ width:100%; height:100%; object-fit:cover; display:block; }
+.sr-frame:fullscreen{ clip-path:none !important; }
+
+.sr-veil{
+  position:absolute; inset:0; pointer-events:none; z-index:2;
+  background:linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 40%);
+  opacity:var(--p);
+}
+
+/* Kicker oben, nur bevor der Clip offen ist */
+.sr-kicker{
+  position:absolute; z-index:3; top:calc(var(--inset-y, 32vh) - 2.6rem);
+  left:0; right:0; display:flex; justify-content:center; gap:.75rem; align-items:center;
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.28em; text-transform:uppercase;
+  color:var(--l55); pointer-events:none;
+  opacity:calc(1 - var(--p) * 3);
+}
+.sr-kicker .rule{ width:2.5rem; height:1px; background:var(--l16); }
+
+/* Untertitel, erscheint wenn der Clip vollflaechig steht */
+.sr-cap{
+  position:absolute; z-index:3; left:var(--pad-x); bottom:clamp(1.5rem,5vh,3.25rem);
+  display:flex; flex-direction:column; gap:.4rem; pointer-events:none;
+  opacity:var(--p-mid); transform:translateY(calc((1 - var(--p-mid)) * 12px));
+}
+.sr-cap .k{
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.28em; text-transform:uppercase; color:var(--l55);
+}
+.sr-cap .t{
+  font-family:'Orbitron',sans-serif; font-weight:700; text-transform:uppercase;
+  letter-spacing:.05em; line-height:1.05; font-size:var(--headline-2);
+  text-shadow:0 2px 20px rgba(0,0,0,.6);
+}
+
+/* Schlagwoerter links / rechts */
+.sr-words{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+.sr-word{
+  position:absolute; font-family:'Orbitron',sans-serif; font-weight:700;
+  text-transform:uppercase; letter-spacing:.14em;
+  font-size:clamp(1.1rem, 1vw + 0.8rem, 2rem);
+  color:var(--ink); text-shadow:0 2px 18px rgba(0,0,0,.7);
+  opacity:0; will-change:transform,opacity;
+}
+.sr-word.l{ left:clamp(1.25rem,4vw,4rem);  transform:translateX(-40px); text-align:left; }
+.sr-word.r{ right:clamp(1.25rem,4vw,4rem); transform:translateX(40px);  text-align:right; }
+.sr-word .n{
+  display:block; font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.24em; color:var(--l40); margin-bottom:.2rem;
+}
+.sr-word.on{ opacity:1; transform:translateX(0); }
+.sr-word{ transition:opacity .5s var(--ease), transform .6s var(--ease); }
+
+.sr-ctrls{
+  position:absolute; z-index:4;
+  right:clamp(.75rem,1.6vw,1.4rem); bottom:clamp(.75rem,1.6vw,1.4rem);
+  display:flex; gap:.5rem; opacity:var(--p-mid); transition:opacity .3s var(--ease);
+}
+.sr-ctrls .vctrl{ position:static; }
+
+@media (max-width:760px){
+  .sr-track{ height:300svh; }
+  .sr-frame{ --inset-y:34vh; --inset-x:8vw; }
+  .sr-word{ font-size:clamp(.9rem,3vw,1.3rem); }
+}
+@media (prefers-reduced-motion:reduce){
+  .sr-track{ height:auto; }
+  .sr-stage{ position:relative; height:auto; padding:clamp(3rem,8vh,6rem) 0; }
+  .sr-frame{ position:relative; inset:auto; clip-path:none !important;
+             aspect-ratio:16/9; margin:0 var(--pad-x); border-radius:var(--radius); }
+  .sr-kicker{ display:none; }
+  .sr-cap,.sr-ctrls{ opacity:1; transform:none; }
+  .sr-word{ opacity:1; transform:none; position:static; display:inline-block; margin:.5rem 1rem; }
+  .sr-words{ position:static; text-align:center; padding-top:1.5rem; }
+}
+
+/* ============================================================
+   3 · TRAILER — oberhalb der zweiten Galerie
+   ============================================================ */
+.trailer-sec{ padding-inline:var(--pad-x); padding-block:var(--sec-py) 0; }
+.trailer-frame{
+  position:relative; margin-top:clamp(2rem,5vh,3.5rem);
+  aspect-ratio:16/9; overflow:hidden; border-radius:var(--radius);
+  background:#000; border:1px solid var(--l16);
+}
+@media (max-width:640px){ .trailer-frame{ aspect-ratio:4/3; } }
+.trailer-frame video{ width:100%; height:100%; object-fit:cover; }
+.trailer-frame .veil{
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 45%);
+  opacity:1; transition:opacity .6s var(--ease);
+}
+.trailer-frame.playing .veil{ opacity:0; }
+
+/* Grosser Play-Knopf */
+.tr-play{
+  position:absolute; inset:0; z-index:3;
+  display:grid; place-items:center; gap:1rem;
+  transition:opacity .5s var(--ease);
+}
+.trailer-frame.playing .tr-play{ opacity:0; pointer-events:none; }
+.tr-play .ring{
+  width:clamp(3.5rem,7vw,5.5rem); height:clamp(3.5rem,7vw,5.5rem);
+  border-radius:999px; display:grid; place-items:center;
+  border:1px solid rgba(255,255,255,.55); background:rgba(0,0,0,.4);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  transition:background .45s var(--ease), transform .35s var(--ease-press), border-color .45s var(--ease);
+}
+.tr-play:hover .ring{ background:rgba(255,255,255,.16); border-color:#fff; }
+.tr-play:active .ring{ transform:scale(.94); }
+.tr-play .lbl{
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.28em; text-transform:uppercase; color:var(--l70);
+}
+
+/* Ton- und Pause-Schalter, in jeder Video-Ecke gleich */
+.vctrl{
+  position:absolute; z-index:4; display:inline-flex; align-items:center; gap:.5rem;
+  padding:.5rem .9rem; border-radius:999px;
+  border:1px solid rgba(255,255,255,.4); background:rgba(0,0,0,.45); color:#fff;
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.2em; text-transform:uppercase;
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  transition:background .4s var(--ease), border-color .4s var(--ease), opacity .4s var(--ease);
+}
+.vctrl:hover{ background:rgba(0,0,0,.7); border-color:#fff; }
+.vctrl.snd{ right:clamp(.75rem,1.6vw,1.4rem); bottom:clamp(.75rem,1.6vw,1.4rem); }
+.trailer-frame .vctrl.play{ left:clamp(.75rem,1.6vw,1.4rem); bottom:clamp(.75rem,1.6vw,1.4rem); opacity:0; }
+.trailer-frame.playing .vctrl.play{ opacity:1; }
+.vctrl .off{ display:none; }
+.vctrl[aria-pressed="true"] .off{ display:inline; }
+.vctrl[aria-pressed="true"] .on{ display:none; }
+
+.trailer-meta{
+  display:flex; flex-wrap:wrap; gap:clamp(1rem,3vw,3rem);
+  margin-top:clamp(1rem,2.5vh,1.75rem);
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.22em; text-transform:uppercase; color:var(--l55);
+}
+.trailer-meta b{ color:var(--ink); font-weight:600; }
+
+/* ============================================================
+   4 · GALERIE 2 — vollflaechiges Akkordeon, scrollt nach links
+   ============================================================ */
+.acc-sec{ padding-block:var(--sec-py) 0; }
+.acc-sec .acc-head{ padding-inline:var(--pad-x); }
+
+.acc-wrap{
+  position:relative; margin-top:clamp(2rem,5vh,3.5rem);
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+  mask-image:linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+}
+.acc-track{
+  display:flex; gap:clamp(.4rem,.8vw,.75rem);
+  width:max-content;
+  animation:accScroll var(--acc-dur, 70s) linear infinite;
+  will-change:transform;
+}
+.acc-wrap.paused .acc-track{ animation-play-state:paused; }
+@keyframes accScroll{ from{ transform:translate3d(0,0,0) } to{ transform:translate3d(-50%,0,0) } }
+
+.acc-item{
+  position:relative; flex:none; padding:0; overflow:hidden;
+  width:clamp(6rem, 13vw, 13rem);
+  height:clamp(20rem, 62vh, 40rem);
+  border-radius:var(--radius);
+  background:var(--surface); cursor:pointer;
+  transition:width .85s var(--ease), filter .6s var(--ease);
+  filter:grayscale(.35) brightness(.82);
+}
+.acc-item.open{
+  width:clamp(16rem, 42vw, 46rem);
+  filter:none;
+}
+.acc-item > img,
+.acc-item > video{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+}
+.acc-item .shade{
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.15) 42%, rgba(0,0,0,0) 70%);
+}
+/* Titel steht quer, solange die Kachel schmal ist */
+.acc-item .label{
+  position:absolute; left:0; right:0; bottom:0;
+  padding:clamp(.85rem,1.4vw,1.35rem);
+  display:flex; flex-direction:column; gap:.35rem; text-align:left;
+}
+.acc-item .lt{
+  font-family:'Orbitron',sans-serif; font-weight:700;
+  font-size:clamp(.7rem,.75vw + .35rem,1rem);
+  text-transform:uppercase; letter-spacing:.09em; line-height:1.3;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.acc-item .ls{
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.2em; text-transform:uppercase; color:var(--l55);
+  opacity:0; transform:translateY(6px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+.acc-item.open .ls{ opacity:1; transform:none; }
+.acc-item .badge{
+  position:absolute; top:.75rem; left:.75rem;
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.3rem .6rem; border-radius:999px;
+  background:rgba(0,0,0,.55); border:1px solid var(--l16);
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.18em; text-transform:uppercase; color:var(--l70);
+}
+.acc-hint{
+  display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  padding-inline:var(--pad-x); margin-top:clamp(1rem,2.5vh,1.75rem);
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.22em; text-transform:uppercase; color:var(--l55);
+}
+@media (max-width:640px){
+  .acc-item{ width:clamp(8rem,42vw,14rem); height:clamp(18rem,52vh,26rem); }
+  .acc-item.open{ width:min(78vw, 26rem); }
+}
+
+
+/* ---------- Akkordeon: Pfeile und Ziehen ---------- */
+.acc-wrap{ touch-action:pan-y; cursor:grab; }
+.acc-wrap.dragging{ cursor:grabbing; }
+.acc-nav{
+  position:absolute; top:50%; translate:0 -50%; z-index:5;
+  width:clamp(2.4rem,3.5vw,3.25rem); height:clamp(2.4rem,3.5vw,3.25rem);
+  border-radius:999px; display:grid; place-items:center;
+  background:rgba(0,0,0,.55); border:1px solid var(--l16); color:#fff;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  transition:background .4s var(--ease), border-color .4s var(--ease), transform .3s var(--ease-press);
+}
+.acc-nav:hover{ background:rgba(255,255,255,.16); border-color:var(--l40); }
+.acc-nav:active{ transform:translateY(-50%) scale(.92); }
+.acc-prev{ left:clamp(.5rem,1.5vw,1.25rem); }
+.acc-next{ right:clamp(.5rem,1.5vw,1.25rem); }
+
+/* ---------- Reel-Lightbox: Bild oder Video ---------- */
+.rlb-media{
+  position:relative; display:grid; place-items:center;
+  max-width:100%; max-height:100%; min-height:0;
+}
+.rlb-media img,
+.rlb-media video{
+  max-width:100%; max-height:100%; width:auto; height:auto;
+  border-radius:var(--radius); object-fit:contain; background:#000;
+  opacity:0; transform:scale(.97);
+  transition:opacity .5s var(--ease), transform .5s var(--ease);
+}
+.rlb-media img.shown,
+.rlb-media video.shown{ opacity:1; transform:none; }
+.rlb-media video{ display:none; }
+.rlb-media.is-video video{ display:block; }
+.rlb-media.is-video img{ display:none; }
+.rlb-tools{ display:flex; gap:.5rem; align-items:center; }
+
+/* ---------- Vollbild-Knopf ---------- */
+.vctrl.fs{ right:clamp(.75rem,1.6vw,1.4rem); top:clamp(.75rem,1.6vw,1.4rem); }
+:fullscreen video, :-webkit-full-screen video{ width:100%; height:100%; object-fit:contain; background:#000; }
+:fullscreen .veil, :fullscreen .tr-play{ display:none; }
+
+/* ============================================================
+   Responsive — enge Viewports
+   ============================================================ */
+@media (max-width:760px){
+  .hero-bottom{ flex-direction:column; align-items:flex-start; gap:1.25rem; }
+  .feature{ min-width:0; width:100%; }
+  .lb-foot{ gap:.75rem; }
+  .lb-meta{ flex-direction:column; gap:.25rem; }
+  .trailer-meta{ gap:.6rem 1.25rem; }
+  .acc-hint{ flex-direction:column; gap:.4rem; }
+}
+@media (max-width:560px){
+  .tr-play .lbl{ display:none; }
+  .vctrl span{ display:none; }
+  .vctrl{ padding:.55rem; }
+  .vctrl .off,.vctrl .on{ display:none; }
+  .vctrl svg .off,.vctrl svg .on{ display:inline; }
+  .lb-thumb{ width:2.75rem; }
+}
+/* ============================================================
+   6 · Zurueck
+   ============================================================ */
+.back{
+  display:flex; align-items:center; gap:clamp(1rem,3vw,2.5rem); flex-wrap:wrap;
+  margin-inline:var(--pad-x); margin-block:var(--sec-py);
+  padding:clamp(1.5rem,4vw,3rem);
+  border:1px solid var(--l16); border-radius:var(--radius);
+  transition:background .6s var(--ease), border-color .6s var(--ease);
+}
+.back:hover{ background:var(--surface); border-color:var(--l40); }
+.back svg{ flex:none; transition:transform .5s var(--ease); }
+.back:hover svg{ transform:translateX(-6px); }
+.back .bt{
+  display:block; font-family:'Orbitron',sans-serif; font-weight:700;
+  font-size:clamp(1rem,1.4vw + .5rem,1.9rem);
+  text-transform:uppercase; letter-spacing:.08em; line-height:1.2;
+}
+.back .bs{
+  display:block; margin-top:.6rem;
+  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
+  letter-spacing:.24em; text-transform:uppercase; color:var(--l55);
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-foot{
+  border-top:1px solid var(--l16);
+  padding-inline:var(--pad-x);
+  padding-block:clamp(2rem,5vh,3.5rem) clamp(1.25rem,3vh,2rem);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:1.5rem; flex-wrap:wrap;
+  font-size:var(--micro); letter-spacing:.22em; text-transform:uppercase;
+  color:var(--l55);
+}
+.foot-nav{ display:flex; gap:clamp(1rem,2.5vw,2rem); flex-wrap:wrap; }
+.foot-nav a{ transition:color .4s var(--ease); }
+.foot-nav a:hover{ color:var(--ink); }
+
+/* ============================================================
+   Reveals
+   ============================================================ */
+.rv{ opacity:0; transform:translateY(26px); transition:opacity .9s var(--ease), transform .9s var(--ease); }
+.rv.in{ opacity:1; transform:none; }
+.rv[data-d="1"]{ transition-delay:.08s } .rv[data-d="2"]{ transition-delay:.16s }
+
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  .rv,.tile{ opacity:1 !important; transform:none !important; }
+  [data-in]{ opacity:1 !important; }
+  .hero-track{ height:auto; }
+  .hero-stage{ position:relative; height:auto; min-height:88svh; }
+  .acc-track{ animation:none; }
+  .acc-wrap{ overflow-x:auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- Feste Kopfnavigation: Zurueck zum Portfolio + die drei Cases -->
+<!-- ▼ ZURUECK-LINK: hier das Ziel deiner vorherigen Seite eintragen ▼ -->
+<header class="lab-nav" id="labNav">
+  <a class="lab-back" href="../index.html" aria-label="Back to portfolio">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    <span>Portfolio</span>
+  </a>
+
+  <nav class="lab-cases" id="labCases" aria-label="Cases">
+    <a href="AILABS.html" class="is-active" aria-current="page"><span class="n">01</span> Case 1</a>
+    <a href="AILABS-case2.html"><span class="n">02</span> Case 2</a>
+    <a href="AILABS-case3.html"><span class="n">03</span> Case 3</a>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- ============================ 1 · HERO ============================ -->
+<section class="hero" id="hero">
+  <div class="hero-media" id="heroMedia">
+    <div class="hero-layer hero-base"></div>
+    <div class="hero-layer hero-reveal" id="heroReveal"></div>
+    <canvas id="heroMaskCanvas" style="display:none" aria-hidden="true"></canvas>
+    <div class="hero-ripple" id="heroRipple" aria-hidden="true"></div>
+    <svg class="hero-grid" id="heroGrid" aria-hidden="true">
+      <defs>
+        <pattern id="heroGridPat" width="48" height="48" patternUnits="userSpaceOnUse">
+          <path d="M 48 0 L 0 0 0 48"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#heroGridPat)"/>
+    </svg>
+  </div>
+
+  <div class="hero-shade"></div>
+
+  <div class="hero-feature rv">
+    <span class="c tl"></span><span class="c tr"></span>
+    <span class="c bl"></span><span class="c br"></span>
+
+    <div class="hf-top">
+      <svg class="globe" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="28"/>
+        <line x1="4" y1="32" x2="60" y2="32"/>
+        <ellipse cx="32" cy="32" rx="28" ry="12"/>
+        <ellipse cx="32" cy="32" rx="28" ry="22"/>
+        <line x1="32" y1="4" x2="32" y2="60"/>
+        <ellipse cx="32" cy="32" rx="12" ry="28"/>
+        <ellipse cx="32" cy="32" rx="22" ry="28"/>
+      </svg>
+      <span class="hf-idx">Case 01 / 03</span>
+    </div>
+
+    <div class="hf-body">
+      <span class="hf-kicker">AI Workflow — Portfolio 2026</span>
+      <h1 class="hf-title">Project EVE</h1>
+      <p class="hf-lead">One avatar, carried through an entire AI production pipeline — concept, character sheet, material studies, motion, grade.</p>
+    </div>
+
+    <a class="hf-cta" href="#gallery">
+      <span>Enter the case</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============================ 2 · GALERIE 1 ============================ -->
+<section class="section" id="gallery">
+  <div class="sec-label rv"><b>Frame index</b> <span>—</span> <span>Key scenes &amp; studies</span></div>
+  <div class="sec-head">
+    <h2 class="hl rv">Same avatar,<br>every stage</h2>
+    <p class="sl rv" data-d="1">Key scenes and the rig, shader and lighting tests they came out of. <strong>Filter by stage, or open any frame full size.</strong></p>
+  </div>
+
+  <div class="filters" id="filters" role="group" aria-label="Filter frames by stage"></div>
+  <div class="gallery" id="galleryGrid"></div>
+</section>
+
+
+<!-- ============================ 2.5 · REVEAL — Scroll ins Vollbild ============================ -->
+<section class="sr-sec" id="reveal" aria-label="Project EVE — reveal">
+  <div class="sr-track" id="srTrack">
+    <div class="sr-stage" id="srStage">
+
+      <div class="sr-frame" id="srFrame">
+        <video id="srVideo" playsinline muted preload="auto" disablepictureinpicture
+               poster="../img/AI/eve/v09-poster.jpg">
+          <source src="../img/AI/videos/eve/v09.mp4" type="video/mp4">
+        </video>
+        <div class="sr-veil" aria-hidden="true"></div>
+      </div>
+
+      <div class="sr-kicker" aria-hidden="true">
+        <span class="rule"></span><span>Scroll to reveal</span><span class="rule"></span>
+      </div>
+
+      <!-- Schlagwoerter — hier gern anpassen -->
+      <div class="sr-words" id="srWords" aria-hidden="true">
+        <span class="sr-word l" data-at="0.30" style="top:26%"><span class="n">01</span>Concept</span>
+        <span class="sr-word r" data-at="0.42" style="top:38%"><span class="n">02</span>Character</span>
+        <span class="sr-word l" data-at="0.54" style="top:52%"><span class="n">03</span>Material</span>
+        <span class="sr-word r" data-at="0.66" style="top:64%"><span class="n">04</span>Motion</span>
+        <span class="sr-word l" data-at="0.78" style="top:76%"><span class="n">05</span>Grade</span>
+      </div>
+
+      <div class="sr-cap">
+        <span class="k">Motion — 00:10</span>
+        <span class="t">Pull-back</span>
+      </div>
+
+      <div class="sr-ctrls">
+        <button class="vctrl fs" data-fs="reveal" aria-label="Fullscreen"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/></svg><span>Full</span></button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 3 · TRAILER ============================ -->
+<section class="trailer-sec" id="trailer">
+  <div class="sec-label rv"><b>Trailer</b> <span>—</span> <span>Project EVE</span></div>
+  <div class="sec-head">
+    <h2 class="hl rv">Project EVE Teaser</h2>
+    <p class="sl rv" data-d="1">Every pass on this page, assembled into one piece with sound. <strong>Thirty-five seconds, one avatar, no reshoots.</strong></p>
+  </div>
+
+  <div class="trailer-frame" id="trailerFrame">
+    <video id="trailerVideo" playsinline preload="metadata" poster="../img/AI/trailer-poster.jpg">
+      <source src="../img/AI/videos/trailer.mp4" type="video/mp4">
+    </video>
+    <div class="veil"></div>
+
+    <button class="tr-play" id="trPlay" aria-label="Play trailer with sound">
+      <span class="ring">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+      <span class="lbl">Play with sound</span>
+    </button>
+
+    <button class="vctrl play" id="trPause" aria-label="Pause trailer">Pause</button>
+<button class="vctrl fs" data-fs="trailer" aria-label="Fullscreen"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/></svg><span>Full</span></button>
+    <button class="vctrl snd" id="trSnd" aria-pressed="true" aria-label="Toggle sound">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path class="off" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/><path class="on" d="m22 9-6 6M16 9l6 6"/></svg>
+      <span class="on">Sound off</span><span class="off">Sound on</span>
+    </button>
+  </div>
+
+  <div class="trailer-meta">
+    <span>Length <b>00:35</b></span>
+    <span>Master <b>1920 × 1080</b></span>
+    <span>Audio <b>Stereo</b></span>
+    <span>Stage <b>Edit / Grade</b></span>
+  </div>
+</section>
+
+<!-- ============================ 4 · GALERIE 2 · AKKORDEON ============================ -->
+<section class="acc-sec" id="reel">
+  <div class="acc-head">
+    <div class="sec-label rv"><b>Teaser reel</b> <span>—</span> <span>Project EVE</span></div>
+    <div class="sec-head">
+      <h2 class="hl rv">The moving cut</h2>
+      <p class="sl rv" data-d="1">Trailer shots and costume plates, shuffled fresh on every visit. <strong>Hover or tap a panel to open it — the strip pauses while you look.</strong></p>
+    </div>
+  </div>
+
+  <div class="acc-wrap" id="accWrap">
+    <div class="acc-track" id="accTrack"></div>
+    <button class="acc-nav acc-prev" id="accPrev" aria-label="Scroll left">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button class="acc-nav acc-next" id="accNext" aria-label="Scroll right">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <div class="acc-hint">
+    <span id="accCount">—</span>
+    <span>Shuffled per visit · hover to hold</span>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ 5 · ZURUECK ============================ -->
+<!-- ▼ ZURUECK-LINK: hier das Ziel deiner vorherigen Seite eintragen ▼ -->
+<a class="back rv" href="../index.html">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+  <span>
+    <span class="bt">Back to portfolio</span>
+    <span class="bs">daverindorindo.de — Work, About, Contact</span>
+  </span>
+</a>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="site-foot">
+  <span>Project EVE © 2026 — AI Workflow Portfolio</span>
+  <nav class="foot-nav">
+    <a href="../index.html">Portfolio</a>
+    <a href="#top">Top</a>
+  </nav>
+</footer>
+
+<!-- ============================ LIGHTBOX ============================ -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Frame viewer" aria-hidden="true">
+  <div class="lb-head">
+    <span class="lb-count" id="lbCount">01 / 08</span>
+    <button class="lb-close" id="lbClose" aria-label="Close viewer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="lb-stage" id="lbStageEl">
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous frame">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <img class="lb-img" id="lbImg" alt="">
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next frame">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <div class="lb-foot">
+    <div class="lb-meta">
+      <h3 id="lbTitle">—</h3>
+      <span class="stage" id="lbStageName">—</span>
+    </div>
+    <div class="lb-strip" id="lbStrip"></div>
+  </div>
+</div>
+
+
+<!-- ============================ REEL-LIGHTBOX ============================ -->
+<div class="lb" id="reelBox" role="dialog" aria-modal="true" aria-label="Reel viewer" aria-hidden="true">
+  <div class="lb-head">
+    <span class="lb-count" id="rlbCount">01 / 13</span>
+    <div class="rlb-tools">
+      <button class="lb-close" id="rlbFs" aria-label="Fullscreen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/></svg>
+      </button>
+      <button class="lb-close" id="rlbClose" aria-label="Close viewer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="lb-stage" id="rlbStage">
+    <button class="lb-nav lb-prev" id="rlbPrev" aria-label="Previous item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <div class="rlb-media" id="rlbMedia">
+      <img id="rlbImg" alt="">
+      <video id="rlbVideo" playsinline controls muted disableRemotePlayback
+             controlslist="nodownload noplaybackrate" preload="metadata"></video>
+    </div>
+    <button class="lb-nav lb-next" id="rlbNext" aria-label="Next item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <div class="lb-foot">
+    <div class="lb-meta">
+      <h3 id="rlbTitle">—</h3>
+      <span class="stage" id="rlbNote">—</span>
+    </div>
+    <div class="lb-strip" id="rlbStrip"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var clamp01 = function(v){ return v < 0 ? 0 : v > 1 ? 1 : v; };
+
+  /* ============================================================
+     VOLLBILD — mit Fallback fuer iOS Safari, das nur Videos kennt
+     ============================================================ */
+  function goFullscreen(el, video){
+    var doc = document;
+    var isFs = doc.fullscreenElement || doc.webkitFullscreenElement;
+    if (isFs){
+      (doc.exitFullscreen || doc.webkitExitFullscreen || function(){}).call(doc);
+      return;
+    }
+    var req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (req){ req.call(el).catch(function(){}); }
+    else if (video && video.webkitEnterFullscreen){ video.webkitEnterFullscreen(); }
+  }
+
+  var FS_TARGETS = {
+    trailer: { frame:'trailerFrame', video:'trailerVideo' },
+    reveal:  { frame:'srFrame',      video:'srVideo' }
+  };
+  document.querySelectorAll('[data-fs]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var t = FS_TARGETS[btn.getAttribute('data-fs')];
+      if (!t) return;
+      goFullscreen(document.getElementById(t.frame), document.getElementById(t.video));
+    });
+  });
+
+  /* ============================================================
+     HERO — Bild-Reveal am Mauszeiger + Raster-Parallaxe
+
+     Zwei Bildebenen liegen uebereinander. Die obere wird durch
+     eine weiche runde Maske freigelegt, die dem Zeiger mit
+     Verzoegerung folgt. Der Kegel atmet leicht (Radius pulsiert),
+     und jede Zeigerbewegung loest eine feine Ringwelle aus.
+     Das Raster darueber laeuft leicht gegen die Bewegung.
+
+     Die Maske ist ein CSS-Radialverlauf ueber Variablen, kein
+     Canvas. Ein Canvas pro Bild in eine Data-URL zu schreiben
+     kostet ein Vielfaches und sieht identisch aus.
+
+     EASE       Nachlauf des Lichtkegels (0.1 = traege)
+     GRID_EASE  Nachlauf der Rasterverschiebung
+     SCROLLPAR  Scroll-Parallaxe, Anteil der Fensterhoehe
+     PULSE_AMP  Staerke des Atmens, Anteil des Radius (0.06 = 6%)
+     PULSE_MS   Dauer eines Atemzugs
+     ============================================================ */
+  (function(){
+    var hero   = document.getElementById('hero');
+    var media  = document.getElementById('heroMedia');
+    var ripple = document.getElementById('heroRipple');
+    var pat    = document.getElementById('heroGridPat');
+    if (!hero || !media) return;
+
+    var EASE      = 0.10;
+    var GRID_EASE = 0.06;
+    var SCROLLPAR = 0.14;
+    var PULSE_AMP = 0.06;
+    var PULSE_MS  = 4200;
+
+    var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+    /* ---------- Scroll-Parallaxe (auch ohne Maus) ---------- */
+    var sTicking = false;
+    function scrollTick(){
+      sTicking = false;
+      if (reduce) return;
+      var h = hero.offsetHeight || window.innerHeight;
+      var p = clamp01(-hero.getBoundingClientRect().top / h);
+      media.style.transform =
+        'translate3d(0,' + (p * SCROLLPAR * window.innerHeight).toFixed(1) + 'px,0)';
+    }
+    function onScroll(){
+      if (!sTicking){ sTicking = true; requestAnimationFrame(scrollTick); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    scrollTick();
+
+    if (!fine || reduce) return;   /* Touch / reduced motion: nur Basisbild */
+
+    /* ---------- Lichtkegel ---------- */
+    var reveal = document.getElementById('heroReveal');
+    var canvas = document.getElementById('heroMaskCanvas');
+    var ctx    = canvas ? canvas.getContext('2d') : null;
+
+    var mouse  = { x: null, y: null };
+    var smooth = { x: 0, y: 0 };
+    var grid   = { x: 0, y: 0 };
+    var started = false, inView = true;
+    var lastRipple = 0;
+
+    /* Canvas an die Fenstergroesse koppeln — die Maske deckt das
+       ganze Fenster ab und wird per mask-size:100% auf den Layer
+       gestreckt. */
+    function sizeCanvas(){
+      if (!canvas) return;
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    sizeCanvas();
+    window.addEventListener('resize', sizeCanvas);
+
+    function baseRadius(){
+      return Math.round(Math.min(620, Math.max(240, window.innerWidth * 0.24)));
+    }
+    function cellSize(){
+      return Math.round(Math.min(64, Math.max(36, window.innerWidth * 0.028)));
+    }
+    var rBase = baseRadius();
+
+    function applyCell(){
+      if (!pat) return;
+      var c = cellSize();
+      pat.setAttribute('width',  c);
+      pat.setAttribute('height', c);
+      var path = pat.querySelector('path');
+      if (path) path.setAttribute('d', 'M ' + c + ' 0 L 0 0 0 ' + c);
+    }
+    applyCell();
+    window.addEventListener('resize', applyCell);
+
+    /* Laeuft dauerhaft, solange der Hero im Bild ist — das Atmen
+       braucht einen kontinuierlichen Takt, nicht nur bei Bewegung. */
+    function frame(now){
+      if (!inView){ return; }
+
+      smooth.x += (mouse.x - smooth.x) * EASE;
+      smooth.y += (mouse.y - smooth.y) * EASE;
+
+      /* Atmen: Radius sinusfoermig um den Grundwert */
+      var breathe = 1 + PULSE_AMP * Math.sin((now || 0) / PULSE_MS * Math.PI * 2);
+      var radius  = rBase * breathe;
+
+      /* Maske als Canvas neu zeichnen — Verlauf mit den Prompt-Stops.
+         cursorX/Y sind Fensterkoordinaten, weil der Canvas das Fenster
+         abbildet und mask-size:100% ihn auf den Layer streckt. */
+      if (ctx && canvas){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var cxp = smooth.x, cyp = smooth.y;
+        var g = ctx.createRadialGradient(cxp, cyp, 0, cxp, cyp, radius);
+        g.addColorStop(0,    'rgba(255,255,255,1)');
+        g.addColorStop(0.4,  'rgba(255,255,255,1)');
+        g.addColorStop(0.6,  'rgba(255,255,255,0.75)');
+        g.addColorStop(0.75, 'rgba(255,255,255,0.4)');
+        g.addColorStop(0.88, 'rgba(255,255,255,0.12)');
+        g.addColorStop(1,    'rgba(255,255,255,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(cxp, cyp, radius, 0, Math.PI * 2);
+        ctx.fill();
+        var url = canvas.toDataURL();
+        if (reveal){
+          reveal.style.webkitMaskImage = 'url(' + url + ')';
+          reveal.style.maskImage       = 'url(' + url + ')';
+        }
+      }
+
+      /* Raster gegenlaeufig */
+      var r = media.getBoundingClientRect();
+      if (pat && r.width && r.height){
+        var cx = (smooth.x - r.left) / r.width  - 0.5;
+        var cy = (smooth.y - r.top)  / r.height - 0.5;
+        grid.x += (cx * 16 - grid.x) * GRID_EASE;
+        grid.y += (cy * 16 - grid.y) * GRID_EASE;
+        pat.setAttribute('x', grid.x.toFixed(2));
+        pat.setAttribute('y', grid.y.toFixed(2));
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    /* ---------- Ringwelle bei Bewegung ---------- */
+    function emitRipple(x, y){
+      if (!ripple) return;
+      var now = performance.now();
+      if (now - lastRipple < 220) return;   /* nicht zu dicht */
+      lastRipple = now;
+      var r = media.getBoundingClientRect();
+      var dot = document.createElement('span');
+      dot.className = 'ripple-dot';
+      dot.style.left = (x - r.left) + 'px';
+      dot.style.top  = (y - r.top)  + 'px';
+      ripple.appendChild(dot);
+      dot.addEventListener('animationend', function(){ dot.remove(); });
+    }
+
+    window.addEventListener('mousemove', function(e){
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      if (!started){
+        started = true;
+        smooth.x = mouse.x;
+        smooth.y = mouse.y;
+        rBase = baseRadius();
+        requestAnimationFrame(frame);
+      }
+      emitRipple(e.clientX, e.clientY);
+    }, { passive: true });
+
+    window.addEventListener('resize', function(){
+      rBase = baseRadius();
+    });
+
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        var wasOut = !inView;
+        inView = e[0].isIntersecting;
+        if (inView && wasOut && started) requestAnimationFrame(frame);
+      }, { threshold: 0 }).observe(hero);
+    }
+  })();
+
+
+  /* ============================================================
+     REVEAL — Video oeffnet ins Vollbild, scrubbt, schliesst
+     wieder; Schlagwoerter fliegen links/rechts ein.
+
+     Fortschritt p (0..1) aus der Scrollposition der Sektion.
+       0 .. OPEN_END      Rahmen faehrt auf, Clip startet bei t=0
+       OPEN_END .. CLOSE  Clip wird gescrubbt (voll offen)
+       CLOSE .. 1         Rahmen faehrt wieder zu
+
+     Scrubbing braucht v09-scrub.mp4 (Keyframe je Bild) und einen
+     Server, der Range-Anfragen beantwortet — sonst nur Standbild.
+     ============================================================ */
+  (function(){
+    var sec   = document.getElementById('reveal');
+    var stage = document.getElementById('srStage');
+    var frame = document.getElementById('srFrame');
+    var vid   = document.getElementById('srVideo');
+    var words = Array.prototype.slice.call(document.querySelectorAll('#srWords .sr-word'));
+    if (!sec || !stage || !frame || !vid) return;
+
+    var OPEN_END    = 0.20;   /* bis hier ist der Rahmen offen */
+    var CLOSE_START = 0.82;   /* ab hier faehrt er wieder zu   */
+
+    /* Das Video laeuft stumm (Scrub), daher kein Ton-Manager. */
+
+    /* Scrub-Vorbereitung: erst wenn Bilddaten da sind */
+    var dur = 0, scrubbable = false, seekQueued = null;
+    function seek(t){
+      if (vid.seeking){ seekQueued = t; return; }
+      try { vid.currentTime = t; } catch (e) {}
+    }
+    vid.addEventListener('seeked', function(){
+      if (seekQueued !== null){ var t = seekQueued; seekQueued = null; seek(t); }
+    });
+    function readyScrub(){
+      if (scrubbable || reduce) return;
+      if (vid.readyState < 2) return;
+      dur = vid.duration || 0;
+      if (!dur || !isFinite(dur)) return;
+      var canSeek = vid.seekable.length > 0 && vid.seekable.end(0) > 0.5;
+      if (!canSeek){ vid.loop = true; vid.play().catch(function(){}); return; }
+      scrubbable = true; vid.pause(); seek(0.001);
+    }
+    vid.addEventListener('loadeddata', readyScrub);
+    vid.addEventListener('canplay', readyScrub);
+    readyScrub();
+
+    var ticking = false;
+
+    function ease(t){ return 1 - Math.pow(1 - t, 3); }   /* easeOutCubic */
+
+    function draw(){
+      ticking = false;
+      var rect  = sec.getBoundingClientRect();
+      var total = sec.offsetHeight - window.innerHeight;
+      var p     = total > 0 ? clamp01(-rect.top / total) : 0;
+
+      /* Oeffnungsgrad 0..1..0 ueber die drei Phasen */
+      var open;
+      if (p < OPEN_END)          open = ease(p / OPEN_END);
+      else if (p > CLOSE_START)  open = ease(1 - (p - CLOSE_START) / (1 - CLOSE_START));
+      else                       open = 1;
+
+      var narrow = window.innerWidth < 760;
+      var sy = narrow ? 34 : 32;   /* Start-Inset vertikal (vh) */
+      var sx = narrow ? 8  : 32;   /* horizontal (vw)           */
+      var sr = 20;                 /* Eckradius (px)            */
+
+      frame.style.setProperty('--inset-y', (sy * (1 - open)).toFixed(2) + 'vh');
+      frame.style.setProperty('--inset-x', (sx * (1 - open)).toFixed(2) + 'vw');
+      frame.style.setProperty('--inset-r', (sr * (1 - open)).toFixed(1) + 'px');
+      stage.style.setProperty('--p', open.toFixed(3));
+
+      /* Untertitel/Regler nur im vollen Zustand */
+      stage.style.setProperty('--p-mid', (p > OPEN_END && p < CLOSE_START ? 1 : 0));
+
+      /* Scrub: Fortschritt der Halte-Phase auf die Clip-Laenge */
+      if (scrubbable && dur){
+        var span = CLOSE_START - OPEN_END;
+        var mid  = clamp01((p - OPEN_END) / span);
+        seek(mid * (dur - 0.05));
+      }
+
+      /* Schlagwoerter ab ihrem Schwellwert */
+      for (var i = 0; i < words.length; i++){
+        var at = parseFloat(words[i].getAttribute('data-at')) || 0;
+        words[i].classList.toggle('on', p >= at && p < CLOSE_START + 0.05);
+      }
+    }
+    function tick(){ if (!ticking){ ticking = true; requestAnimationFrame(draw); } }
+
+    /* Video nur abspielen/pausieren je nach Sichtbarkeit */
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        if (e[0].isIntersecting){
+          if (!scrubbable && !reduce) vid.play().catch(function(){});
+        } else {
+          if (!scrubbable) vid.pause();
+        }
+      }, { threshold: 0.02 }).observe(sec);
+    }
+
+    if (reduce){
+      vid.loop = true; vid.play().catch(function(){});
+      words.forEach(function(w){ w.classList.add('on'); });
+      return;
+    }
+
+    window.addEventListener('scroll', tick, { passive: true });
+    window.addEventListener('resize', tick);
+    tick();
+  })();
+
+
+  /* ============================================================
+     TON — ein Manager fuer alle Videos ausser dem Hero-Clip
+
+     Browser erlauben Autoplay nur stumm. Deshalb starten alle Clips
+     stumm und werden erst durch eine Nutzeraktion hoerbar. Es kann
+     immer nur eine Quelle klingen; wer den Ton uebernimmt, stellt die
+     anderen still.
+     ============================================================ */
+  var AUDIO = { on:false, current:null, videos:[], buttons:[] };
+
+  function audioRegister(video){
+    video.muted = true;
+    if (AUDIO.videos.indexOf(video) === -1) AUDIO.videos.push(video);
+  }
+  function audioSync(){
+    AUDIO.videos.forEach(function(v){
+      v.muted = !(AUDIO.on && v === AUDIO.current);
+    });
+    AUDIO.buttons.forEach(function(b){
+      b.setAttribute('aria-pressed', String(AUDIO.on));
+    });
+  }
+  /* Uebernimmt den Ton fuer dieses Video (z. B. wenn es sichtbar wird) */
+  function audioClaim(video){ AUDIO.current = video; audioSync(); }
+  function audioToggle(video){
+    if (AUDIO.on && AUDIO.current === video){ AUDIO.on = false; }
+    else { AUDIO.on = true; AUDIO.current = video; }
+    audioSync();
+  }
+  function audioButton(btn, video){
+    AUDIO.buttons.push(btn);
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      audioToggle(video);
+    });
+  }
+
+  /* ============================================================
+     GALERIE 1 — Raster
+     thumb: ../img/AI/gallery/  (1:1, 1080px)
+     full:  ../img/AI/full/     (Originalformat, max 1600px)
+     ============================================================ */
+  var FRAMES = [
+    { id:'g01', name:'Encounter',     stage:'scene', label:'Key scene 01' },
+    { id:'g02', name:'Eye level',     stage:'scene', label:'Key scene 02' },
+    { id:'g03', name:'Uplink',        stage:'study', label:'Rig study 01' },
+    { id:'g04', name:'Tethered',      stage:'study', label:'Rig study 02' },
+    { id:'g05', name:'Port array',    stage:'study', label:'Rig study 03' },
+    { id:'g06', name:'Hands pass',    stage:'study', label:'Anatomy test' },
+    { id:'g07', name:'Iris & skin',   stage:'study', label:'Shader test' },
+    { id:'g08', name:'Profile light', stage:'study', label:'Lighting test' }
+  ];
+
+  var STAGES = [
+    { key:'all',   label:'All frames' },
+    { key:'scene', label:'Key scenes' },
+    { key:'study', label:'Studies' }
+  ];
+
+  var grid = document.getElementById('galleryGrid');
+  grid.innerHTML = FRAMES.map(function(f, i){
+    return '<button class="tile" data-stage="' + f.stage + '" data-i="' + i + '" ' +
+             'aria-label="Open ' + f.name + ' full size">' +
+             '<img src="../img/AI/gallery/' + f.id + '.webp" alt="' + f.name + '" ' +
+                  (i < 4 ? '' : 'loading="lazy" ') + 'decoding="async" width="1080" height="1080">' +
+             '<span class="zoom" aria-hidden="true">' +
+               '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round">' +
+               '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>' +
+             '</span>' +
+             '<span class="cap"><span class="name">' + f.name + '</span>' +
+             '<span class="idx">' + f.label + '</span></span>' +
+           '</button>';
+  }).join('');
+  var tiles = Array.prototype.slice.call(grid.children);
+
+  var filters = document.getElementById('filters');
+  filters.innerHTML = STAGES.map(function(s){
+    var n = s.key === 'all' ? FRAMES.length
+          : FRAMES.filter(function(f){ return f.stage === s.key; }).length;
+    return '<button class="chip" data-stage="' + s.key + '" aria-pressed="' +
+           (s.key === 'all') + '">' + s.label + ' <span class="n">' + n + '</span></button>';
+  }).join('');
+
+  filters.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip');
+    if (!chip) return;
+    var stage = chip.getAttribute('data-stage');
+    Array.prototype.forEach.call(filters.children, function(c){
+      c.setAttribute('aria-pressed', String(c === chip));
+    });
+    tiles.forEach(function(t){
+      t.classList.toggle('out', !(stage === 'all' || t.getAttribute('data-stage') === stage));
+    });
+  });
+
+  /* ============================================================
+     LIGHTBOX
+     ============================================================ */
+  var lb      = document.getElementById('lightbox');
+  var lbImg   = document.getElementById('lbImg');
+  var lbTitle = document.getElementById('lbTitle');
+  var lbStageName = document.getElementById('lbStageName');
+  var lbCount = document.getElementById('lbCount');
+  var lbStrip = document.getElementById('lbStrip');
+  var lbOpener = null, lbIndex = 0;
+
+  lbStrip.innerHTML = FRAMES.map(function(f, i){
+    return '<button class="lb-thumb" data-i="' + i + '" aria-label="Go to ' + f.name + '">' +
+           '<img src="../img/AI/gallery/' + f.id + '.webp" alt="" loading="lazy" decoding="async"></button>';
+  }).join('');
+  var thumbs = Array.prototype.slice.call(lbStrip.children);
+
+  function show(i){
+    lbIndex = (i + FRAMES.length) % FRAMES.length;
+    var f = FRAMES[lbIndex];
+
+    lbImg.classList.remove('shown');
+    var next = new Image();
+    next.onload = function(){
+      lbImg.src = next.src;
+      lbImg.alt = f.name + ' — ' + f.label;
+      lbImg.classList.add('shown');
+    };
+    next.src = '../img/AI/full/' + f.id + '.webp';
+
+    lbTitle.textContent = f.name;
+    lbStageName.textContent = f.label;
+    lbCount.textContent = String(lbIndex + 1).padStart(2, '0') + ' / ' + FRAMES.length;
+
+    thumbs.forEach(function(t, j){ t.setAttribute('aria-current', String(j === lbIndex)); });
+    thumbs[lbIndex].scrollIntoView({ block:'nearest', inline:'center', behavior: reduce ? 'auto' : 'smooth' });
+
+    [lbIndex + 1, lbIndex - 1].forEach(function(j){
+      var n = FRAMES[(j + FRAMES.length) % FRAMES.length];
+      new Image().src = '../img/AI/full/' + n.id + '.webp';
+    });
+  }
+  function openLb(i, opener){
+    lbOpener = opener || null;
+    show(i);
+    lb.classList.add('on');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('locked');
+    document.getElementById('lbClose').focus();
+  }
+  function closeLb(){
+    lb.classList.remove('on');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('locked');
+    if (lbOpener) lbOpener.focus();
+  }
+
+  grid.addEventListener('click', function(e){
+    var tile = e.target.closest('.tile');
+    if (tile) openLb(parseInt(tile.getAttribute('data-i'), 10), tile);
+  });
+  lbStrip.addEventListener('click', function(e){
+    var t = e.target.closest('.lb-thumb');
+    if (t) show(parseInt(t.getAttribute('data-i'), 10));
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbPrev').addEventListener('click', function(){ show(lbIndex - 1); });
+  document.getElementById('lbNext').addEventListener('click', function(){ show(lbIndex + 1); });
+  document.getElementById('lbStageEl').addEventListener('click', function(e){
+    if (e.target === this) closeLb();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('on')) return;
+    if (e.key === 'Escape')     closeLb();
+    if (e.key === 'ArrowRight') show(lbIndex + 1);
+    if (e.key === 'ArrowLeft')  show(lbIndex - 1);
+  });
+  var tx = 0, ty = 0;
+  lb.addEventListener('touchstart', function(e){
+    tx = e.changedTouches[0].clientX; ty = e.changedTouches[0].clientY;
+  }, { passive:true });
+  lb.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) show(lbIndex + (dx < 0 ? 1 : -1));
+    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) closeLb();
+  }, { passive:true });
+
+  /* ============================================================
+     GALERIE 2 — Akkordeon-Slider
+
+     Der Streifen driftet nach links, laesst sich mit den Pfeilen
+     springen und mit der Maus oder dem Finger ziehen. Ein Klick auf
+     eine Kachel oeffnet sie gross in der Reel-Lightbox.
+
+     type 'video' -> ../img/AI/videos/eve/<id>.mp4 + ../img/AI/eve/<id>-poster.jpg
+     type 'image' -> ../img/AI/eve/<id>.webp
+     ============================================================ */
+  var REEL = [
+    { id:'v01', type:'video', name:'Trailer plate 01', note:'Teaser · 00:08' },
+    { id:'v02', type:'video', name:'Trailer plate 02', note:'Teaser · 00:05' },
+    { id:'v03', type:'video', name:'Trailer plate 03', note:'Teaser · 00:05' },
+    { id:'v04', type:'video', name:'Trailer plate 04', note:'Teaser · 00:10' },
+    { id:'v05', type:'video', name:'Trailer plate 05', note:'Teaser · 00:06' },
+    { id:'v06', type:'video', name:'Trailer plate 06', note:'Teaser · 00:08' },
+    { id:'v07', type:'video', name:'Trailer plate 07', note:'Teaser · 00:08' },
+    { id:'v08', type:'video', name:'Trailer plate 08', note:'Teaser · 00:08' },
+    { id:'v10', type:'video', name:'Motion pass',      note:'Image-to-video · 00:10' },
+    { id:'i01', type:'image', name:'Costume turnaround', note:'Character sheet' },
+    { id:'i02', type:'image', name:'Glove study',        note:'Material pass' },
+    { id:'i03', type:'image', name:'Weave macro',        note:'Material pass' },
+    { id:'i04', type:'image', name:'Hip rig',            note:'Material pass' },
+    { id:'i05', type:'image', name:'Hair pass',          note:'Shader test' }
+  ];
+
+  function reelPoster(it){
+    return it.type === 'video' ? '../img/AI/eve/' + it.id + '-poster.jpg'
+                               : '../img/AI/eve/' + it.id + '.webp';
+  }
+
+  // Fisher-Yates — bei jedem Aufruf eine neue Reihenfolge
+  function shuffle(a){
+    var c = a.slice();
+    for (var i = c.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = c[i]; c[i] = c[j]; c[j] = t;
+    }
+    return c;
+  }
+
+  var order    = shuffle(REEL);
+  var accTrack = document.getElementById('accTrack');
+  var accWrap  = document.getElementById('accWrap');
+
+  function itemHtml(it, i){
+    var media = it.type === 'video'
+      ? '<video src="../img/AI/videos/eve/' + it.id + '.mp4" poster="../img/AI/eve/' + it.id + '-poster.jpg" ' +
+        'muted loop playsinline preload="none"></video>'
+      : '<img src="../img/AI/eve/' + it.id + '.webp" alt="' + it.name + '" loading="lazy" decoding="async">';
+    var badge = it.type === 'video'
+      ? '<span class="badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Clip</span>'
+      : '<span class="badge">Still</span>';
+    return '<button class="acc-item" data-i="' + (i % order.length) + '" aria-label="Open ' + it.name + '">' +
+             media + badge + '<span class="shade"></span>' +
+             '<span class="label"><span class="lt">' + it.name + '</span>' +
+             '<span class="ls">' + it.note + '</span></span>' +
+           '</button>';
+  }
+
+  // Zweimal ausgeben, damit die Schleife nahtlos umspringt
+  accTrack.innerHTML = order.map(itemHtml).concat(order.map(itemHtml)).join('');
+  document.getElementById('accCount').textContent =
+    REEL.filter(function(r){ return r.type === 'video'; }).length + ' clips · ' +
+    REEL.filter(function(r){ return r.type === 'image'; }).length + ' stills';
+
+  var accItems = Array.prototype.slice.call(accTrack.children);
+  var fine     = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* ---------- Bewegung ---------- */
+  var DRIFT = 26;        // Pixel pro Sekunde
+  var x = 0, targetX = 0, half = 0;
+  var accRaf = null, accVisible = false, dragging = false, holding = false;
+  var last = 0;
+
+  function measure(){
+    // Nur messen, wenn nichts geoeffnet ist — sonst stimmt die Haelfte nicht
+    half = accTrack.scrollWidth / 2;
+  }
+  function stepSize(){
+    var el = accItems[0];
+    return el ? el.getBoundingClientRect().width + 12 : 200;
+  }
+  function accLoop(ts){
+    var dt = last ? Math.min(0.05, (ts - last) / 1000) : 0;
+    last = ts;
+
+    if (!holding && !dragging) targetX += DRIFT * dt;
+    x += (targetX - x) * 0.12;
+
+    if (half > 0){
+      while (x > half){ x -= half; targetX -= half; }
+      while (x < 0)   { x += half; targetX += half; }
+    }
+    accTrack.style.transform = 'translate3d(' + (-x).toFixed(2) + 'px,0,0)';
+    accRaf = accVisible ? requestAnimationFrame(accLoop) : null;
+  }
+
+  document.getElementById('accPrev').addEventListener('click', function(){ targetX -= stepSize(); });
+  document.getElementById('accNext').addEventListener('click', function(){ targetX += stepSize(); });
+
+  /* ---------- Ziehen mit Maus und Finger ---------- */
+  var dragStartX = 0, dragStartTarget = 0, moved = 0;
+  accWrap.addEventListener('pointerdown', function(e){
+    dragging = true; moved = 0;
+    dragStartX = e.clientX; dragStartTarget = targetX;
+    accWrap.classList.add('dragging');
+    accWrap.setPointerCapture(e.pointerId);
+  });
+  accWrap.addEventListener('pointermove', function(e){
+    if (!dragging) return;
+    var dx = e.clientX - dragStartX;
+    moved = Math.max(moved, Math.abs(dx));
+    targetX = dragStartTarget - dx;
+  });
+  function endDrag(){ dragging = false; accWrap.classList.remove('dragging'); }
+  accWrap.addEventListener('pointerup', endDrag);
+  accWrap.addEventListener('pointercancel', endDrag);
+
+  /* ---------- Aufklappen und oeffnen ---------- */
+  function openItem(el){
+    accItems.forEach(function(other){
+      if (other === el) return;
+      other.classList.remove('open');
+      var v = other.querySelector('video');
+      if (v && !v.paused) v.pause();
+    });
+    el.classList.add('open');
+    var vid = el.querySelector('video');
+    if (vid){
+      if (vid.preload === 'none') vid.preload = 'auto';
+      vid.muted = true;            // Moving Cut laeuft grundsaetzlich stumm
+      vid.play().catch(function(){});
+    }
+    holding = true;
+  }
+  function closeItem(el){
+    el.classList.remove('open');
+    var vid = el.querySelector('video');
+    if (vid) vid.pause();
+    if (!accTrack.querySelector('.acc-item.open')) holding = false;
+  }
+
+  accItems.forEach(function(el){
+    if (fine){
+      el.addEventListener('mouseenter', function(){ openItem(el); });
+      el.addEventListener('mouseleave', function(){ closeItem(el); });
+      el.addEventListener('focus',      function(){ openItem(el); });
+      el.addEventListener('blur',       function(){ closeItem(el); });
+    }
+    el.addEventListener('click', function(){
+      if (moved > 8) return;                 // war eine Ziehbewegung, kein Klick
+      reelOpen(parseInt(el.getAttribute('data-i'), 10), el);
+    });
+  });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(e){
+      accVisible = e[0].isIntersecting;
+      if (accVisible){
+        measure();
+        last = 0;
+        if (!accRaf) accRaf = requestAnimationFrame(accLoop);
+      } else {
+        accItems.forEach(function(el){
+          el.classList.remove('open');
+          var v = el.querySelector('video');
+          if (v && !v.paused) v.pause();
+        });
+        holding = false;
+      }
+    }, { threshold: 0 }).observe(accWrap);
+  } else {
+    accVisible = true; measure(); accRaf = requestAnimationFrame(accLoop);
+  }
+
+  var reMeasure;
+  window.addEventListener('resize', function(){
+    clearTimeout(reMeasure);
+    reMeasure = setTimeout(measure, 200);
+  });
+  window.addEventListener('load', measure);
+
+  /* ============================================================
+     REEL-LIGHTBOX — Bild oder Clip in gross
+     ============================================================ */
+  var rlb      = document.getElementById('reelBox');
+  var rlbMedia = document.getElementById('rlbMedia');
+  var rlbImg   = document.getElementById('rlbImg');
+  var rlbVideo = document.getElementById('rlbVideo');
+  var rlbTitle = document.getElementById('rlbTitle');
+  var rlbNote  = document.getElementById('rlbNote');
+  var rlbCount = document.getElementById('rlbCount');
+  var rlbStrip = document.getElementById('rlbStrip');
+  var rlbIndex = 0, rlbOpener = null;
+
+  rlbStrip.innerHTML = order.map(function(it, i){
+    return '<button class="lb-thumb" data-i="' + i + '" aria-label="Go to ' + it.name + '">' +
+           '<img src="' + reelPoster(it) + '" alt="" loading="lazy" decoding="async"></button>';
+  }).join('');
+  var rlbThumbs = Array.prototype.slice.call(rlbStrip.children);
+
+  function reelShow(i){
+    rlbIndex = (i + order.length) % order.length;
+    var it = order[rlbIndex];
+
+    rlbImg.classList.remove('shown');
+    rlbVideo.classList.remove('shown');
+    rlbVideo.pause();
+
+    if (it.type === 'video'){
+      rlbMedia.classList.add('is-video');
+      rlbVideo.src = '../img/AI/videos/eve/' + it.id + '.mp4';
+      rlbVideo.poster = '../img/AI/eve/' + it.id + '-poster.jpg';
+      rlbVideo.muted = true;               // Moving Cut laeuft grundsaetzlich stumm
+      rlbVideo.loop = true;
+      rlbVideo.play().catch(function(){});
+      rlbVideo.classList.add('shown');
+    } else {
+      rlbMedia.classList.remove('is-video');
+      var img = new Image();
+      img.onload = function(){
+        rlbImg.src = img.src;
+        rlbImg.alt = it.name + ' — ' + it.note;
+        rlbImg.classList.add('shown');
+      };
+      img.src = '../img/AI/eve/' + it.id + '.webp';
+    }
+
+    rlbTitle.textContent = it.name;
+    rlbNote.textContent  = it.note;
+    rlbCount.textContent = String(rlbIndex + 1).padStart(2, '0') + ' / ' + order.length;
+    rlbThumbs.forEach(function(t, j){ t.setAttribute('aria-current', String(j === rlbIndex)); });
+    rlbThumbs[rlbIndex].scrollIntoView({ block:'nearest', inline:'center', behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  function reelOpen(i, opener){
+    rlbOpener = opener || null;
+    reelShow(i);
+    rlb.classList.add('on');
+    rlb.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('locked');
+    document.getElementById('rlbClose').focus();
+  }
+  function reelClose(){
+    rlbVideo.pause();
+    rlb.classList.remove('on');
+    rlb.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('locked');
+    if (rlbOpener) rlbOpener.focus();
+  }
+
+  document.getElementById('rlbClose').addEventListener('click', reelClose);
+  document.getElementById('rlbPrev').addEventListener('click', function(){ reelShow(rlbIndex - 1); });
+  document.getElementById('rlbNext').addEventListener('click', function(){ reelShow(rlbIndex + 1); });
+  document.getElementById('rlbFs').addEventListener('click', function(){
+    goFullscreen(order[rlbIndex].type === 'video' ? rlbVideo : rlbMedia, rlbVideo);
+  });
+  rlbStrip.addEventListener('click', function(e){
+    var t = e.target.closest('.lb-thumb');
+    if (t) reelShow(parseInt(t.getAttribute('data-i'), 10));
+  });
+  document.getElementById('rlbStage').addEventListener('click', function(e){
+    if (e.target === this) reelClose();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!rlb.classList.contains('on')) return;
+    if (e.key === 'Escape')     reelClose();
+    if (e.key === 'ArrowRight') reelShow(rlbIndex + 1);
+    if (e.key === 'ArrowLeft')  reelShow(rlbIndex - 1);
+  });
+  var rtx = 0, rty = 0;
+  rlb.addEventListener('touchstart', function(e){
+    rtx = e.changedTouches[0].clientX; rty = e.changedTouches[0].clientY;
+  }, { passive:true });
+  rlb.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - rtx;
+    var dy = e.changedTouches[0].clientY - rty;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) reelShow(rlbIndex + (dx < 0 ? 1 : -1));
+    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) reelClose();
+  }, { passive:true });
+
+  /* ============================================================
+     TRAILER — startet erst auf Klick, dann mit Ton
+     ============================================================ */
+  var trFrame = document.getElementById('trailerFrame');
+  var trVideo = document.getElementById('trailerVideo');
+  var trPlay  = document.getElementById('trPlay');
+  var trPause = document.getElementById('trPause');
+  var trSnd   = document.getElementById('trSnd');
+
+  audioRegister(trVideo);
+  audioButton(trSnd, trVideo);
+
+  function trailerStart(){
+    AUDIO.on = true;              // Klick ist die Nutzeraktion, die Ton erlaubt
+    audioClaim(trVideo);
+    trVideo.play().then(function(){
+      trFrame.classList.add('playing');
+    }).catch(function(){});
+  }
+  function trailerStop(){
+    trVideo.pause();
+    trFrame.classList.remove('playing');
+  }
+
+  trPlay.addEventListener('click', trailerStart);
+  trPause.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (trVideo.paused){ trVideo.play().catch(function(){}); trFrame.classList.add('playing'); trPause.textContent = 'Pause'; }
+    else { trVideo.pause(); trPause.textContent = 'Play'; }
+  });
+  trVideo.addEventListener('ended', function(){ trFrame.classList.remove('playing'); });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(e){
+      if (!e[0].isIntersecting && !trVideo.paused) trailerStop();
+    }, { threshold: 0.2 }).observe(trFrame);
+  }
+
+  /* ============================================================
+     Kopfnavigation — Hintergrund ab Scroll
+     ============================================================ */
+  var labNav = document.getElementById('labNav');
+  if (labNav) {
+    var onScroll = function(){
+      labNav.classList.toggle('solid', window.scrollY > 40);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ============================================================
+     Reveals
+     ============================================================ */
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        if (en.target.classList.contains('tile')){
+          var i = Array.prototype.indexOf.call(en.target.parentNode.children, en.target);
+          en.target.style.transitionDelay = ((i % 4) * 0.07).toFixed(2) + 's';
+        }
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+    document.querySelectorAll('.rv, .tile').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.rv, .tile').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>
