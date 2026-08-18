@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>AI Lab — Case 2 | Dave RindoRindo</title>
+<meta name="description" content="AI Lab — Case 2. In production." />
+<meta name="theme-color" content="#000000" />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="../img/Flavicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/Flavicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   Tokens — identisch zu AILABS.html
+   ============================================================ */
+:root{
+  --pad-x: clamp(1.25rem, 4.5vw, 5rem);
+  --headline-2: clamp(1.6rem, 2.6vw + 0.7rem, 3.4rem);
+  --lead: clamp(0.85rem, 0.5vw + 0.65rem, 1.1rem);
+  --micro: clamp(0.55rem, 0.25vw + 0.45rem, 0.7rem);
+
+  --bg:#000; --ink:#fff;
+  --l08:rgba(255,255,255,.08);
+  --l16:rgba(255,255,255,.16);
+  --l40:rgba(255,255,255,.40);
+  --l55:rgba(255,255,255,.55);
+  --l70:rgba(255,255,255,.70);
+  --brand-red:#e8281f;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ background:var(--bg); -webkit-text-size-adjust:100%; }
+body{
+  margin:0; min-height:100svh; background:var(--bg); color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;
+}
+a{ color:inherit; text-decoration:none; }
+:focus-visible{ outline:2px solid currentColor; outline-offset:3px; }
+
+/* ============================================================
+   Kopfnavigation
+   ============================================================ */
+.lab-nav{
+  position:fixed; z-index:80; top:0; left:0; right:0;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:clamp(.75rem,2vw,2rem);
+  padding:clamp(.7rem,1.6vh,1.1rem) var(--pad-x);
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.22em; text-transform:uppercase;
+  background:rgba(0,0,0,.72); border-bottom:1px solid var(--l08);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+}
+.lab-back{
+  display:inline-flex; align-items:center; gap:.6rem; flex:none;
+  padding:.5rem .95rem .5rem .8rem; border-radius:999px;
+  border:1px solid var(--l16); color:var(--ink);
+  transition:background .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease);
+}
+.lab-back:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.lab-back svg{ flex:none; transition:transform .45s var(--ease); }
+.lab-back:hover svg{ transform:translateX(-4px); }
+
+.lab-cases{ display:flex; align-items:center; gap:clamp(.35rem,1.6vw,1.5rem); min-width:0; }
+.lab-cases a{
+  display:inline-flex; align-items:baseline; gap:.5rem;
+  padding:.5rem .2rem; color:var(--l55); white-space:nowrap;
+  border-bottom:1px solid transparent;
+  transition:color .35s var(--ease), border-color .35s var(--ease);
+}
+.lab-cases a .n{ font-size:.85em; letter-spacing:.14em; color:var(--l40); transition:color .35s var(--ease); }
+.lab-cases a:hover{ color:var(--ink); }
+.lab-cases a.is-active{ color:var(--ink); border-bottom-color:var(--ink); }
+.lab-cases a.is-active .n{ color:var(--ink); }
+
+@media (max-width:760px){
+  .lab-nav{ letter-spacing:.14em; }
+  .lab-back span{ display:none; }
+  .lab-back{ padding:.5rem; }
+  .lab-cases a .n{ display:none; }
+}
+
+/* ============================================================
+   Coming soon
+   ============================================================ */
+.soon{
+  flex:1; display:flex; flex-direction:column; justify-content:center;
+  gap:clamp(1rem,2.6vh,1.9rem);
+  padding:clamp(7rem,18vh,11rem) var(--pad-x) clamp(4rem,10vh,7rem);
+  max-width:56rem;
+}
+.eyebrow{
+  display:flex; align-items:center; gap:.75rem;
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.28em; text-transform:uppercase;
+  color:var(--l55);
+}
+.eyebrow .rule{ flex:1; max-width:10rem; height:1px; background:var(--l16); }
+.badge{
+  display:inline-flex; align-items:center;
+  padding:.42em .78em .38em; border-radius:999px;
+  background:var(--brand-red); color:#fff;
+  font-family:'Chakra Petch',sans-serif; font-weight:700;
+  font-size:var(--micro); letter-spacing:.16em; text-transform:uppercase;
+}
+h1{
+  margin:0; font-family:'Orbitron',sans-serif; font-weight:800;
+  text-transform:uppercase; letter-spacing:.06em; line-height:1.1;
+  font-size:var(--headline-2);
+}
+.lead{ margin:0; max-width:48ch; font-size:var(--lead); line-height:1.8; color:var(--l70); }
+
+.actions{ display:flex; flex-wrap:wrap; gap:.75rem; margin-top:clamp(.5rem,1.5vh,1rem); }
+.btn{
+  display:inline-flex; align-items:center; gap:.7rem;
+  border:1px solid var(--l40); border-radius:999px;
+  padding:.7rem 1.4rem;
+  font-family:'Chakra Petch',sans-serif; font-weight:600;
+  font-size:var(--micro); letter-spacing:.18em; text-transform:uppercase;
+  transition:background .45s var(--ease), color .45s var(--ease), border-color .45s var(--ease);
+}
+.btn:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+
+.site-foot{
+  display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between;
+  padding:clamp(1.25rem,3vh,2rem) var(--pad-x);
+  border-top:1px solid var(--l08);
+  font-family:'Chakra Petch',sans-serif;
+  font-size:var(--micro); letter-spacing:.22em; text-transform:uppercase;
+  color:var(--l40);
+}
+.site-foot a:hover{ color:var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ▼ ZURUECK-LINK: hier das Ziel deiner vorherigen Seite eintragen ▼ -->
+<header class="lab-nav">
+  <a class="lab-back" href="../index.html" aria-label="Back to portfolio">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    <span>Portfolio</span>
+  </a>
+
+  <nav class="lab-cases" aria-label="Cases">
+    <a href="AILABS.html"><span class="n">01</span> Case 1</a>
+    <a href="AILABS-case2.html" class="is-active" aria-current="page"><span class="n">02</span> Case 2</a>
+    <a href="AILABS-case3.html"><span class="n">03</span> Case 3</a>
+  </nav>
+</header>
+
+<main class="soon">
+  <div class="eyebrow">
+    <span>AI Lab — Case 2</span>
+    <span class="rule" aria-hidden="true"></span>
+  </div>
+
+  <span class="badge">Coming soon</span>
+
+  <h1>In production</h1>
+
+  <p class="lead">Der zweite Case ist gerade in Arbeit. Bis dahin ist Case 1 — Project EVE — komplett online: ein Avatar, durch die gesamte AI-Pipeline gezogen.</p>
+
+  <div class="actions">
+    <a class="btn" href="AILABS.html">
+      <span>Zu Case 1</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+    <a class="btn" href="../index.html#contact">
+      <span>Contact</span>
+    </a>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <span>AI Lab © 2026 — Dave RindoRindo</span>
+  <a href="../index.html">Portfolio</a>
+</footer>
+
+</body>
+</html>

@@ -924,9 +924,10 @@
       opacity: 1;
       transform: translateY(0);
     }
-    .nav-mobile.is-open a:nth-child(1){ transition-delay: .12s; }
-    .nav-mobile.is-open a:nth-child(2){ transition-delay: .20s; }
-    .nav-mobile.is-open a:nth-child(3){ transition-delay: .28s; }
+    .nav-mobile.is-open a:nth-of-type(1){ transition-delay: .12s; }
+    .nav-mobile.is-open a:nth-of-type(2){ transition-delay: .20s; }
+    .nav-mobile.is-open a:nth-of-type(3){ transition-delay: .28s; }
+    .nav-mobile.is-open a:nth-of-type(4){ transition-delay: .36s; }
     .nav-mobile a:hover,
     .nav-mobile a:focus-visible{
       color: var(--brand-red) !important;
@@ -982,6 +983,13 @@
     opacity: 1;
     transform: translateY(0);
   }
+  /* ── AI Lab: hervorgehobener Navigationspunkt ── */
+  .nav-center a.nav-ai{
+    font-weight: 700;
+  }
+  .nav-mobile a.nav-ai{
+    font-weight: 800 !important;
+  }
 
 </style>
 </head>
@@ -1006,6 +1014,7 @@
 
   <div class="nav-center">
     <a href="#work">Work</a>
+    <a class="nav-ai" href="projects/AILABS.html">AI Lab</a>
     <a href="#about">About me</a>
     <a href="#contact">Contact</a>
   </div>
@@ -1027,6 +1036,7 @@
 <div class="nav-mobile" id="navMobile">
   <button class="nav-mobile-close" id="navMobileClose" aria-label="Close menu">×</button>
   <a href="#work">Work</a>
+  <a class="nav-ai" href="projects/AILABS.html">AI Lab</a>
   <a href="#about">About me</a>
   <a href="#contact">Contact</a>
 </div>
@@ -1275,6 +1285,31 @@
       letter-spacing: .04em;
     }
 
+    /* ── "New"-Sticker neben einem Service-Namen ── */
+    .srv-new{
+      font-family: 'Geist', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: clamp(10px, .9vw, 13px);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: #fff;
+      background: var(--brand-red, #e8281f);
+      border-radius: 999px;
+      padding: .42em .78em .38em;
+      flex-shrink: 0;
+      align-self: center;
+      margin-left: -.4em;
+      transform: translateY(-1.6em) rotate(-5deg);
+      transition: transform .35s cubic-bezier(.22,.61,.36,1);
+    }
+    .srv-link:hover .srv-new{
+      transform: translateY(-1.6em) rotate(0deg) scale(1.06);
+    }
+    @media (prefers-reduced-motion: reduce){
+      .srv-new{ transition: none; }
+    }
+
     .srv-tag{
       font-family: 'Geist Mono', ui-monospace, monospace;
       font-size: 11px;
@@ -1367,13 +1402,14 @@
       </li>
 
       <li class="srv-item">
-        <div class="srv-link"
-          data-img="img/EVE_prompt.jpg"
-          data-label="AI Workflow">
+        <a class="srv-link" id="srvAiLink" href="projects/AILABS.html"
+          data-img="img/AI/gallery/g01.webp"
+          data-label="AI Workflow — Project EVE">
           <span class="srv-num">02</span>
           <span class="srv-name">AI Workflow</span>
+          <span class="srv-new" aria-label="New">New</span>
           <span class="srv-tag">Midjourney · Runway</span>
-        </div>
+        </a>
       </li>
 
       <li class="srv-item">
@@ -1532,6 +1568,37 @@
         previewVid.pause();
       });
     });
+  })();
+  </script>
+
+  <script>
+  /* ── AI Workflow: Vorschaubild zufaellig aus dem AI-Lab-Ordner ──
+     Pool = img/AI/gallery/g01..g08.webp
+     Es wird beim Laden gewuerfelt und nach jedem Hover neu gewuerfelt,
+     sodass beim naechsten Ueberfahren ein anderes Bild liegt. */
+  (function(){
+    var link = document.getElementById('srvAiLink');
+    if (!link) return;
+
+    var POOL = [];
+    for (var i = 1; i <= 8; i++) {
+      POOL.push('img/AI/gallery/g0' + i + '.webp');
+    }
+
+    /* still vorladen, damit der erste Hover nicht flackert */
+    POOL.forEach(function(src){ new Image().src = src; });
+
+    function pick(){
+      var current = link.getAttribute('data-img');
+      var next;
+      do {
+        next = POOL[Math.floor(Math.random() * POOL.length)];
+      } while (POOL.length > 1 && next === current);
+      link.setAttribute('data-img', next);
+    }
+
+    pick();
+    link.addEventListener('mouseleave', pick);
   })();
   </script>
 
