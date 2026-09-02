@@ -56,7 +56,15 @@
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; background:var(--bg); }
+html{ -webkit-text-size-adjust:100%; background:var(--bg); }
+
+/* ---- Lenis (sanftes Scrollen) ---- */
+html.lenis, html.lenis body{ height:auto; }
+.lenis.lenis-smooth{ scroll-behavior:auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent]{ overscroll-behavior:contain; }
+.lenis.lenis-stopped{ overflow:hidden; }
+.lenis.lenis-smooth iframe{ pointer-events:none; }
+
 body{
   margin:0; background:var(--bg); color:var(--ink);
   font-family:'Plus Jakarta Sans',sans-serif;
@@ -93,7 +101,7 @@ a{ color:inherit; text-decoration:none; }
 .hero-media{
   position:absolute; z-index:-2; background:#000;
   top:-6svh; left:0; right:0; bottom:-10svh;
-  will-change:transform;
+  transform:translateZ(0);
 
   --img-base:   url('../img/AI/hero/Attaching_helmet_to_woman_2K_202608151824.jpeg');
   --img-reveal: url('../img/AI/hero/Woman_staring_at_camera_2K_202608170927\ \(1\).jpeg');
@@ -114,10 +122,19 @@ a{ color:inherit; text-decoration:none; }
 
 .hero-reveal{
   background-image:var(--img-reveal);
-  /* Maske kommt zur Laufzeit aus einem Canvas (siehe Script):
-     radialer Verlauf -> toDataURL -> mask-image. Optisch identisch
-     zum CSS-Verlauf, aber exakt nach den Prompt-Stops erzeugt. */
-  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  /* Maske ist ein reiner CSS-Verlauf, dessen Mittelpunkt/Radius per
+     Custom Properties vom Script (--mx/--my/--mr) live nachgefuehrt
+     wird. Kein Canvas, kein toDataURL() pro Frame -> deutlich weniger
+     Hauptthread-Last, besonders spuerbar beim Scrollen. */
+  --mx:50%; --my:50%; --mr:0px;
+  -webkit-mask-image: radial-gradient(circle var(--mr) at var(--mx) var(--my),
+    rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%,
+    rgba(255,255,255,.75) 60%, rgba(255,255,255,.4) 75%,
+    rgba(255,255,255,.12) 88%, rgba(255,255,255,0) 100%);
+  mask-image: radial-gradient(circle var(--mr) at var(--mx) var(--my),
+    rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%,
+    rgba(255,255,255,.75) 60%, rgba(255,255,255,.4) 75%,
+    rgba(255,255,255,.12) 88%, rgba(255,255,255,0) 100%);
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 }
 
@@ -246,8 +263,7 @@ a{ color:inherit; text-decoration:none; }
   right:clamp(1rem,2.5vw,2.25rem); bottom:clamp(1rem,2.5vw,2.25rem);
   display:inline-flex; align-items:center; gap:.6rem;
   padding:.8rem 1.2rem; border-radius:999px;
-  border:1px solid var(--l16); background:rgba(0,0,0,.62); color:var(--ink);
-  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--l16); background:rgba(0,0,0,.78); color:var(--ink);
   font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
   letter-spacing:.22em; text-transform:uppercase;
   opacity:0; transform:translateY(14px) scale(.96); pointer-events:none;
@@ -271,12 +287,11 @@ a{ color:inherit; text-decoration:none; }
   font-family:'Chakra Petch',sans-serif; font-weight:600;
   font-size:var(--micro); letter-spacing:.22em; text-transform:uppercase;
   background:transparent; border-bottom:1px solid transparent;
-  transition:background .5s var(--ease), border-color .5s var(--ease),
-             backdrop-filter .5s var(--ease);
+  transition:background .5s var(--ease), border-color .5s var(--ease);
 }
 .lab-nav.solid{
-  background:rgba(0,0,0,.72); border-bottom-color:var(--l08);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  background:rgba(0,0,0,.82); border-bottom-color:var(--l08);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
 }
 .lab-back{
   display:inline-flex; align-items:center; gap:.6rem; flex:none;
@@ -309,6 +324,17 @@ a{ color:inherit; text-decoration:none; }
 
 /* Ziele nicht unter die Navigation scrollen lassen */
 section[id]{ scroll-margin-top:clamp(3.5rem,9vh,5.5rem); }
+
+/* Off-Screen-Sektionen nicht rendern, solange sie nicht in Sicht sind.
+   Spart pro Scroll-Frame Layout- und Paint-Arbeit. Nur auf hoehen-
+   stabile Sektionen anwenden — bei Sektionen, deren echte Hoehe stark
+   von der Schaetzung abweicht, wuerde Lenis sonst einen Hoehensprung
+   sehen. Hero, Reveal (sticky) und die dynamischen Sektionen sind
+   bewusst ausgenommen. */
+.site-foot{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 400px;
+}
 
 @media (max-width:760px){
   .lab-nav{ letter-spacing:.14em; }
@@ -386,6 +412,7 @@ h2.hl{
 .chip .n{ opacity:.55; font-size:.85em; }
 
 .gallery{
+  position:relative;
   margin-top:clamp(1.5rem,4vh,2.5rem);
   display:grid; grid-template-columns:repeat(2,1fr);
   gap:clamp(.5rem,1.2vw,1rem);
@@ -399,13 +426,12 @@ h2.hl{
   background:var(--surface); cursor:pointer; display:block; width:100%;
   opacity:0; transform:translateY(26px) scale(.96);
   transition:opacity .8s var(--ease), transform .8s var(--ease);
-  will-change:transform, opacity;
 }
 .tile.in{ opacity:1; transform:none; }
 .tile.out{ opacity:0; transform:scale(.94); pointer-events:none; position:absolute; visibility:hidden; }
 .tile img{
   width:100%; height:100%; object-fit:cover; transform:scale(1.02);
-  transition:transform 1.05s var(--ease); will-change:transform;
+  transition:transform 1.05s var(--ease);
 }
 .tile:hover img,.tile:focus-visible img{ transform:scale(1.08); }
 .tile .cap{
@@ -441,7 +467,7 @@ h2.hl{
 /* ---------- Lightbox ---------- */
 .lb{
   position:fixed; inset:0; z-index:100;
-  display:grid; grid-template-rows:auto 1fr auto;
+  display:grid; grid-template-rows:auto 1fr auto; grid-template-columns:minmax(0,1fr);
   background:rgba(0,0,0,.94);
   backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
   opacity:0; pointer-events:none; transition:opacity .45s var(--ease);
@@ -456,7 +482,7 @@ h2.hl{
 }
 .lb-close:hover{ background:var(--l08); border-color:var(--l40); }
 .lb-close:active{ transform:scale(.94); }
-.lb-stage{ position:relative; display:grid; place-items:center; padding-inline:clamp(1rem,3vw,2.25rem); min-height:0; }
+.lb-stage{ position:relative; display:grid; grid-template-columns:minmax(0,1fr); place-items:center; padding-inline:clamp(1rem,3vw,2.25rem); min-height:0; min-width:0; }
 .lb-img{
   max-width:100%; max-height:100%; border-radius:var(--radius); object-fit:contain;
   opacity:0; transform:scale(.97);
@@ -475,7 +501,17 @@ h2.hl{
 .lb-nav:active{ transform:scale(.92); }
 .lb-prev{ left:clamp(.5rem,2vw,1.5rem); }
 .lb-next{ right:clamp(.5rem,2vw,1.5rem); }
-@media (max-width:640px){ .lb-nav{ display:none; } }
+/* Auf dem Handy blieben Vor/Zurueck bisher per display:none ganz
+   weg — nur Wischen ging. Jetzt kleiner und naeher am Rand, damit
+   sie das Bild nicht verdecken, aber antippbar bleiben. */
+@media (max-width:640px){
+  .lb-nav{
+    width:2.5rem; height:2.5rem;
+    background:rgba(0,0,0,.6);
+  }
+  .lb-prev{ left:.35rem; }
+  .lb-next{ right:.35rem; }
+}
 .lb-foot{ display:flex; flex-direction:column; gap:clamp(.75rem,2vh,1.25rem); padding:clamp(1rem,2.5vw,1.75rem) clamp(1rem,3vw,2.25rem) clamp(1.25rem,3vh,2rem); }
 .lb-meta{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
 .lb-meta h3{ margin:0; font-family:'Orbitron',sans-serif; font-weight:700; font-size:clamp(.85rem,.9vw + .45rem,1.2rem); text-transform:uppercase; letter-spacing:.09em; }
@@ -675,11 +711,9 @@ h2.hl{
 .acc-track{
   display:flex; gap:clamp(.4rem,.8vw,.75rem);
   width:max-content;
-  animation:accScroll var(--acc-dur, 70s) linear infinite;
   will-change:transform;
 }
 .acc-wrap.paused .acc-track{ animation-play-state:paused; }
-@keyframes accScroll{ from{ transform:translate3d(0,0,0) } to{ transform:translate3d(-50%,0,0) } }
 
 .acc-item{
   position:relative; flex:none; padding:0; overflow:hidden;
@@ -741,6 +775,13 @@ h2.hl{
   .acc-item{ width:clamp(8rem,42vw,14rem); height:clamp(18rem,52vh,26rem); }
   .acc-item.open{ width:min(78vw, 26rem); }
 }
+/* Kurze Fenster (Handy quer) — die feste 18rem/20rem-Untergrenze
+   der Hoehe kann hier groesser sein als 52-62% der Fensterhoehe
+   und die Kacheln oben/unten abschneiden. Ohne rem-Untergrenze
+   schrumpfen sie stattdessen sauber mit dem Fenster mit. */
+@media (max-height:560px){
+  .acc-item{ height:min(60vh, 22rem); }
+}
 
 
 /* ---------- Akkordeon: Pfeile und Ziehen ---------- */
@@ -761,8 +802,8 @@ h2.hl{
 
 /* ---------- Reel-Lightbox: Bild oder Video ---------- */
 .rlb-media{
-  position:relative; display:grid; place-items:center;
-  max-width:100%; max-height:100%; min-height:0;
+  position:relative; display:grid; grid-template-columns:minmax(0,1fr); place-items:center;
+  max-width:100%; max-height:100%; min-height:0; min-width:0;
 }
 .rlb-media img,
 .rlb-media video{
@@ -1131,11 +1172,81 @@ h2.hl{
   </div>
 </div>
 
+<script>/* Lenis 1.3.26 — inline eingebettet, damit kein externer Pfad noetig ist und es auch per file:// laeuft */
+(function(){var e=`1.3.26`;function t(e,t,n){return Math.max(e,Math.min(t,n))}function n(e,t,n){return(1-n)*e+n*t}function r(e,t,r,i){return n(e,t,1-Math.exp(-r*i))}function i(e,t){return(e%t+t)%t}var a=class{isRunning=!1;value=0;from=0;to=0;currentTime=0;lerp;duration;easing;onUpdate;advance(e){if(!this.isRunning)return;let n=!1;if(this.duration&&this.easing){this.currentTime+=e;let r=t(0,this.currentTime/this.duration,1);n=r>=1;let i=n?1:this.easing(r);this.value=this.from+(this.to-this.from)*i}else this.lerp?(this.value=r(this.value,this.to,this.lerp*60,e),Math.round(this.value)===Math.round(this.to)&&(this.value=this.to,n=!0)):(this.value=this.to,n=!0);n&&this.stop(),this.onUpdate?.(this.value,n)}stop(){this.isRunning=!1}fromTo(e,t,{lerp:n,duration:r,easing:i,onStart:a,onUpdate:o}){this.from=this.value=e,this.to=t,this.lerp=n,this.duration=r,this.easing=i,this.currentTime=0,this.isRunning=!0,a?.(),this.onUpdate=o}};function o(e,t){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>{n=void 0,e.apply(this,r)},t)}}var s=class{width=0;height=0;scrollHeight=0;scrollWidth=0;debouncedResize;wrapperResizeObserver;contentResizeObserver;constructor(e,t,{autoResize:n=!0,debounce:r=250}={}){this.wrapper=e,this.content=t,n&&(this.debouncedResize=o(this.resize,r),this.wrapper instanceof Window?window.addEventListener(`resize`,this.debouncedResize):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}destroy(){this.wrapperResizeObserver?.disconnect(),this.contentResizeObserver?.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener(`resize`,this.debouncedResize)}resize=()=>{this.onWrapperResize(),this.onContentResize()};onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)};onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)};get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}},c=class{events={};emit(e,...t){let n=this.events[e]||[];for(let e=0,r=n.length;e<r;e++)n[e]?.(...t)}on(e,t){return this.events[e]?this.events[e].push(t):this.events[e]=[t],()=>{this.events[e]=this.events[e]?.filter(e=>t!==e)}}off(e,t){this.events[e]=this.events[e]?.filter(e=>t!==e)}destroy(){this.events={}}};let l={passive:!1};function u(e,t){return e===1?16.666666666666668:e===2?t:1}var d=class{touchStart={x:0,y:0};lastDelta={x:0,y:0};window={width:0,height:0};emitter=new c;constructor(e,t={wheelMultiplier:1,touchMultiplier:1}){this.element=e,this.options=t,window.addEventListener(`resize`,this.onWindowResize),this.onWindowResize(),this.element.addEventListener(`wheel`,this.onWheel,l),this.element.addEventListener(`touchstart`,this.onTouchStart,l),this.element.addEventListener(`touchmove`,this.onTouchMove,l),this.element.addEventListener(`touchend`,this.onTouchEnd,l)}on(e,t){return this.emitter.on(e,t)}destroy(){this.emitter.destroy(),window.removeEventListener(`resize`,this.onWindowResize),this.element.removeEventListener(`wheel`,this.onWheel,l),this.element.removeEventListener(`touchstart`,this.onTouchStart,l),this.element.removeEventListener(`touchmove`,this.onTouchMove,l),this.element.removeEventListener(`touchend`,this.onTouchEnd,l)}onTouchStart=e=>{let{clientX:t,clientY:n}=e.targetTouches?e.targetTouches[0]:e;this.touchStart.x=t,this.touchStart.y=n,this.lastDelta={x:0,y:0},this.emitter.emit(`scroll`,{deltaX:0,deltaY:0,event:e})};onTouchMove=e=>{let{clientX:t,clientY:n}=e.targetTouches?e.targetTouches[0]:e,r=-(t-this.touchStart.x)*this.options.touchMultiplier,i=-(n-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=t,this.touchStart.y=n,this.lastDelta={x:r,y:i},this.emitter.emit(`scroll`,{deltaX:r,deltaY:i,event:e})};onTouchEnd=e=>{this.emitter.emit(`scroll`,{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:e})};onWheel=e=>{let{deltaX:t,deltaY:n,deltaMode:r}=e,i=u(r,this.window.width),a=u(r,this.window.height);t*=i,n*=a,t*=this.options.wheelMultiplier,n*=this.options.wheelMultiplier,this.emitter.emit(`scroll`,{deltaX:t,deltaY:n,event:e})};onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}}};let f=e=>Math.min(1,1.001-2**(-10*e));var p=class{_isScrolling=!1;_isStopped=!1;_isLocked=!1;_preventNextNativeScrollEvent=!1;_resetVelocityTimeout=null;_rafId=null;_isDraggingSelection=!1;reducedMotionMediaQuery=window.matchMedia(`(prefers-reduced-motion: reduce)`);isTouching;isIos;time=0;userData={};lastVelocity=0;velocity=0;direction=0;options;targetScroll;animatedScroll;animate=new a;emitter=new c;dimensions;virtualScroll;constructor({wrapper:t=window,content:n=document.documentElement,eventsTarget:r=t,smoothWheel:i=!0,syncTouch:a=!1,syncTouchLerp:o=.075,touchInertiaExponent:c=1.7,duration:l,easing:u,lerp:p=.1,infinite:m=!1,orientation:h=`vertical`,gestureOrientation:g=h===`horizontal`?`both`:`vertical`,touchMultiplier:_=1,wheelMultiplier:v=1,autoResize:y=!0,prevent:b,virtualScroll:x,overscroll:S=!0,autoRaf:C=!1,anchors:w=!1,autoToggle:T=!1,allowNestedScroll:E=!1,__experimental__naiveDimensions:D=!1,naiveDimensions:O=D,stopInertiaOnNavigate:k=!1,respectReducedMotion:A=!0}={}){window.lenisVersion=e,window.lenis||(window.lenis={}),window.lenis.version=e,h===`horizontal`&&(window.lenis.horizontal=!0),a===!0&&(window.lenis.touch=!0),this.isIos=/(iPad|iPhone|iPod)/g.test(navigator.userAgent),(!t||t===document.documentElement)&&(t=window),typeof l==`number`&&typeof u!=`function`?u=f:typeof u==`function`&&typeof l!=`number`&&(l=1),this.options={wrapper:t,content:n,eventsTarget:r,smoothWheel:i,syncTouch:a,syncTouchLerp:o,touchInertiaExponent:c,duration:l,easing:u,lerp:p,infinite:m,gestureOrientation:g,orientation:h,touchMultiplier:_,wheelMultiplier:v,autoResize:y,prevent:b,virtualScroll:x,overscroll:S,autoRaf:C,anchors:w,autoToggle:T,allowNestedScroll:E,naiveDimensions:O,stopInertiaOnNavigate:k,respectReducedMotion:A},this.dimensions=new s(t,n,{autoResize:y}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener(`scroll`,this.onNativeScroll),this.options.wrapper.addEventListener(`scrollend`,this.onScrollEnd,{capture:!0}),(this.options.anchors||this.options.stopInertiaOnNavigate)&&this.options.wrapper.addEventListener(`click`,this.onClick),this.options.wrapper.addEventListener(`pointerdown`,this.onPointerDown),this.virtualScroll=new d(r,{touchMultiplier:_,wheelMultiplier:v}),this.virtualScroll.on(`scroll`,this.onVirtualScroll),this.options.autoToggle&&(this.checkOverflow(),this.rootElement.addEventListener(`transitionend`,this.onTransitionEnd)),this.options.autoRaf&&(this._rafId=requestAnimationFrame(this.raf))}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener(`scroll`,this.onNativeScroll),this.options.wrapper.removeEventListener(`scrollend`,this.onScrollEnd,{capture:!0}),this.options.wrapper.removeEventListener(`pointerdown`,this.onPointerDown),(this.options.anchors||this.options.stopInertiaOnNavigate)&&this.options.wrapper.removeEventListener(`click`,this.onClick),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName(),this._rafId&&cancelAnimationFrame(this._rafId)}on(e,t){return this.emitter.on(e,t)}off(e,t){return this.emitter.off(e,t)}onScrollEnd=e=>{e instanceof CustomEvent||(this.isScrolling===`smooth`||this.isScrolling===!1)&&e.stopPropagation()};dispatchScrollendEvent=()=>{this.options.wrapper.dispatchEvent(new CustomEvent(`scrollend`,{bubbles:this.options.wrapper===window,detail:{lenisScrollEnd:!0}}))};get overflow(){let e=this.isHorizontal?`overflow-x`:`overflow-y`;return getComputedStyle(this.rootElement)[e]}checkOverflow(){[`hidden`,`clip`].includes(this.overflow)?this.internalStop():this.internalStart()}onTransitionEnd=e=>{e.propertyName?.includes(`overflow`)&&e.target===this.rootElement&&this.checkOverflow()};setScroll(e){this.isHorizontal?this.options.wrapper.scrollTo({left:e,behavior:`instant`}):this.options.wrapper.scrollTo({top:e,behavior:`instant`})}onClick=e=>{let t=e.composedPath().filter(e=>e instanceof HTMLAnchorElement&&e.href).map(e=>new URL(e.href)),n=new URL(window.location.href);if(this.options.anchors){let e=t.find(e=>n.host===e.host&&n.pathname===e.pathname&&e.hash);if(e){let t=typeof this.options.anchors==`object`&&this.options.anchors?this.options.anchors:void 0,n=decodeURIComponent(e.hash);this.scrollTo(n,t);return}}if(this.options.stopInertiaOnNavigate&&t.some(e=>n.host===e.host&&n.pathname!==e.pathname)){this.reset();return}};onPointerDown=e=>{e.button===1&&this.reset()};isTouchOnSelectionHandle(e){let t=window.getSelection();if(!t||t.isCollapsed||t.rangeCount===0)return!1;let n=e.targetTouches[0]??e.changedTouches[0];if(!n)return!1;let r=t.getRangeAt(0).getClientRects();if(r.length===0)return!1;let i=r[0],a=r[r.length-1],o=Math.hypot(n.clientX-i.left,n.clientY-i.top)<=40,s=Math.hypot(n.clientX-a.right,n.clientY-a.bottom)<=40;return o||s}onVirtualScroll=e=>{if(typeof this.options.virtualScroll==`function`&&this.options.virtualScroll(e)===!1)return;let{deltaX:t,deltaY:n,event:r}=e;if(this.emitter.emit(`virtual-scroll`,{deltaX:t,deltaY:n,event:r}),r.ctrlKey||r.lenisStopPropagation)return;let i=r.type.includes(`touch`),a=r.type.includes(`wheel`);if(i&&this.isIos&&(r.type===`touchstart`&&(this._isDraggingSelection=this.isTouchOnSelectionHandle(r)),this._isDraggingSelection)){r.type===`touchend`&&(this._isDraggingSelection=!1);return}this.isTouching=r.type===`touchstart`||r.type===`touchmove`;let o=t===0&&n===0;if(this.options.syncTouch&&i&&r.type===`touchstart`&&o&&!this.isStopped&&!this.isLocked){this.reset();return}let s=this.options.gestureOrientation===`vertical`&&n===0||this.options.gestureOrientation===`horizontal`&&t===0;if(o||s)return;let c=r.composedPath();c=c.slice(0,c.indexOf(this.rootElement));let l=this.options.prevent,u=Math.abs(t)>=Math.abs(n)?`horizontal`:`vertical`;if(c.find(e=>e instanceof HTMLElement&&(typeof l==`function`&&l?.(e)||e.hasAttribute?.(`data-lenis-prevent`)||u===`vertical`&&e.hasAttribute?.(`data-lenis-prevent-vertical`)||u===`horizontal`&&e.hasAttribute?.(`data-lenis-prevent-horizontal`)||i&&e.hasAttribute?.(`data-lenis-prevent-touch`)||a&&e.hasAttribute?.(`data-lenis-prevent-wheel`)||this.options.allowNestedScroll&&this.hasNestedScroll(e,{deltaX:t,deltaY:n}))))return;if(this.isStopped||this.isLocked){r.cancelable&&r.preventDefault();return}if(!(this.options.syncTouch&&i||this.options.smoothWheel&&a)){this.isScrolling=`native`,this.animate.stop(),r.lenisStopPropagation=!0;return}let d=n;this.options.gestureOrientation===`both`?d=Math.abs(n)>Math.abs(t)?n:t:this.options.gestureOrientation===`horizontal`&&(d=t),(!this.options.overscroll||this.options.infinite||this.options.wrapper!==window&&this.limit>0&&(this.animatedScroll>0&&this.animatedScroll<this.limit||this.animatedScroll===0&&n>0||this.animatedScroll===this.limit&&n<0))&&(r.lenisStopPropagation=!0),r.cancelable&&r.preventDefault();let f=i&&this.options.syncTouch,p=i&&r.type===`touchend`;p&&(d=Math.sign(d)*Math.abs(this.velocity)**this.options.touchInertiaExponent),this.scrollTo(this.targetScroll+d,{programmatic:!1,...f?{lerp:p?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}})};resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit(`scroll`,this)}onNativeScroll=()=>{if(this._resetVelocityTimeout!==null&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent){this._preventNextNativeScrollEvent=!1;return}if(this.isScrolling===!1||this.isScrolling===`native`){let e=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-e,this.direction=Math.sign(this.animatedScroll-e),this.isStopped||(this.isScrolling=`native`),this.emit(),this.velocity!==0&&(this._resetVelocityTimeout=setTimeout(()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()},400))}};reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){if(this.isStopped){if(this.options.autoToggle){this.rootElement.style.removeProperty(`overflow`);return}this.internalStart()}}internalStart(){this.isStopped&&(this.reset(),this.isStopped=!1,this.emit())}stop(){if(!this.isStopped){if(this.options.autoToggle){this.rootElement.style.setProperty(`overflow`,`clip`);return}this.internalStop()}}internalStop(){this.isStopped||(this.reset(),this.isStopped=!0,this.emit())}raf=e=>{let t=e-(this.time||e);this.time=e,this.animate.advance(t*.001),this.options.autoRaf&&(this._rafId=requestAnimationFrame(this.raf))};scrollTo(e,{offset:n=0,immediate:r=!1,lock:i=!1,programmatic:a=!0,lerp:o=a?this.options.lerp:void 0,duration:s=a?this.options.duration:void 0,easing:c=a?this.options.easing:void 0,onStart:l,onComplete:u,force:d=!1,userData:p}={}){if(this.prefersReducedMotion&&(a?r=!0:(o=1,s=void 0,c=void 0)),(this.isStopped||this.isLocked)&&!d)return;let m=e,h=n;if(typeof m==`string`&&[`top`,`left`,`start`,`#`].includes(m))m=0;else if(typeof m==`string`&&[`bottom`,`right`,`end`].includes(m))m=this.limit;else{let e=null;if(typeof m==`string`?(e=m.startsWith(`#`)?document.getElementById(m.slice(1)):document.querySelector(m),e||(m===`#top`?m=0:console.warn(`Lenis: Target not found`,m))):m instanceof HTMLElement&&m?.nodeType&&(e=m),e){if(this.options.wrapper!==window){let e=this.rootElement.getBoundingClientRect();h-=this.isHorizontal?e.left:e.top}let t=e.getBoundingClientRect(),n=getComputedStyle(e),r=this.isHorizontal?Number.parseFloat(n.scrollMarginLeft):Number.parseFloat(n.scrollMarginTop),i=getComputedStyle(this.rootElement),a=this.isHorizontal?Number.parseFloat(i.scrollPaddingLeft):Number.parseFloat(i.scrollPaddingTop);m=(this.isHorizontal?t.left:t.top)+this.animatedScroll-(Number.isNaN(r)?0:r)-(Number.isNaN(a)?0:a)}}if(typeof m==`number`){if(m+=h,this.options.infinite){if(a){this.targetScroll=this.animatedScroll=this.scroll;let e=m-this.animatedScroll;e>this.limit/2?m-=this.limit:e<-this.limit/2&&(m+=this.limit)}}else m=t(0,m,this.limit);if(m===this.targetScroll){l?.(this),u?.(this);return}if(this.userData=p??{},r){this.animatedScroll=this.targetScroll=m,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),u?.(this),this.userData={},requestAnimationFrame(()=>{this.dispatchScrollendEvent()});return}a||(this.targetScroll=m),typeof s==`number`&&typeof c!=`function`?c=f:typeof c==`function`&&typeof s!=`number`&&(s=1),this.animate.fromTo(this.animatedScroll,m,{duration:s,easing:c,lerp:o,onStart:()=>{i&&(this.isLocked=!0),this.isScrolling=`smooth`,l?.(this)},onUpdate:(e,t)=>{this.isScrolling=`smooth`,this.lastVelocity=this.velocity,this.velocity=e-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=e,this.setScroll(this.scroll),a&&(this.targetScroll=e),t||this.emit(),t&&(this.reset(),this.emit(),u?.(this),this.userData={},requestAnimationFrame(()=>{this.dispatchScrollendEvent()}),this.preventNextNativeScrollEvent())}})}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame(()=>{this._preventNextNativeScrollEvent=!1})}hasNestedScroll(e,{deltaX:t,deltaY:n}){let r=Date.now();e._lenis||={};let i=e._lenis,a,o,s,c,l,u,d,f,p,m;if(r-(i.time??0)>2e3){i.time=Date.now();let t=window.getComputedStyle(e);if(i.computedStyle=t,a=[`auto`,`overlay`,`scroll`].includes(t.overflowX),o=[`auto`,`overlay`,`scroll`].includes(t.overflowY),l=[`auto`].includes(t.overscrollBehaviorX),u=[`auto`].includes(t.overscrollBehaviorY),i.hasOverflowX=a,i.hasOverflowY=o,!(a||o))return!1;d=e.scrollWidth,f=e.scrollHeight,p=e.clientWidth,m=e.clientHeight,s=d>p,c=f>m,i.isScrollableX=s,i.isScrollableY=c,i.scrollWidth=d,i.scrollHeight=f,i.clientWidth=p,i.clientHeight=m,i.hasOverscrollBehaviorX=l,i.hasOverscrollBehaviorY=u}else s=i.isScrollableX,c=i.isScrollableY,a=i.hasOverflowX,o=i.hasOverflowY,d=i.scrollWidth,f=i.scrollHeight,p=i.clientWidth,m=i.clientHeight,l=i.hasOverscrollBehaviorX,u=i.hasOverscrollBehaviorY;if(!(a&&s||o&&c))return!1;let h=Math.abs(t)>=Math.abs(n)?`horizontal`:`vertical`,g,_,v,y,b,x;if(h===`horizontal`)g=Math.round(e.scrollLeft),_=d-p,v=t,y=a,b=s,x=l;else if(h===`vertical`)g=Math.round(e.scrollTop),_=f-m,v=n,y=o,b=c,x=u;else return!1;return!x&&(g>=_||g<=0)?!0:(v>0?g<_:g>0)&&y&&b}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?`x`:`y`]}get isHorizontal(){return this.options.orientation===`horizontal`}get actualScroll(){let e=this.options.wrapper;return this.isHorizontal?e.scrollX??e.scrollLeft:e.scrollY??e.scrollTop}get scroll(){return this.options.infinite?i(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return this.limit===0?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(e){this._isScrolling!==e&&(this._isScrolling=e,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(e){this._isStopped!==e&&(this._isStopped=e,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(e){this._isLocked!==e&&(this._isLocked=e,this.updateClassName())}get isSmooth(){return this.isScrolling===`smooth`}get prefersReducedMotion(){return this.options.respectReducedMotion&&this.reducedMotionMediaQuery.matches}get className(){let e=`lenis`;return this.options.autoToggle&&(e+=` lenis-autoToggle`),this.isStopped&&(e+=` lenis-stopped`),this.isLocked&&(e+=` lenis-locked`),this.isScrolling&&(e+=` lenis-scrolling`),this.isScrolling===`smooth`&&(e+=` lenis-smooth`),e}updateClassName(){this.cleanUpClassName(),this.className.split(` `).forEach(e=>{this.rootElement.classList.add(e)})}cleanUpClassName(){for(let e of Array.from(this.rootElement.classList))(e===`lenis`||e.startsWith(`lenis-`))&&this.rootElement.classList.remove(e)}};globalThis.Lenis=p,globalThis.Lenis.prototype=p.prototype})();
+//# sourceMappingURL=lenis.min.js.map
+</script>
 <script>
 (function(){
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var clamp01 = function(v){ return v < 0 ? 0 : v > 1 ? 1 : v; };
+
+  /* ============================================================
+     SANFTES SCROLLEN — Lenis
+     ------------------------------------------------------------
+     Lenis fangt das native Scrollen ab und interpoliert es
+     framerate-unabhaengig (exponentielle Glaettung ueber die real
+     verstrichene Zeit — laeuft auf 60Hz wie auf 120Hz gleich schwer).
+     Trackpad-Momentum wird sauber gedaempft, daher wirkt der Nachlauf
+     kontrolliert statt uebersteuert.
+
+     STELLSCHRAUBEN (in der Lenis-Config unten):
+       lerp        Nachlauf pro Frame, 0..1. KLEINER = langsamer,
+                   traeger, mehr Nachschieben. 0.055 ≈ deutlich
+                   gleitend. Fuer noch schwerer: 0.04. Straffer: 0.09.
+       wheelMultiplier  Reichweite eines Radschritts. Groesser =
+                   man kommt mit einem Wisch weiter.
+       touchMultiplier  dasselbe fuer Touch (bleibt hier nativ).
+
+     Andere Effekte (Hero-Parallaxe, Reveal-Video, Nav) haengen unten
+     am 'scroll'-Event von Lenis bzw. laufen im selben rAF-Takt.
+     Die Instanz liegt global als window.__lenis.
+     ============================================================ */
+  var lenis = null;
+  (function(){
+    if (reduce || typeof Lenis === 'undefined') return;
+
+    lenis = new Lenis({
+      lerp: 0.038,            // Grundtempo: kleiner = gleitender/traeger
+      wheelMultiplier: 1.0,   // Reichweite eines Radschritts
+      touchMultiplier: 1.2,
+      smoothWheel: true,
+      // Touch bleibt nativ — auf dem Handy fuehlt sich das System-
+      // Scrollen besser an als jede Nachbildung.
+      syncTouch: false
+    });
+    window.__lenis = lenis;
+
+    // Lenis in einer rAF-Schleife takten
+    function raf(time){
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Overlays (Lightbox/Reel-Viewer) sperren die Seite via body.locked
+    // -> Lenis anhalten, damit dahinter nichts weiterscrollt.
+    var mo = new MutationObserver(function(){
+      if (document.body.classList.contains('locked')) lenis.stop();
+      else lenis.start();
+    });
+    mo.observe(document.body, { attributes:true, attributeFilter:['class'] });
+
+    // Anker-Spruenge (Menue, "Top") sanft ueber Lenis fahren
+    document.addEventListener('click', function(e){
+      var a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      var id = a.getAttribute('href').slice(1);
+      var el = (id && id !== 'top') ? document.getElementById(id) : null;
+      if (id === 'top'){ e.preventDefault(); lenis.scrollTo(0); return; }
+      if (!el) return;
+      e.preventDefault();
+      lenis.scrollTo(el, { offset: 0 });
+      if (a.hash) history.replaceState(null, '', a.hash);
+    });
+  })();
+
 
   /* ============================================================
      VOLLBILD — mit Fallback fuer iOS Safari, das nur Videos kennt
@@ -1209,10 +1320,23 @@ h2.hl{
       media.style.transform =
         'translate3d(0,' + (p * SCROLLPAR * window.innerHeight).toFixed(1) + 'px,0)';
     }
+
+    /* will-change nur aktiv halten, solange der Hero wirklich im Bild
+       ist — dauerhaft gesetzt belegt es eine grosse GPU-Ebene und
+       bremst das Compositing im Rest der Seite. */
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        media.style.willChange = e[0].isIntersecting ? 'transform' : 'auto';
+      }, { threshold: 0 }).observe(hero);
+    } else {
+      media.style.willChange = 'transform';
+    }
     function onScroll(){
       if (!sTicking){ sTicking = true; requestAnimationFrame(scrollTick); }
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // An Lenis' geglaettete Position koppeln, sonst ans native Event.
+    if (lenis){ lenis.on('scroll', onScroll); }
+    else { window.addEventListener('scroll', onScroll, { passive: true }); }
     window.addEventListener('resize', onScroll);
     scrollTick();
 
@@ -1220,25 +1344,12 @@ h2.hl{
 
     /* ---------- Lichtkegel ---------- */
     var reveal = document.getElementById('heroReveal');
-    var canvas = document.getElementById('heroMaskCanvas');
-    var ctx    = canvas ? canvas.getContext('2d') : null;
 
     var mouse  = { x: null, y: null };
     var smooth = { x: 0, y: 0 };
     var grid   = { x: 0, y: 0 };
     var started = false, inView = true;
     var lastRipple = 0;
-
-    /* Canvas an die Fenstergroesse koppeln — die Maske deckt das
-       ganze Fenster ab und wird per mask-size:100% auf den Layer
-       gestreckt. */
-    function sizeCanvas(){
-      if (!canvas) return;
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    sizeCanvas();
-    window.addEventListener('resize', sizeCanvas);
 
     function baseRadius(){
       return Math.round(Math.min(620, Math.max(240, window.innerWidth * 0.24)));
@@ -1271,32 +1382,19 @@ h2.hl{
       var breathe = 1 + PULSE_AMP * Math.sin((now || 0) / PULSE_MS * Math.PI * 2);
       var radius  = rBase * breathe;
 
-      /* Maske als Canvas neu zeichnen — Verlauf mit den Prompt-Stops.
-         cursorX/Y sind Fensterkoordinaten, weil der Canvas das Fenster
-         abbildet und mask-size:100% ihn auf den Layer streckt. */
-      if (ctx && canvas){
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var cxp = smooth.x, cyp = smooth.y;
-        var g = ctx.createRadialGradient(cxp, cyp, 0, cxp, cyp, radius);
-        g.addColorStop(0,    'rgba(255,255,255,1)');
-        g.addColorStop(0.4,  'rgba(255,255,255,1)');
-        g.addColorStop(0.6,  'rgba(255,255,255,0.75)');
-        g.addColorStop(0.75, 'rgba(255,255,255,0.4)');
-        g.addColorStop(0.88, 'rgba(255,255,255,0.12)');
-        g.addColorStop(1,    'rgba(255,255,255,0)');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(cxp, cyp, radius, 0, Math.PI * 2);
-        ctx.fill();
-        var url = canvas.toDataURL();
-        if (reveal){
-          reveal.style.webkitMaskImage = 'url(' + url + ')';
-          reveal.style.maskImage       = 'url(' + url + ')';
-        }
+      /* Ein einziger rect-Read pro Frame, fuer Maske UND Raster.
+         Maske: nur noch drei CSS-Variablen setzen (--mx/--my/--mr),
+         der Verlauf selbst steht fix in der CSS-Regel .hero-reveal.
+         Kein Redraw, kein toDataURL — das war der teure Teil, der
+         auch beim Scrollen jeden Frame Hauptthread-Zeit gefressen hat. */
+      var r = media.getBoundingClientRect();
+      if (reveal && r.width && r.height){
+        reveal.style.setProperty('--mx', (smooth.x - r.left).toFixed(1) + 'px');
+        reveal.style.setProperty('--my', (smooth.y - r.top).toFixed(1) + 'px');
+        reveal.style.setProperty('--mr', radius.toFixed(1) + 'px');
       }
 
       /* Raster gegenlaeufig */
-      var r = media.getBoundingClientRect();
       if (pat && r.width && r.height){
         var cx = (smooth.x - r.left) / r.width  - 0.5;
         var cy = (smooth.y - r.top)  / r.height - 0.5;
@@ -1399,6 +1497,7 @@ h2.hl{
     readyScrub();
 
     var ticking = false;
+    var lastSeekTarget = -1;
 
     function ease(t){ return 1 - Math.pow(1 - t, 3); }   /* easeOutCubic */
 
@@ -1427,11 +1526,18 @@ h2.hl{
       /* Untertitel/Regler nur im vollen Zustand */
       stage.style.setProperty('--p-mid', (p > OPEN_END && p < CLOSE_START ? 1 : 0));
 
-      /* Scrub: Fortschritt der Halte-Phase auf die Clip-Laenge */
+      /* Scrub: Fortschritt der Halte-Phase auf die Clip-Laenge.
+         Feine Schwelle -> beim langsamen, sanften Scrollen laeuft das
+         Video fluessig mit; nur identische Frames werden uebersprungen,
+         damit der Decoder nicht sinnlos arbeitet. */
       if (scrubbable && dur){
         var span = CLOSE_START - OPEN_END;
         var mid  = clamp01((p - OPEN_END) / span);
-        seek(mid * (dur - 0.05));
+        var target = mid * (dur - 0.05);
+        if (Math.abs(target - lastSeekTarget) > 0.008){
+          lastSeekTarget = target;
+          seek(target);
+        }
       }
 
       /* Schlagwoerter ab ihrem Schwellwert */
@@ -1459,7 +1565,8 @@ h2.hl{
       return;
     }
 
-    window.addEventListener('scroll', tick, { passive: true });
+    if (lenis){ lenis.on('scroll', tick); }
+    else { window.addEventListener('scroll', tick, { passive: true }); }
     window.addEventListener('resize', tick);
     tick();
   })();
@@ -1725,16 +1832,24 @@ h2.hl{
   var last = 0;
 
   function measure(){
-    // Nur messen, wenn nichts geoeffnet ist — sonst stimmt die Haelfte nicht
     half = accTrack.scrollWidth / 2;
   }
   function stepSize(){
     var el = accItems[0];
     return el ? el.getBoundingClientRect().width + 12 : 200;
   }
+  var ARROW_JUMP = 3;   // Bilder pro Pfeilklick
   function accLoop(ts){
     var dt = last ? Math.min(0.05, (ts - last) / 1000) : 0;
     last = ts;
+
+    /* Neu messen, statt uns auf eine einmalig gecachte Haelfte zu
+       verlassen: sobald eine Kachel per Hover/Focus aufklappt oder
+       wieder zuklappt, aendert sich accTrack.scrollWidth sofort.
+       Ohne staendiges Nachmessen lief der Umbruchpunkt "half" nach
+       jeder Interaktion auseinander und der Streifen sprang oder
+       blieb versetzt stehen — auf jeder Bildschirmgroesse. */
+    measure();
 
     if (!holding && !dragging) targetX += DRIFT * dt;
     x += (targetX - x) * 0.12;
@@ -1747,24 +1862,44 @@ h2.hl{
     accRaf = accVisible ? requestAnimationFrame(accLoop) : null;
   }
 
-  document.getElementById('accPrev').addEventListener('click', function(){ targetX -= stepSize(); });
-  document.getElementById('accNext').addEventListener('click', function(){ targetX += stepSize(); });
+  document.getElementById('accPrev').addEventListener('click', function(){ targetX -= stepSize() * ARROW_JUMP; });
+  document.getElementById('accNext').addEventListener('click', function(){ targetX += stepSize() * ARROW_JUMP; });
 
-  /* ---------- Ziehen mit Maus und Finger ---------- */
-  var dragStartX = 0, dragStartTarget = 0, moved = 0;
+  /* ---------- Ziehen mit Maus und Finger ----------
+     Pfeile UND die Kacheln selbst liegen als Kinder innerhalb von
+     accWrap. setPointerCapture(accWrap) sofort bei pointerdown hat
+     bisher jedes nachfolgende native "click"-Event auf diesen
+     Kindern verschluckt — Pfeile sahen tot aus, und Kacheln oeffneten
+     die Reel-Lightbox nur unzuverlaessig. Jetzt wird der Pointer erst
+     eingefangen, sobald wirklich eine Ziehbewegung ueber der
+     Toleranzschwelle vorliegt — ein reiner Tap/Klick auf Pfeil oder
+     Kachel loest dann ganz normal sein eigenes Click-Event aus. */
+  var DRAG_THRESHOLD = 6;
+  var dragStartX = 0, dragStartTarget = 0, moved = 0, activePointerId = null, captured = false;
   accWrap.addEventListener('pointerdown', function(e){
-    dragging = true; moved = 0;
+    if (e.target.closest('.acc-nav')) return;
+    activePointerId = e.pointerId;
     dragStartX = e.clientX; dragStartTarget = targetX;
-    accWrap.classList.add('dragging');
-    accWrap.setPointerCapture(e.pointerId);
+    moved = 0; dragging = false; captured = false;
   });
   accWrap.addEventListener('pointermove', function(e){
-    if (!dragging) return;
+    if (activePointerId === null || e.pointerId !== activePointerId) return;
     var dx = e.clientX - dragStartX;
     moved = Math.max(moved, Math.abs(dx));
-    targetX = dragStartTarget - dx;
+    if (!dragging && moved > DRAG_THRESHOLD){
+      dragging = true;
+      accWrap.classList.add('dragging');
+      if (!captured){ accWrap.setPointerCapture(activePointerId); captured = true; }
+    }
+    if (dragging) targetX = dragStartTarget - dx;
   });
-  function endDrag(){ dragging = false; accWrap.classList.remove('dragging'); }
+  function endDrag(){
+    if (captured && activePointerId !== null){
+      try { accWrap.releasePointerCapture(activePointerId); } catch (err) {}
+    }
+    dragging = false; captured = false; activePointerId = null;
+    accWrap.classList.remove('dragging');
+  }
   accWrap.addEventListener('pointerup', endDrag);
   accWrap.addEventListener('pointercancel', endDrag);
 
@@ -1831,6 +1966,7 @@ h2.hl{
     reMeasure = setTimeout(measure, 200);
   });
   window.addEventListener('load', measure);
+  window.addEventListener('load', function(){ if (lenis) lenis.resize(); });
 
   /* ============================================================
      REEL-LIGHTBOX — Bild oder Clip in gross
@@ -1978,7 +2114,8 @@ h2.hl{
       labNav.classList.toggle('solid', window.scrollY > 40);
     };
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    if (lenis){ lenis.on('scroll', onScroll); }
+    else { window.addEventListener('scroll', onScroll, { passive: true }); }
   }
 
   /* ============================================================
