@@ -38,8 +38,6 @@
   --feature-pad: clamp(1rem, 1.5vw, 1.75rem);
   --feature-min: clamp(13rem, 18vw, 20rem);
   --globe: clamp(2.25rem, 2.5vw + 1rem, 3.25rem);
-  --checker-w: clamp(2.75rem, 4.5vw, 6.5rem);
-  --checker-h: clamp(1.35rem, 2.2vw, 3rem);
   --corner: clamp(0.65rem, 0.4vw + 0.4rem, 0.95rem);
   --radius: clamp(0.75rem, 1.1vw, 1.15rem);
 
@@ -77,7 +75,6 @@ img,video{ display:block; max-width:100%; }
 button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
 a{ color:inherit; text-decoration:none; }
 :focus-visible{ outline:2px solid currentColor; outline-offset:3px; }
-.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
 
 /* ============================================================
    1 · HERO — Bild mit Typografie darueber
@@ -89,15 +86,6 @@ a{ color:inherit; text-decoration:none; }
   padding-block:clamp(4rem,12vh,8rem);
   overflow:hidden;
 }
-/* ------------------------------------------------------------
-   Hero-Hintergrund: zwei Bilder uebereinander. Das obere wird
-   durch eine weiche runde Maske freigelegt, die dem Mauszeiger
-   nachlaeuft. Darueber ein Raster, das leicht gegenlaeuft.
-
-   PLATZHALTER — hier spaeter die richtigen Motive eintragen:
-     --img-base    liegt immer
-     --img-reveal  erscheint im Lichtkegel
-   ------------------------------------------------------------ */
 .hero-media{
   position:absolute; z-index:-2; background:#000;
   top:-6svh; left:0; right:0; bottom:-10svh;
@@ -111,8 +99,6 @@ a{ color:inherit; text-decoration:none; }
   background-size:cover; background-position:center center;
   background-repeat:no-repeat;
 }
-/* Ab Desktop das ganze Bild zeigen (kein Beschnitt);
-   Mobil/Tablet bleiben formatfuellend. */
 @media (min-width:901px){
   .hero-layer{ background-size:contain; }
 }
@@ -122,10 +108,6 @@ a{ color:inherit; text-decoration:none; }
 
 .hero-reveal{
   background-image:var(--img-reveal);
-  /* Maske ist ein reiner CSS-Verlauf, dessen Mittelpunkt/Radius per
-     Custom Properties vom Script (--mx/--my/--mr) live nachgefuehrt
-     wird. Kein Canvas, kein toDataURL() pro Frame -> deutlich weniger
-     Hauptthread-Last, besonders spuerbar beim Scrollen. */
   --mx:50%; --my:50%; --mr:0px;
   -webkit-mask-image: radial-gradient(circle var(--mr) at var(--mx) var(--my),
     rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%,
@@ -138,14 +120,12 @@ a{ color:inherit; text-decoration:none; }
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 }
 
-/* Raster darueber, sehr zurueckgenommen */
 .hero-grid{
   position:absolute; inset:0; width:100%; height:100%;
   opacity:.10; pointer-events:none;
 }
 .hero-grid path{ stroke:#64748b; stroke-width:.6; fill:none; }
 
-/* Ringwellen, die der Zeiger hinterlaesst */
 .hero-ripple{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
 .hero-ripple .ripple-dot{
   position:absolute; width:0; height:0; border-radius:999px;
@@ -158,7 +138,6 @@ a{ color:inherit; text-decoration:none; }
   100% { width:260px;height:260px;opacity:0;  border-width:.5px; }
 }
 
-/* Ohne feinen Zeiger (Touch) bleibt nur das Basisbild stehen */
 @media (hover:none), (pointer:coarse){
   .hero-reveal,.hero-grid,.hero-ripple{ display:none; }
 }
@@ -166,7 +145,6 @@ a{ color:inherit; text-decoration:none; }
   .hero-ripple{ display:none; }
 }
 
-/* Eckwinkel und Merkmalsblock */
 .hero-corner{ width:var(--corner); height:var(--corner); flex:none; color:var(--l40); }
 .hero-corner path{ stroke:currentColor; stroke-width:1.5; fill:none; }
 
@@ -178,7 +156,6 @@ a{ color:inherit; text-decoration:none; }
   display:flex; flex-direction:column; gap:clamp(1rem,1.8vh,1.5rem);
   background:transparent;
 }
-/* Kopfzeile: Globus + Case-Zaehler */
 .hero-feature .hf-top{
   display:flex; align-items:center; justify-content:space-between; gap:1rem;
 }
@@ -191,7 +168,6 @@ a{ color:inherit; text-decoration:none; }
   font-size:var(--micro); letter-spacing:.24em; text-transform:uppercase;
   color:var(--l55); text-shadow:0 1px 3px rgba(0,0,0,.9);
 }
-/* Textkoerper */
 .hero-feature .hf-body{ display:flex; flex-direction:column; gap:.7rem; }
 .hero-feature .hf-kicker{
   font-family:'Chakra Petch',sans-serif; font-weight:600;
@@ -208,7 +184,6 @@ a{ color:inherit; text-decoration:none; }
   margin:0; font-size:var(--body); line-height:1.7; color:var(--l70);
   text-shadow:0 1px 3px rgba(0,0,0,.95), 0 1px 16px rgba(0,0,0,.7);
 }
-/* Aktionslink */
 .hero-feature .hf-cta{
   align-self:flex-start;
   display:inline-flex; align-items:center; gap:.6rem;
@@ -221,7 +196,6 @@ a{ color:inherit; text-decoration:none; }
 .hero-feature .hf-cta svg{ transition:transform .4s var(--ease); }
 .hero-feature .hf-cta:hover svg{ transform:translate(2px,-2px); }
 
-/* Eckmarken des Blocks — vier Winkel */
 .hero-feature .c{
   position:absolute; width:var(--corner); height:var(--corner);
   border:1px solid var(--l40);
@@ -231,7 +205,6 @@ a{ color:inherit; text-decoration:none; }
 .hero-feature .c.bl{ bottom:0; left:0;  border-right:0; border-top:0; }
 .hero-feature .c.br{ bottom:0; right:0; border-left:0;  border-top:0; }
 
-/* Schmalere Viewports: Karte volle Breite unten */
 @media (max-width:900px){
   .hero-feature{
     position:absolute; left:var(--pad-x); right:var(--pad-x);
@@ -241,7 +214,6 @@ a{ color:inherit; text-decoration:none; }
 @media (max-width:560px){
   .hero-feature .hf-lead{ display:none; }
 }
-/* Verlauf von links, damit die Schrift auf jedem Motiv liegt */
 .hero-shade{
   position:absolute; inset:0; z-index:-1; pointer-events:none;
   background:
@@ -253,28 +225,6 @@ a{ color:inherit; text-decoration:none; }
     background:linear-gradient(to top, rgba(0,0,0,.92) 12%, rgba(0,0,0,.6) 45%, rgba(0,0,0,.25) 75%, rgba(0,0,0,.35) 100%);
   }
 }
-/* (Headline/Lead in den Eckblock verschoben) */
-
-/* ============================================================
-   Fester Zurueck-Knopf, unten rechts
-   ============================================================ */
-.back-fab{
-  position:fixed; z-index:70;
-  right:clamp(1rem,2.5vw,2.25rem); bottom:clamp(1rem,2.5vw,2.25rem);
-  display:inline-flex; align-items:center; gap:.6rem;
-  padding:.8rem 1.2rem; border-radius:999px;
-  border:1px solid var(--l16); background:rgba(0,0,0,.78); color:var(--ink);
-  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
-  letter-spacing:.22em; text-transform:uppercase;
-  opacity:0; transform:translateY(14px) scale(.96); pointer-events:none;
-  transition:opacity .55s var(--ease), transform .55s var(--ease),
-             background .4s var(--ease), border-color .4s var(--ease);
-}
-.back-fab.on{ opacity:1; transform:none; pointer-events:auto; }
-.back-fab:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
-.back-fab svg{ transition:transform .45s var(--ease); }
-.back-fab:hover svg{ transform:translateX(-4px); }
-@media (max-width:560px){ .back-fab span{ display:none; } .back-fab{ padding:.85rem; } }
 
 /* ============================================================
    Feste Kopfnavigation — Zurueck + die drei Cases
@@ -322,15 +272,8 @@ a{ color:inherit; text-decoration:none; }
 .lab-cases a.is-active{ color:var(--ink); border-bottom-color:var(--ink); }
 .lab-cases a.is-active .n{ color:var(--ink); }
 
-/* Ziele nicht unter die Navigation scrollen lassen */
 section[id]{ scroll-margin-top:clamp(3.5rem,9vh,5.5rem); }
 
-/* Off-Screen-Sektionen nicht rendern, solange sie nicht in Sicht sind.
-   Spart pro Scroll-Frame Layout- und Paint-Arbeit. Nur auf hoehen-
-   stabile Sektionen anwenden — bei Sektionen, deren echte Hoehe stark
-   von der Schaetzung abweicht, wuerde Lenis sonst einen Hoehensprung
-   sehen. Hero, Reveal (sticky) und die dynamischen Sektionen sind
-   bewusst ausgenommen. */
 .site-foot{
   content-visibility:auto;
   contain-intrinsic-size:auto 400px;
@@ -343,34 +286,8 @@ section[id]{ scroll-margin-top:clamp(3.5rem,9vh,5.5rem); }
   .lab-cases a .n{ display:none; }
 }
 
-.btn{
-  display:inline-flex; align-items:center; gap:var(--btn-gap);
-  border:1px solid var(--l40); border-radius:999px;
-  padding:var(--btn-py) var(--btn-px);
-  text-transform:uppercase; letter-spacing:.18em;
-  font-size:var(--body); font-weight:600;
-  background:rgba(255,255,255,.06); color:var(--ink);
-  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-  transition:background .5s var(--ease), color .5s var(--ease),
-             border-color .5s var(--ease), transform .3s var(--ease-press);
-}
-.btn svg{ transition:transform .5s var(--ease); }
-.btn:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
-.btn:hover svg{ transform:translate(3px,-3px); }
-.btn:active{ transform:scale(.985); }
-
-.framed{ position:relative; padding:var(--feature-pad); }
-.framed .c{ position:absolute; width:var(--corner); height:var(--corner); }
-.framed .c.tl{ top:0; left:0 } .framed .c.tr{ top:0; right:0 }
-.framed .c.bl{ bottom:0; left:0 } .framed .c.br{ bottom:0; right:0 }
-.feature{ min-width:var(--feature-min); display:flex; flex-direction:column; gap:.75rem; }
-.feature .tag{
-  font-weight:600; text-transform:uppercase; letter-spacing:.18em;
-  font-size:var(--body); line-height:1.6;
-}
-
 /* ============================================================
-   Sektionen
+   Sektionen — Shared heading styles
    ============================================================ */
 .section{ padding-inline:var(--pad-x); padding-block:var(--sec-py); }
 .sec-label{
@@ -394,247 +311,9 @@ h2.hl{
 .sl strong{ color:var(--ink); font-weight:600; }
 
 /* ============================================================
-   2 · GALERIE 1 — Raster mit Filter und Lightbox
+   3 · TRAILER
    ============================================================ */
-.filters{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:clamp(1.5rem,4vh,2.5rem); }
-.chip{
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:.5rem 1rem; border-radius:999px;
-  border:1px solid var(--l16); color:var(--l70);
-  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
-  letter-spacing:.2em; text-transform:uppercase;
-  transition:background .4s var(--ease), color .4s var(--ease),
-             border-color .4s var(--ease), transform .3s var(--ease-press);
-}
-.chip:hover{ color:var(--ink); border-color:var(--l40); }
-.chip[aria-pressed="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
-.chip:active{ transform:scale(.96); }
-.chip .n{ opacity:.55; font-size:.85em; }
-
-.gallery{
-  position:relative;
-  margin-top:clamp(1.5rem,4vh,2.5rem);
-  display:grid; grid-template-columns:repeat(2,1fr);
-  gap:clamp(.5rem,1.2vw,1rem);
-}
-@media (min-width:700px){ .gallery{ grid-template-columns:repeat(3,1fr); } }
-@media (min-width:1200px){ .gallery{ grid-template-columns:repeat(4,1fr); } }
-
-.tile{
-  position:relative; margin:0; overflow:hidden; padding:0;
-  aspect-ratio:1/1; border-radius:var(--radius);
-  background:var(--surface); cursor:pointer; display:block; width:100%;
-  opacity:0; transform:translateY(26px) scale(.96);
-  transition:opacity .8s var(--ease), transform .8s var(--ease);
-}
-.tile.in{ opacity:1; transform:none; }
-.tile.out{ opacity:0; transform:scale(.94); pointer-events:none; position:absolute; visibility:hidden; }
-.tile img{
-  width:100%; height:100%; object-fit:cover; transform:scale(1.02);
-  transition:transform 1.05s var(--ease);
-}
-.tile:hover img,.tile:focus-visible img{ transform:scale(1.08); }
-.tile .cap{
-  position:absolute; inset:auto 0 0 0;
-  padding:clamp(.7rem,1.4vw,1.05rem);
-  display:flex; align-items:flex-end; justify-content:space-between; gap:.75rem;
-  text-align:left;
-  background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.35) 55%, rgba(0,0,0,0));
-  opacity:0; transform:translateY(28%);
-  transition:opacity .55s var(--ease), transform .55s var(--ease);
-}
-.tile:hover .cap,.tile:focus-visible .cap{ opacity:1; transform:none; }
-.tile .name{
-  font-family:'Orbitron',sans-serif; font-weight:700; font-size:var(--body);
-  text-transform:uppercase; letter-spacing:.09em; line-height:1.3;
-}
-.tile .idx{
-  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
-  letter-spacing:.18em; color:var(--l55); white-space:nowrap;
-}
-.tile .zoom{
-  position:absolute; top:.6rem; right:.6rem;
-  width:2rem; height:2rem; border-radius:999px;
-  display:grid; place-items:center;
-  background:rgba(0,0,0,.5); border:1px solid var(--l16);
-  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
-  opacity:0; transform:scale(.8);
-  transition:opacity .45s var(--ease), transform .45s var(--ease);
-}
-.tile:hover .zoom,.tile:focus-visible .zoom{ opacity:1; transform:none; }
-@media (hover:none){ .tile .cap{ opacity:1; transform:none; } .tile .zoom{ display:none; } }
-
-/* ---------- Lightbox ---------- */
-.lb{
-  position:fixed; inset:0; z-index:100;
-  display:grid; grid-template-rows:auto 1fr auto; grid-template-columns:minmax(0,1fr);
-  background:rgba(0,0,0,.94);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  opacity:0; pointer-events:none; transition:opacity .45s var(--ease);
-}
-.lb.on{ opacity:1; pointer-events:auto; }
-.lb-head{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:clamp(1rem,2.5vw,1.75rem) clamp(1rem,3vw,2.25rem); }
-.lb-count{ font-family:'Chakra Petch',sans-serif; font-size:var(--micro); letter-spacing:.24em; text-transform:uppercase; color:var(--l55); }
-.lb-close{
-  width:2.5rem; height:2.5rem; border-radius:999px; display:grid; place-items:center;
-  border:1px solid var(--l16);
-  transition:background .4s var(--ease), border-color .4s var(--ease), transform .3s var(--ease-press);
-}
-.lb-close:hover{ background:var(--l08); border-color:var(--l40); }
-.lb-close:active{ transform:scale(.94); }
-.lb-stage{ position:relative; display:grid; grid-template-columns:minmax(0,1fr); place-items:center; padding-inline:clamp(1rem,3vw,2.25rem); min-height:0; min-width:0; }
-.lb-img{
-  max-width:100%; max-height:100%; border-radius:var(--radius); object-fit:contain;
-  opacity:0; transform:scale(.97);
-  transition:opacity .5s var(--ease), transform .5s var(--ease);
-}
-.lb-img.shown{ opacity:1; transform:none; }
-.lb-nav{
-  position:absolute; top:50%; translate:0 -50%;
-  width:clamp(2.5rem,4vw,3.25rem); height:clamp(2.5rem,4vw,3.25rem);
-  border-radius:999px; display:grid; place-items:center;
-  background:rgba(0,0,0,.5); border:1px solid var(--l16);
-  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-  transition:background .4s var(--ease), border-color .4s var(--ease), transform .3s var(--ease-press);
-}
-.lb-nav:hover{ background:rgba(255,255,255,.12); border-color:var(--l40); }
-.lb-nav:active{ transform:scale(.92); }
-.lb-prev{ left:clamp(.5rem,2vw,1.5rem); }
-.lb-next{ right:clamp(.5rem,2vw,1.5rem); }
-/* Auf dem Handy blieben Vor/Zurueck bisher per display:none ganz
-   weg — nur Wischen ging. Jetzt kleiner und naeher am Rand, damit
-   sie das Bild nicht verdecken, aber antippbar bleiben. */
-@media (max-width:640px){
-  .lb-nav{
-    width:2.5rem; height:2.5rem;
-    background:rgba(0,0,0,.6);
-  }
-  .lb-prev{ left:.35rem; }
-  .lb-next{ right:.35rem; }
-}
-.lb-foot{ display:flex; flex-direction:column; gap:clamp(.75rem,2vh,1.25rem); padding:clamp(1rem,2.5vw,1.75rem) clamp(1rem,3vw,2.25rem) clamp(1.25rem,3vh,2rem); }
-.lb-meta{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
-.lb-meta h3{ margin:0; font-family:'Orbitron',sans-serif; font-weight:700; font-size:clamp(.85rem,.9vw + .45rem,1.2rem); text-transform:uppercase; letter-spacing:.09em; }
-.lb-meta .stage{ font-family:'Chakra Petch',sans-serif; font-size:var(--micro); letter-spacing:.22em; text-transform:uppercase; color:var(--l55); }
-.lb-strip{ display:flex; gap:.5rem; overflow-x:auto; padding-bottom:.25rem; scrollbar-width:thin; scrollbar-color:var(--l16) transparent; }
-.lb-strip::-webkit-scrollbar{ height:3px; }
-.lb-strip::-webkit-scrollbar-thumb{ background:var(--l16); border-radius:2px; }
-.lb-thumb{
-  flex:none; width:clamp(3rem,5vw,4.25rem); aspect-ratio:1/1;
-  border-radius:calc(var(--radius) * .55); overflow:hidden;
-  opacity:.4; outline:2px solid transparent; outline-offset:2px;
-  transition:opacity .4s var(--ease), outline-color .4s var(--ease);
-}
-.lb-thumb img{ width:100%; height:100%; object-fit:cover; }
-.lb-thumb:hover{ opacity:.8; }
-.lb-thumb[aria-current="true"]{ opacity:1; outline-color:var(--ink); }
-
-
-/* ============================================================
-   2.5 · REVEAL — Video oeffnet beim Scrollen ins Vollbild,
-   scrubbt bis zum letzten Frame und schliesst wieder. Links und
-   rechts fliegen Schlagwoerter ein.
-
-   Aufbau: ein langer .sr-track gibt den Scrollweg vor. Darin
-   klebt .sr-stage (sticky, 100svh). Der Fortschritt 0..1 steuert
-   drei Phasen ueber die Variable --p:
-     OPEN_END   bis hier faehrt der Clip ins Vollbild auf
-     HOLD_*     dazwischen laeuft nur das Video (Scrub)
-     CLOSE_START ab hier faehrt der Rahmen wieder zu
-   ============================================================ */
-.sr-sec{ position:relative; background:var(--bg); }
-.sr-track{ height:360svh; }
-.sr-stage{
-  position:sticky; top:0; height:100svh; overflow:hidden;
-  display:flex; align-items:center; justify-content:center;
-  --p:0;
-}
-.sr-frame{
-  position:absolute; inset:0; background:#000;
-  clip-path:inset(var(--inset-y, 32vh) var(--inset-x, 32vw) round var(--inset-r, 20px));
-  will-change:clip-path;
-}
-.sr-frame video{ width:100%; height:100%; object-fit:cover; display:block; }
-.sr-frame:fullscreen{ clip-path:none !important; }
-
-.sr-veil{
-  position:absolute; inset:0; pointer-events:none; z-index:2;
-  background:linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 40%);
-  opacity:var(--p);
-}
-
-/* Kicker oben, nur bevor der Clip offen ist */
-.sr-kicker{
-  position:absolute; z-index:3; top:calc(var(--inset-y, 32vh) - 2.6rem);
-  left:0; right:0; display:flex; justify-content:center; gap:.75rem; align-items:center;
-  font-family:'Chakra Petch',sans-serif; font-weight:600;
-  font-size:var(--micro); letter-spacing:.28em; text-transform:uppercase;
-  color:var(--l55); pointer-events:none;
-  opacity:calc(1 - var(--p) * 3);
-}
-.sr-kicker .rule{ width:2.5rem; height:1px; background:var(--l16); }
-
-/* Untertitel, erscheint wenn der Clip vollflaechig steht */
-.sr-cap{
-  position:absolute; z-index:3; left:var(--pad-x); bottom:clamp(1.5rem,5vh,3.25rem);
-  display:flex; flex-direction:column; gap:.4rem; pointer-events:none;
-  opacity:var(--p-mid); transform:translateY(calc((1 - var(--p-mid)) * 12px));
-}
-.sr-cap .k{
-  font-family:'Chakra Petch',sans-serif; font-weight:600;
-  font-size:var(--micro); letter-spacing:.28em; text-transform:uppercase; color:var(--l55);
-}
-.sr-cap .t{
-  font-family:'Orbitron',sans-serif; font-weight:700; text-transform:uppercase;
-  letter-spacing:.05em; line-height:1.05; font-size:var(--headline-2);
-  text-shadow:0 2px 20px rgba(0,0,0,.6);
-}
-
-/* Schlagwoerter links / rechts */
-.sr-words{ position:absolute; inset:0; z-index:3; pointer-events:none; }
-.sr-word{
-  position:absolute; font-family:'Orbitron',sans-serif; font-weight:700;
-  text-transform:uppercase; letter-spacing:.14em;
-  font-size:clamp(1.1rem, 1vw + 0.8rem, 2rem);
-  color:var(--ink); text-shadow:0 2px 18px rgba(0,0,0,.7);
-  opacity:0; will-change:transform,opacity;
-}
-.sr-word.l{ left:clamp(1.25rem,4vw,4rem);  transform:translateX(-40px); text-align:left; }
-.sr-word.r{ right:clamp(1.25rem,4vw,4rem); transform:translateX(40px);  text-align:right; }
-.sr-word .n{
-  display:block; font-family:'Chakra Petch',sans-serif; font-weight:600;
-  font-size:var(--micro); letter-spacing:.24em; color:var(--l40); margin-bottom:.2rem;
-}
-.sr-word.on{ opacity:1; transform:translateX(0); }
-.sr-word{ transition:opacity .5s var(--ease), transform .6s var(--ease); }
-
-.sr-ctrls{
-  position:absolute; z-index:4;
-  right:clamp(.75rem,1.6vw,1.4rem); bottom:clamp(.75rem,1.6vw,1.4rem);
-  display:flex; gap:.5rem; opacity:var(--p-mid); transition:opacity .3s var(--ease);
-}
-.sr-ctrls .vctrl{ position:static; }
-
-@media (max-width:760px){
-  .sr-track{ height:300svh; }
-  .sr-frame{ --inset-y:34vh; --inset-x:8vw; }
-  .sr-word{ font-size:clamp(.9rem,3vw,1.3rem); }
-}
-@media (prefers-reduced-motion:reduce){
-  .sr-track{ height:auto; }
-  .sr-stage{ position:relative; height:auto; padding:clamp(3rem,8vh,6rem) 0; }
-  .sr-frame{ position:relative; inset:auto; clip-path:none !important;
-             aspect-ratio:16/9; margin:0 var(--pad-x); border-radius:var(--radius); }
-  .sr-kicker{ display:none; }
-  .sr-cap,.sr-ctrls{ opacity:1; transform:none; }
-  .sr-word{ opacity:1; transform:none; position:static; display:inline-block; margin:.5rem 1rem; }
-  .sr-words{ position:static; text-align:center; padding-top:1.5rem; }
-}
-
-/* ============================================================
-   3 · TRAILER — oberhalb der zweiten Galerie
-   ============================================================ */
-.trailer-sec{ padding-inline:var(--pad-x); padding-block:var(--sec-py) 0; }
+.trailer-sec{ padding-inline:var(--pad-x); padding-block:var(--sec-py); }
 .trailer-frame{
   position:relative; margin-top:clamp(2rem,5vh,3.5rem);
   aspect-ratio:16/9; overflow:hidden; border-radius:var(--radius);
@@ -649,7 +328,6 @@ h2.hl{
 }
 .trailer-frame.playing .veil{ opacity:0; }
 
-/* Grosser Play-Knopf */
 .tr-play{
   position:absolute; inset:0; z-index:3;
   display:grid; place-items:center; gap:1rem;
@@ -670,7 +348,6 @@ h2.hl{
   letter-spacing:.28em; text-transform:uppercase; color:var(--l70);
 }
 
-/* Ton- und Pause-Schalter, in jeder Video-Ecke gleich */
 .vctrl{
   position:absolute; z-index:4; display:inline-flex; align-items:center; gap:.5rem;
   padding:.5rem .9rem; border-radius:999px;
@@ -684,6 +361,9 @@ h2.hl{
 .vctrl.snd{ right:clamp(.75rem,1.6vw,1.4rem); bottom:clamp(.75rem,1.6vw,1.4rem); }
 .trailer-frame .vctrl.play{ left:clamp(.75rem,1.6vw,1.4rem); bottom:clamp(.75rem,1.6vw,1.4rem); opacity:0; }
 .trailer-frame.playing .vctrl.play{ opacity:1; }
+.vctrl.fs{ right:clamp(.75rem,1.6vw,1.4rem); top:clamp(.75rem,1.6vw,1.4rem); }
+:fullscreen video, :-webkit-full-screen video{ width:100%; height:100%; object-fit:contain; background:#000; }
+:fullscreen .veil, :fullscreen .tr-play{ display:none; }
 .vctrl .off{ display:none; }
 .vctrl[aria-pressed="true"] .off{ display:inline; }
 .vctrl[aria-pressed="true"] .on{ display:none; }
@@ -696,175 +376,12 @@ h2.hl{
 }
 .trailer-meta b{ color:var(--ink); font-weight:600; }
 
-/* ============================================================
-   4 · GALERIE 2 — vollflaechiges Akkordeon, scrollt nach links
-   ============================================================ */
-.acc-sec{ padding-block:var(--sec-py) 0; }
-.acc-sec .acc-head{ padding-inline:var(--pad-x); }
-
-.acc-wrap{
-  position:relative; margin-top:clamp(2rem,5vh,3.5rem);
-  overflow:hidden;
-  -webkit-mask-image:linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-  mask-image:linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-}
-.acc-track{
-  display:flex; gap:clamp(.4rem,.8vw,.75rem);
-  width:max-content;
-  will-change:transform;
-}
-.acc-wrap.paused .acc-track{ animation-play-state:paused; }
-
-.acc-item{
-  position:relative; flex:none; padding:0; overflow:hidden;
-  width:clamp(6rem, 13vw, 13rem);
-  height:clamp(20rem, 62vh, 40rem);
-  border-radius:var(--radius);
-  background:var(--surface); cursor:pointer;
-  transition:width .85s var(--ease), filter .6s var(--ease);
-  filter:grayscale(.35) brightness(.82);
-}
-.acc-item.open{
-  width:clamp(16rem, 42vw, 46rem);
-  filter:none;
-}
-.acc-item > img,
-.acc-item > video{
-  position:absolute; inset:0; width:100%; height:100%;
-  object-fit:cover; object-position:center;
-}
-.acc-item .shade{
-  position:absolute; inset:0; pointer-events:none;
-  background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.15) 42%, rgba(0,0,0,0) 70%);
-}
-/* Titel steht quer, solange die Kachel schmal ist */
-.acc-item .label{
-  position:absolute; left:0; right:0; bottom:0;
-  padding:clamp(.85rem,1.4vw,1.35rem);
-  display:flex; flex-direction:column; gap:.35rem; text-align:left;
-}
-.acc-item .lt{
-  font-family:'Orbitron',sans-serif; font-weight:700;
-  font-size:clamp(.7rem,.75vw + .35rem,1rem);
-  text-transform:uppercase; letter-spacing:.09em; line-height:1.3;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.acc-item .ls{
-  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
-  letter-spacing:.2em; text-transform:uppercase; color:var(--l55);
-  opacity:0; transform:translateY(6px);
-  transition:opacity .6s var(--ease), transform .6s var(--ease);
-}
-.acc-item.open .ls{ opacity:1; transform:none; }
-.acc-item .badge{
-  position:absolute; top:.75rem; left:.75rem;
-  display:inline-flex; align-items:center; gap:.35rem;
-  padding:.3rem .6rem; border-radius:999px;
-  background:rgba(0,0,0,.55); border:1px solid var(--l16);
-  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
-  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
-  letter-spacing:.18em; text-transform:uppercase; color:var(--l70);
-}
-.acc-hint{
-  display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
-  padding-inline:var(--pad-x); margin-top:clamp(1rem,2.5vh,1.75rem);
-  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
-  letter-spacing:.22em; text-transform:uppercase; color:var(--l55);
-}
-@media (max-width:640px){
-  .acc-item{ width:clamp(8rem,42vw,14rem); height:clamp(18rem,52vh,26rem); }
-  .acc-item.open{ width:min(78vw, 26rem); }
-}
-/* Kurze Fenster (Handy quer) — die feste 18rem/20rem-Untergrenze
-   der Hoehe kann hier groesser sein als 52-62% der Fensterhoehe
-   und die Kacheln oben/unten abschneiden. Ohne rem-Untergrenze
-   schrumpfen sie stattdessen sauber mit dem Fenster mit. */
-@media (max-height:560px){
-  .acc-item{ height:min(60vh, 22rem); }
-}
-
-
-/* ---------- Akkordeon: Pfeile und Ziehen ---------- */
-.acc-wrap{ touch-action:pan-y; cursor:grab; }
-.acc-wrap.dragging{ cursor:grabbing; }
-.acc-nav{
-  position:absolute; top:50%; translate:0 -50%; z-index:5;
-  width:clamp(2.4rem,3.5vw,3.25rem); height:clamp(2.4rem,3.5vw,3.25rem);
-  border-radius:999px; display:grid; place-items:center;
-  background:rgba(0,0,0,.55); border:1px solid var(--l16); color:#fff;
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  transition:background .4s var(--ease), border-color .4s var(--ease), transform .3s var(--ease-press);
-}
-.acc-nav:hover{ background:rgba(255,255,255,.16); border-color:var(--l40); }
-.acc-nav:active{ transform:translateY(-50%) scale(.92); }
-.acc-prev{ left:clamp(.5rem,1.5vw,1.25rem); }
-.acc-next{ right:clamp(.5rem,1.5vw,1.25rem); }
-
-/* ---------- Reel-Lightbox: Bild oder Video ---------- */
-.rlb-media{
-  position:relative; display:grid; grid-template-columns:minmax(0,1fr); place-items:center;
-  max-width:100%; max-height:100%; min-height:0; min-width:0;
-}
-.rlb-media img,
-.rlb-media video{
-  max-width:100%; max-height:100%; width:auto; height:auto;
-  border-radius:var(--radius); object-fit:contain; background:#000;
-  opacity:0; transform:scale(.97);
-  transition:opacity .5s var(--ease), transform .5s var(--ease);
-}
-.rlb-media img.shown,
-.rlb-media video.shown{ opacity:1; transform:none; }
-.rlb-media video{ display:none; }
-.rlb-media.is-video video{ display:block; }
-.rlb-media.is-video img{ display:none; }
-.rlb-tools{ display:flex; gap:.5rem; align-items:center; }
-
-/* ---------- Vollbild-Knopf ---------- */
-.vctrl.fs{ right:clamp(.75rem,1.6vw,1.4rem); top:clamp(.75rem,1.6vw,1.4rem); }
-:fullscreen video, :-webkit-full-screen video{ width:100%; height:100%; object-fit:contain; background:#000; }
-:fullscreen .veil, :fullscreen .tr-play{ display:none; }
-
-/* ============================================================
-   Responsive — enge Viewports
-   ============================================================ */
-@media (max-width:760px){
-  .hero-bottom{ flex-direction:column; align-items:flex-start; gap:1.25rem; }
-  .feature{ min-width:0; width:100%; }
-  .lb-foot{ gap:.75rem; }
-  .lb-meta{ flex-direction:column; gap:.25rem; }
-  .trailer-meta{ gap:.6rem 1.25rem; }
-  .acc-hint{ flex-direction:column; gap:.4rem; }
-}
 @media (max-width:560px){
   .tr-play .lbl{ display:none; }
   .vctrl span{ display:none; }
   .vctrl{ padding:.55rem; }
   .vctrl .off,.vctrl .on{ display:none; }
   .vctrl svg .off,.vctrl svg .on{ display:inline; }
-  .lb-thumb{ width:2.75rem; }
-}
-/* ============================================================
-   6 · Zurueck
-   ============================================================ */
-.back{
-  display:flex; align-items:center; gap:clamp(1rem,3vw,2.5rem); flex-wrap:wrap;
-  margin-inline:var(--pad-x); margin-block:var(--sec-py);
-  padding:clamp(1.5rem,4vw,3rem);
-  border:1px solid var(--l16); border-radius:var(--radius);
-  transition:background .6s var(--ease), border-color .6s var(--ease);
-}
-.back:hover{ background:var(--surface); border-color:var(--l40); }
-.back svg{ flex:none; transition:transform .5s var(--ease); }
-.back:hover svg{ transform:translateX(-6px); }
-.back .bt{
-  display:block; font-family:'Orbitron',sans-serif; font-weight:700;
-  font-size:clamp(1rem,1.4vw + .5rem,1.9rem);
-  text-transform:uppercase; letter-spacing:.08em; line-height:1.2;
-}
-.back .bs{
-  display:block; margin-top:.6rem;
-  font-family:'Chakra Petch',sans-serif; font-size:var(--micro);
-  letter-spacing:.24em; text-transform:uppercase; color:var(--l55);
 }
 
 /* ============================================================
@@ -893,19 +410,14 @@ h2.hl{
 @media (prefers-reduced-motion:reduce){
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
-  .rv,.tile{ opacity:1 !important; transform:none !important; }
+  .rv{ opacity:1 !important; transform:none !important; }
   [data-in]{ opacity:1 !important; }
-  .hero-track{ height:auto; }
-  .hero-stage{ position:relative; height:auto; min-height:88svh; }
-  .acc-track{ animation:none; }
-  .acc-wrap{ overflow-x:auto; }
 }
 </style>
 </head>
 <body>
 
 <!-- Feste Kopfnavigation: Zurueck zum Portfolio + die drei Cases -->
-<!-- ▼ ZURUECK-LINK: hier das Ziel deiner vorherigen Seite eintragen ▼ -->
 <header class="lab-nav" id="labNav">
   <a class="lab-back" href="../index.html" aria-label="Back to portfolio">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
@@ -963,62 +475,10 @@ h2.hl{
       <p class="hf-lead">One avatar, carried through an entire AI production pipeline — concept, character sheet, material studies, motion, grade.</p>
     </div>
 
-    <a class="hf-cta" href="#gallery">
-      <span>Enter the case</span>
+    <a class="hf-cta" href="#trailer">
+      <span>Watch the trailer</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
     </a>
-  </div>
-</section>
-
-<!-- ============================ 2 · GALERIE 1 ============================ -->
-<section class="section" id="gallery">
-  <div class="sec-label rv"><b>Frame index</b> <span>—</span> <span>Key scenes &amp; studies</span></div>
-  <div class="sec-head">
-    <h2 class="hl rv">Same avatar,<br>every stage</h2>
-    <p class="sl rv" data-d="1">Key scenes and the rig, shader and lighting tests they came out of. <strong>Filter by stage, or open any frame full size.</strong></p>
-  </div>
-
-  <div class="filters" id="filters" role="group" aria-label="Filter frames by stage"></div>
-  <div class="gallery" id="galleryGrid"></div>
-</section>
-
-
-<!-- ============================ 2.5 · REVEAL — Scroll ins Vollbild ============================ -->
-<section class="sr-sec" id="reveal" aria-label="Project EVE — reveal">
-  <div class="sr-track" id="srTrack">
-    <div class="sr-stage" id="srStage">
-
-      <div class="sr-frame" id="srFrame">
-        <video id="srVideo" playsinline muted preload="auto" disablepictureinpicture
-               poster="../img/AI/eve/v09-poster.jpg">
-          <source src="../img/AI/videos/eve/v09.mp4" type="video/mp4">
-        </video>
-        <div class="sr-veil" aria-hidden="true"></div>
-      </div>
-
-      <div class="sr-kicker" aria-hidden="true">
-        <span class="rule"></span><span>Scroll to reveal</span><span class="rule"></span>
-      </div>
-
-      <!-- Schlagwoerter — hier gern anpassen -->
-      <div class="sr-words" id="srWords" aria-hidden="true">
-        <span class="sr-word l" data-at="0.30" style="top:26%"><span class="n">01</span>Concept</span>
-        <span class="sr-word r" data-at="0.42" style="top:38%"><span class="n">02</span>Character</span>
-        <span class="sr-word l" data-at="0.54" style="top:52%"><span class="n">03</span>Material</span>
-        <span class="sr-word r" data-at="0.66" style="top:64%"><span class="n">04</span>Motion</span>
-        <span class="sr-word l" data-at="0.78" style="top:76%"><span class="n">05</span>Grade</span>
-      </div>
-
-      <div class="sr-cap">
-        <span class="k">Motion — 00:10</span>
-        <span class="t">Pull-back</span>
-      </div>
-
-      <div class="sr-ctrls">
-        <button class="vctrl fs" data-fs="reveal" aria-label="Fullscreen"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/></svg><span>Full</span></button>
-      </div>
-
-    </div>
   </div>
 </section>
 
@@ -1044,7 +504,7 @@ h2.hl{
     </button>
 
     <button class="vctrl play" id="trPause" aria-label="Pause trailer">Pause</button>
-<button class="vctrl fs" data-fs="trailer" aria-label="Fullscreen"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/></svg><span>Full</span></button>
+    <button class="vctrl fs" data-fs="trailer" aria-label="Fullscreen"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/></svg><span>Full</span></button>
     <button class="vctrl snd" id="trSnd" aria-pressed="true" aria-label="Toggle sound">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path class="off" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/><path class="on" d="m22 9-6 6M16 9l6 6"/></svg>
       <span class="on">Sound off</span><span class="off">Sound on</span>
@@ -1059,43 +519,7 @@ h2.hl{
   </div>
 </section>
 
-<!-- ============================ 4 · GALERIE 2 · AKKORDEON ============================ -->
-<section class="acc-sec" id="reel">
-  <div class="acc-head">
-    <div class="sec-label rv"><b>Teaser reel</b> <span>—</span> <span>Project EVE</span></div>
-    <div class="sec-head">
-      <h2 class="hl rv">The moving cut</h2>
-      <p class="sl rv" data-d="1">Trailer shots and costume plates, shuffled fresh on every visit. <strong>Hover or tap a panel to open it — the strip pauses while you look.</strong></p>
-    </div>
-  </div>
-
-  <div class="acc-wrap" id="accWrap">
-    <div class="acc-track" id="accTrack"></div>
-    <button class="acc-nav acc-prev" id="accPrev" aria-label="Scroll left">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-    </button>
-    <button class="acc-nav acc-next" id="accNext" aria-label="Scroll right">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-    </button>
-  </div>
-
-  <div class="acc-hint">
-    <span id="accCount">—</span>
-    <span>Shuffled per visit · hover to hold</span>
-  </div>
-</section>
-
 </main>
-
-<!-- ============================ 5 · ZURUECK ============================ -->
-<!-- ▼ ZURUECK-LINK: hier das Ziel deiner vorherigen Seite eintragen ▼ -->
-<a class="back rv" href="../index.html">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-  <span>
-    <span class="bt">Back to portfolio</span>
-    <span class="bs">daverindorindo.de — Work, About, Contact</span>
-  </span>
-</a>
 
 <!-- ============================ FOOTER ============================ -->
 <footer class="site-foot">
@@ -1105,72 +529,6 @@ h2.hl{
     <a href="#top">Top</a>
   </nav>
 </footer>
-
-<!-- ============================ LIGHTBOX ============================ -->
-<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Frame viewer" aria-hidden="true">
-  <div class="lb-head">
-    <span class="lb-count" id="lbCount">01 / 08</span>
-    <button class="lb-close" id="lbClose" aria-label="Close viewer">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-    </button>
-  </div>
-
-  <div class="lb-stage" id="lbStageEl">
-    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous frame">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-    </button>
-    <img class="lb-img" id="lbImg" alt="">
-    <button class="lb-nav lb-next" id="lbNext" aria-label="Next frame">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-    </button>
-  </div>
-
-  <div class="lb-foot">
-    <div class="lb-meta">
-      <h3 id="lbTitle">—</h3>
-      <span class="stage" id="lbStageName">—</span>
-    </div>
-    <div class="lb-strip" id="lbStrip"></div>
-  </div>
-</div>
-
-
-<!-- ============================ REEL-LIGHTBOX ============================ -->
-<div class="lb" id="reelBox" role="dialog" aria-modal="true" aria-label="Reel viewer" aria-hidden="true">
-  <div class="lb-head">
-    <span class="lb-count" id="rlbCount">01 / 13</span>
-    <div class="rlb-tools">
-      <button class="lb-close" id="rlbFs" aria-label="Fullscreen">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/></svg>
-      </button>
-      <button class="lb-close" id="rlbClose" aria-label="Close viewer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="lb-stage" id="rlbStage">
-    <button class="lb-nav lb-prev" id="rlbPrev" aria-label="Previous item">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-    </button>
-    <div class="rlb-media" id="rlbMedia">
-      <img id="rlbImg" alt="">
-      <video id="rlbVideo" playsinline controls muted disableRemotePlayback
-             controlslist="nodownload noplaybackrate" preload="metadata"></video>
-    </div>
-    <button class="lb-nav lb-next" id="rlbNext" aria-label="Next item">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-    </button>
-  </div>
-
-  <div class="lb-foot">
-    <div class="lb-meta">
-      <h3 id="rlbTitle">—</h3>
-      <span class="stage" id="rlbNote">—</span>
-    </div>
-    <div class="lb-strip" id="rlbStrip"></div>
-  </div>
-</div>
 
 <script>/* Lenis 1.3.26 — inline eingebettet, damit kein externer Pfad noetig ist und es auch per file:// laeuft */
 (function(){var e=`1.3.26`;function t(e,t,n){return Math.max(e,Math.min(t,n))}function n(e,t,n){return(1-n)*e+n*t}function r(e,t,r,i){return n(e,t,1-Math.exp(-r*i))}function i(e,t){return(e%t+t)%t}var a=class{isRunning=!1;value=0;from=0;to=0;currentTime=0;lerp;duration;easing;onUpdate;advance(e){if(!this.isRunning)return;let n=!1;if(this.duration&&this.easing){this.currentTime+=e;let r=t(0,this.currentTime/this.duration,1);n=r>=1;let i=n?1:this.easing(r);this.value=this.from+(this.to-this.from)*i}else this.lerp?(this.value=r(this.value,this.to,this.lerp*60,e),Math.round(this.value)===Math.round(this.to)&&(this.value=this.to,n=!0)):(this.value=this.to,n=!0);n&&this.stop(),this.onUpdate?.(this.value,n)}stop(){this.isRunning=!1}fromTo(e,t,{lerp:n,duration:r,easing:i,onStart:a,onUpdate:o}){this.from=this.value=e,this.to=t,this.lerp=n,this.duration=r,this.easing=i,this.currentTime=0,this.isRunning=!0,a?.(),this.onUpdate=o}};function o(e,t){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>{n=void 0,e.apply(this,r)},t)}}var s=class{width=0;height=0;scrollHeight=0;scrollWidth=0;debouncedResize;wrapperResizeObserver;contentResizeObserver;constructor(e,t,{autoResize:n=!0,debounce:r=250}={}){this.wrapper=e,this.content=t,n&&(this.debouncedResize=o(this.resize,r),this.wrapper instanceof Window?window.addEventListener(`resize`,this.debouncedResize):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}destroy(){this.wrapperResizeObserver?.disconnect(),this.contentResizeObserver?.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener(`resize`,this.debouncedResize)}resize=()=>{this.onWrapperResize(),this.onContentResize()};onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)};onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)};get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}},c=class{events={};emit(e,...t){let n=this.events[e]||[];for(let e=0,r=n.length;e<r;e++)n[e]?.(...t)}on(e,t){return this.events[e]?this.events[e].push(t):this.events[e]=[t],()=>{this.events[e]=this.events[e]?.filter(e=>t!==e)}}off(e,t){this.events[e]=this.events[e]?.filter(e=>t!==e)}destroy(){this.events={}}};let l={passive:!1};function u(e,t){return e===1?16.666666666666668:e===2?t:1}var d=class{touchStart={x:0,y:0};lastDelta={x:0,y:0};window={width:0,height:0};emitter=new c;constructor(e,t={wheelMultiplier:1,touchMultiplier:1}){this.element=e,this.options=t,window.addEventListener(`resize`,this.onWindowResize),this.onWindowResize(),this.element.addEventListener(`wheel`,this.onWheel,l),this.element.addEventListener(`touchstart`,this.onTouchStart,l),this.element.addEventListener(`touchmove`,this.onTouchMove,l),this.element.addEventListener(`touchend`,this.onTouchEnd,l)}on(e,t){return this.emitter.on(e,t)}destroy(){this.emitter.destroy(),window.removeEventListener(`resize`,this.onWindowResize),this.element.removeEventListener(`wheel`,this.onWheel,l),this.element.removeEventListener(`touchstart`,this.onTouchStart,l),this.element.removeEventListener(`touchmove`,this.onTouchMove,l),this.element.removeEventListener(`touchend`,this.onTouchEnd,l)}onTouchStart=e=>{let{clientX:t,clientY:n}=e.targetTouches?e.targetTouches[0]:e;this.touchStart.x=t,this.touchStart.y=n,this.lastDelta={x:0,y:0},this.emitter.emit(`scroll`,{deltaX:0,deltaY:0,event:e})};onTouchMove=e=>{let{clientX:t,clientY:n}=e.targetTouches?e.targetTouches[0]:e,r=-(t-this.touchStart.x)*this.options.touchMultiplier,i=-(n-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=t,this.touchStart.y=n,this.lastDelta={x:r,y:i},this.emitter.emit(`scroll`,{deltaX:r,deltaY:i,event:e})};onTouchEnd=e=>{this.emitter.emit(`scroll`,{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:e})};onWheel=e=>{let{deltaX:t,deltaY:n,deltaMode:r}=e,i=u(r,this.window.width),a=u(r,this.window.height);t*=i,n*=a,t*=this.options.wheelMultiplier,n*=this.options.wheelMultiplier,this.emitter.emit(`scroll`,{deltaX:t,deltaY:n,event:e})};onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}}};let f=e=>Math.min(1,1.001-2**(-10*e));var p=class{_isScrolling=!1;_isStopped=!1;_isLocked=!1;_preventNextNativeScrollEvent=!1;_resetVelocityTimeout=null;_rafId=null;_isDraggingSelection=!1;reducedMotionMediaQuery=window.matchMedia(`(prefers-reduced-motion: reduce)`);isTouching;isIos;time=0;userData={};lastVelocity=0;velocity=0;direction=0;options;targetScroll;animatedScroll;animate=new a;emitter=new c;dimensions;virtualScroll;constructor({wrapper:t=window,content:n=document.documentElement,eventsTarget:r=t,smoothWheel:i=!0,syncTouch:a=!1,syncTouchLerp:o=.075,touchInertiaExponent:c=1.7,duration:l,easing:u,lerp:p=.1,infinite:m=!1,orientation:h=`vertical`,gestureOrientation:g=h===`horizontal`?`both`:`vertical`,touchMultiplier:_=1,wheelMultiplier:v=1,autoResize:y=!0,prevent:b,virtualScroll:x,overscroll:S=!0,autoRaf:C=!1,anchors:w=!1,autoToggle:T=!1,allowNestedScroll:E=!1,__experimental__naiveDimensions:D=!1,naiveDimensions:O=D,stopInertiaOnNavigate:k=!1,respectReducedMotion:A=!0}={}){window.lenisVersion=e,window.lenis||(window.lenis={}),window.lenis.version=e,h===`horizontal`&&(window.lenis.horizontal=!0),a===!0&&(window.lenis.touch=!0),this.isIos=/(iPad|iPhone|iPod)/g.test(navigator.userAgent),(!t||t===document.documentElement)&&(t=window),typeof l==`number`&&typeof u!=`function`?u=f:typeof u==`function`&&typeof l!=`number`&&(l=1),this.options={wrapper:t,content:n,eventsTarget:r,smoothWheel:i,syncTouch:a,syncTouchLerp:o,touchInertiaExponent:c,duration:l,easing:u,lerp:p,infinite:m,gestureOrientation:g,orientation:h,touchMultiplier:_,wheelMultiplier:v,autoResize:y,prevent:b,virtualScroll:x,overscroll:S,autoRaf:C,anchors:w,autoToggle:T,allowNestedScroll:E,naiveDimensions:O,stopInertiaOnNavigate:k,respectReducedMotion:A},this.dimensions=new s(t,n,{autoResize:y}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener(`scroll`,this.onNativeScroll),this.options.wrapper.addEventListener(`scrollend`,this.onScrollEnd,{capture:!0}),(this.options.anchors||this.options.stopInertiaOnNavigate)&&this.options.wrapper.addEventListener(`click`,this.onClick),this.options.wrapper.addEventListener(`pointerdown`,this.onPointerDown),this.virtualScroll=new d(r,{touchMultiplier:_,wheelMultiplier:v}),this.virtualScroll.on(`scroll`,this.onVirtualScroll),this.options.autoToggle&&(this.checkOverflow(),this.rootElement.addEventListener(`transitionend`,this.onTransitionEnd)),this.options.autoRaf&&(this._rafId=requestAnimationFrame(this.raf))}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener(`scroll`,this.onNativeScroll),this.options.wrapper.removeEventListener(`scrollend`,this.onScrollEnd,{capture:!0}),this.options.wrapper.removeEventListener(`pointerdown`,this.onPointerDown),(this.options.anchors||this.options.stopInertiaOnNavigate)&&this.options.wrapper.removeEventListener(`click`,this.onClick),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName(),this._rafId&&cancelAnimationFrame(this._rafId)}on(e,t){return this.emitter.on(e,t)}off(e,t){return this.emitter.off(e,t)}onScrollEnd=e=>{e instanceof CustomEvent||(this.isScrolling===`smooth`||this.isScrolling===!1)&&e.stopPropagation()};dispatchScrollendEvent=()=>{this.options.wrapper.dispatchEvent(new CustomEvent(`scrollend`,{bubbles:this.options.wrapper===window,detail:{lenisScrollEnd:!0}}))};get overflow(){let e=this.isHorizontal?`overflow-x`:`overflow-y`;return getComputedStyle(this.rootElement)[e]}checkOverflow(){[`hidden`,`clip`].includes(this.overflow)?this.internalStop():this.internalStart()}onTransitionEnd=e=>{e.propertyName?.includes(`overflow`)&&e.target===this.rootElement&&this.checkOverflow()};setScroll(e){this.isHorizontal?this.options.wrapper.scrollTo({left:e,behavior:`instant`}):this.options.wrapper.scrollTo({top:e,behavior:`instant`})}onClick=e=>{let t=e.composedPath().filter(e=>e instanceof HTMLAnchorElement&&e.href).map(e=>new URL(e.href)),n=new URL(window.location.href);if(this.options.anchors){let e=t.find(e=>n.host===e.host&&n.pathname===e.pathname&&e.hash);if(e){let t=typeof this.options.anchors==`object`&&this.options.anchors?this.options.anchors:void 0,n=decodeURIComponent(e.hash);this.scrollTo(n,t);return}}if(this.options.stopInertiaOnNavigate&&t.some(e=>n.host===e.host&&n.pathname!==e.pathname)){this.reset();return}};onPointerDown=e=>{e.button===1&&this.reset()};isTouchOnSelectionHandle(e){let t=window.getSelection();if(!t||t.isCollapsed||t.rangeCount===0)return!1;let n=e.targetTouches[0]??e.changedTouches[0];if(!n)return!1;let r=t.getRangeAt(0).getClientRects();if(r.length===0)return!1;let i=r[0],a=r[r.length-1],o=Math.hypot(n.clientX-i.left,n.clientY-i.top)<=40,s=Math.hypot(n.clientX-a.right,n.clientY-a.bottom)<=40;return o||s}onVirtualScroll=e=>{if(typeof this.options.virtualScroll==`function`&&this.options.virtualScroll(e)===!1)return;let{deltaX:t,deltaY:n,event:r}=e;if(this.emitter.emit(`virtual-scroll`,{deltaX:t,deltaY:n,event:r}),r.ctrlKey||r.lenisStopPropagation)return;let i=r.type.includes(`touch`),a=r.type.includes(`wheel`);if(i&&this.isIos&&(r.type===`touchstart`&&(this._isDraggingSelection=this.isTouchOnSelectionHandle(r)),this._isDraggingSelection)){r.type===`touchend`&&(this._isDraggingSelection=!1);return}this.isTouching=r.type===`touchstart`||r.type===`touchmove`;let o=t===0&&n===0;if(this.options.syncTouch&&i&&r.type===`touchstart`&&o&&!this.isStopped&&!this.isLocked){this.reset();return}let s=this.options.gestureOrientation===`vertical`&&n===0||this.options.gestureOrientation===`horizontal`&&t===0;if(o||s)return;let c=r.composedPath();c=c.slice(0,c.indexOf(this.rootElement));let l=this.options.prevent,u=Math.abs(t)>=Math.abs(n)?`horizontal`:`vertical`;if(c.find(e=>e instanceof HTMLElement&&(typeof l==`function`&&l?.(e)||e.hasAttribute?.(`data-lenis-prevent`)||u===`vertical`&&e.hasAttribute?.(`data-lenis-prevent-vertical`)||u===`horizontal`&&e.hasAttribute?.(`data-lenis-prevent-horizontal`)||i&&e.hasAttribute?.(`data-lenis-prevent-touch`)||a&&e.hasAttribute?.(`data-lenis-prevent-wheel`)||this.options.allowNestedScroll&&this.hasNestedScroll(e,{deltaX:t,deltaY:n}))))return;if(this.isStopped||this.isLocked){r.cancelable&&r.preventDefault();return}if(!(this.options.syncTouch&&i||this.options.smoothWheel&&a)){this.isScrolling=`native`,this.animate.stop(),r.lenisStopPropagation=!0;return}let d=n;this.options.gestureOrientation===`both`?d=Math.abs(n)>Math.abs(t)?n:t:this.options.gestureOrientation===`horizontal`&&(d=t),(!this.options.overscroll||this.options.infinite||this.options.wrapper!==window&&this.limit>0&&(this.animatedScroll>0&&this.animatedScroll<this.limit||this.animatedScroll===0&&n>0||this.animatedScroll===this.limit&&n<0))&&(r.lenisStopPropagation=!0),r.cancelable&&r.preventDefault();let f=i&&this.options.syncTouch,p=i&&r.type===`touchend`;p&&(d=Math.sign(d)*Math.abs(this.velocity)**this.options.touchInertiaExponent),this.scrollTo(this.targetScroll+d,{programmatic:!1,...f?{lerp:p?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}})};resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit(`scroll`,this)}onNativeScroll=()=>{if(this._resetVelocityTimeout!==null&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent){this._preventNextNativeScrollEvent=!1;return}if(this.isScrolling===!1||this.isScrolling===`native`){let e=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-e,this.direction=Math.sign(this.animatedScroll-e),this.isStopped||(this.isScrolling=`native`),this.emit(),this.velocity!==0&&(this._resetVelocityTimeout=setTimeout(()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()},400))}};reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){if(this.isStopped){if(this.options.autoToggle){this.rootElement.style.removeProperty(`overflow`);return}this.internalStart()}}internalStart(){this.isStopped&&(this.reset(),this.isStopped=!1,this.emit())}stop(){if(!this.isStopped){if(this.options.autoToggle){this.rootElement.style.setProperty(`overflow`,`clip`);return}this.internalStop()}}internalStop(){this.isStopped||(this.reset(),this.isStopped=!0,this.emit())}raf=e=>{let t=e-(this.time||e);this.time=e,this.animate.advance(t*.001),this.options.autoRaf&&(this._rafId=requestAnimationFrame(this.raf))};scrollTo(e,{offset:n=0,immediate:r=!1,lock:i=!1,programmatic:a=!0,lerp:o=a?this.options.lerp:void 0,duration:s=a?this.options.duration:void 0,easing:c=a?this.options.easing:void 0,onStart:l,onComplete:u,force:d=!1,userData:p}={}){if(this.prefersReducedMotion&&(a?r=!0:(o=1,s=void 0,c=void 0)),(this.isStopped||this.isLocked)&&!d)return;let m=e,h=n;if(typeof m==`string`&&[`top`,`left`,`start`,`#`].includes(m))m=0;else if(typeof m==`string`&&[`bottom`,`right`,`end`].includes(m))m=this.limit;else{let e=null;if(typeof m==`string`?(e=m.startsWith(`#`)?document.getElementById(m.slice(1)):document.querySelector(m),e||(m===`#top`?m=0:console.warn(`Lenis: Target not found`,m))):m instanceof HTMLElement&&m?.nodeType&&(e=m),e){if(this.options.wrapper!==window){let e=this.rootElement.getBoundingClientRect();h-=this.isHorizontal?e.left:e.top}let t=e.getBoundingClientRect(),n=getComputedStyle(e),r=this.isHorizontal?Number.parseFloat(n.scrollMarginLeft):Number.parseFloat(n.scrollMarginTop),i=getComputedStyle(this.rootElement),a=this.isHorizontal?Number.parseFloat(i.scrollPaddingLeft):Number.parseFloat(i.scrollPaddingTop);m=(this.isHorizontal?t.left:t.top)+this.animatedScroll-(Number.isNaN(r)?0:r)-(Number.isNaN(a)?0:a)}}if(typeof m==`number`){if(m+=h,this.options.infinite){if(a){this.targetScroll=this.animatedScroll=this.scroll;let e=m-this.animatedScroll;e>this.limit/2?m-=this.limit:e<-this.limit/2&&(m+=this.limit)}}else m=t(0,m,this.limit);if(m===this.targetScroll){l?.(this),u?.(this);return}if(this.userData=p??{},r){this.animatedScroll=this.targetScroll=m,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),u?.(this),this.userData={},requestAnimationFrame(()=>{this.dispatchScrollendEvent()});return}a||(this.targetScroll=m),typeof s==`number`&&typeof c!=`function`?c=f:typeof c==`function`&&typeof s!=`number`&&(s=1),this.animate.fromTo(this.animatedScroll,m,{duration:s,easing:c,lerp:o,onStart:()=>{i&&(this.isLocked=!0),this.isScrolling=`smooth`,l?.(this)},onUpdate:(e,t)=>{this.isScrolling=`smooth`,this.lastVelocity=this.velocity,this.velocity=e-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=e,this.setScroll(this.scroll),a&&(this.targetScroll=e),t||this.emit(),t&&(this.reset(),this.emit(),u?.(this),this.userData={},requestAnimationFrame(()=>{this.dispatchScrollendEvent()}),this.preventNextNativeScrollEvent())}})}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame(()=>{this._preventNextNativeScrollEvent=!1})}hasNestedScroll(e,{deltaX:t,deltaY:n}){let r=Date.now();e._lenis||={};let i=e._lenis,a,o,s,c,l,u,d,f,p,m;if(r-(i.time??0)>2e3){i.time=Date.now();let t=window.getComputedStyle(e);if(i.computedStyle=t,a=[`auto`,`overlay`,`scroll`].includes(t.overflowX),o=[`auto`,`overlay`,`scroll`].includes(t.overflowY),l=[`auto`].includes(t.overscrollBehaviorX),u=[`auto`].includes(t.overscrollBehaviorY),i.hasOverflowX=a,i.hasOverflowY=o,!(a||o))return!1;d=e.scrollWidth,f=e.scrollHeight,p=e.clientWidth,m=e.clientHeight,s=d>p,c=f>m,i.isScrollableX=s,i.isScrollableY=c,i.scrollWidth=d,i.scrollHeight=f,i.clientWidth=p,i.clientHeight=m,i.hasOverscrollBehaviorX=l,i.hasOverscrollBehaviorY=u}else s=i.isScrollableX,c=i.isScrollableY,a=i.hasOverflowX,o=i.hasOverflowY,d=i.scrollWidth,f=i.scrollHeight,p=i.clientWidth,m=i.clientHeight,l=i.hasOverscrollBehaviorX,u=i.hasOverscrollBehaviorY;if(!(a&&s||o&&c))return!1;let h=Math.abs(t)>=Math.abs(n)?`horizontal`:`vertical`,g,_,v,y,b,x;if(h===`horizontal`)g=Math.round(e.scrollLeft),_=d-p,v=t,y=a,b=s,x=l;else if(h===`vertical`)g=Math.round(e.scrollTop),_=f-m,v=n,y=o,b=c,x=u;else return!1;return!x&&(g>=_||g<=0)?!0:(v>0?g<_:g>0)&&y&&b}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?`x`:`y`]}get isHorizontal(){return this.options.orientation===`horizontal`}get actualScroll(){let e=this.options.wrapper;return this.isHorizontal?e.scrollX??e.scrollLeft:e.scrollY??e.scrollTop}get scroll(){return this.options.infinite?i(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return this.limit===0?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(e){this._isScrolling!==e&&(this._isScrolling=e,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(e){this._isStopped!==e&&(this._isStopped=e,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(e){this._isLocked!==e&&(this._isLocked=e,this.updateClassName())}get isSmooth(){return this.isScrolling===`smooth`}get prefersReducedMotion(){return this.options.respectReducedMotion&&this.reducedMotionMediaQuery.matches}get className(){let e=`lenis`;return this.options.autoToggle&&(e+=` lenis-autoToggle`),this.isStopped&&(e+=` lenis-stopped`),this.isLocked&&(e+=` lenis-locked`),this.isScrolling&&(e+=` lenis-scrolling`),this.isScrolling===`smooth`&&(e+=` lenis-smooth`),e}updateClassName(){this.cleanUpClassName(),this.className.split(` `).forEach(e=>{this.rootElement.classList.add(e)})}cleanUpClassName(){for(let e of Array.from(this.rootElement.classList))(e===`lenis`||e.startsWith(`lenis-`))&&this.rootElement.classList.remove(e)}};globalThis.Lenis=p,globalThis.Lenis.prototype=p.prototype})();
@@ -1184,56 +542,32 @@ h2.hl{
 
   /* ============================================================
      SANFTES SCROLLEN — Lenis
-     ------------------------------------------------------------
-     Lenis fangt das native Scrollen ab und interpoliert es
-     framerate-unabhaengig (exponentielle Glaettung ueber die real
-     verstrichene Zeit — laeuft auf 60Hz wie auf 120Hz gleich schwer).
-     Trackpad-Momentum wird sauber gedaempft, daher wirkt der Nachlauf
-     kontrolliert statt uebersteuert.
-
-     STELLSCHRAUBEN (in der Lenis-Config unten):
-       lerp        Nachlauf pro Frame, 0..1. KLEINER = langsamer,
-                   traeger, mehr Nachschieben. 0.055 ≈ deutlich
-                   gleitend. Fuer noch schwerer: 0.04. Straffer: 0.09.
-       wheelMultiplier  Reichweite eines Radschritts. Groesser =
-                   man kommt mit einem Wisch weiter.
-       touchMultiplier  dasselbe fuer Touch (bleibt hier nativ).
-
-     Andere Effekte (Hero-Parallaxe, Reveal-Video, Nav) haengen unten
-     am 'scroll'-Event von Lenis bzw. laufen im selben rAF-Takt.
-     Die Instanz liegt global als window.__lenis.
      ============================================================ */
   var lenis = null;
   (function(){
     if (reduce || typeof Lenis === 'undefined') return;
 
     lenis = new Lenis({
-      lerp: 0.038,            // Grundtempo: kleiner = gleitender/traeger
-      wheelMultiplier: 1.0,   // Reichweite eines Radschritts
+      lerp: 0.038,
+      wheelMultiplier: 1.0,
       touchMultiplier: 1.2,
       smoothWheel: true,
-      // Touch bleibt nativ — auf dem Handy fuehlt sich das System-
-      // Scrollen besser an als jede Nachbildung.
       syncTouch: false
     });
     window.__lenis = lenis;
 
-    // Lenis in einer rAF-Schleife takten
     function raf(time){
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Overlays (Lightbox/Reel-Viewer) sperren die Seite via body.locked
-    // -> Lenis anhalten, damit dahinter nichts weiterscrollt.
     var mo = new MutationObserver(function(){
       if (document.body.classList.contains('locked')) lenis.stop();
       else lenis.start();
     });
     mo.observe(document.body, { attributes:true, attributeFilter:['class'] });
 
-    // Anker-Spruenge (Menue, "Top") sanft ueber Lenis fahren
     document.addEventListener('click', function(e){
       var a = e.target.closest('a[href^="#"]');
       if (!a) return;
@@ -1249,7 +583,7 @@ h2.hl{
 
 
   /* ============================================================
-     VOLLBILD — mit Fallback fuer iOS Safari, das nur Videos kennt
+     VOLLBILD
      ============================================================ */
   function goFullscreen(el, video){
     var doc = document;
@@ -1264,8 +598,7 @@ h2.hl{
   }
 
   var FS_TARGETS = {
-    trailer: { frame:'trailerFrame', video:'trailerVideo' },
-    reveal:  { frame:'srFrame',      video:'srVideo' }
+    trailer: { frame:'trailerFrame', video:'trailerVideo' }
   };
   document.querySelectorAll('[data-fs]').forEach(function(btn){
     btn.addEventListener('click', function(e){
@@ -1278,22 +611,6 @@ h2.hl{
 
   /* ============================================================
      HERO — Bild-Reveal am Mauszeiger + Raster-Parallaxe
-
-     Zwei Bildebenen liegen uebereinander. Die obere wird durch
-     eine weiche runde Maske freigelegt, die dem Zeiger mit
-     Verzoegerung folgt. Der Kegel atmet leicht (Radius pulsiert),
-     und jede Zeigerbewegung loest eine feine Ringwelle aus.
-     Das Raster darueber laeuft leicht gegen die Bewegung.
-
-     Die Maske ist ein CSS-Radialverlauf ueber Variablen, kein
-     Canvas. Ein Canvas pro Bild in eine Data-URL zu schreiben
-     kostet ein Vielfaches und sieht identisch aus.
-
-     EASE       Nachlauf des Lichtkegels (0.1 = traege)
-     GRID_EASE  Nachlauf der Rasterverschiebung
-     SCROLLPAR  Scroll-Parallaxe, Anteil der Fensterhoehe
-     PULSE_AMP  Staerke des Atmens, Anteil des Radius (0.06 = 6%)
-     PULSE_MS   Dauer eines Atemzugs
      ============================================================ */
   (function(){
     var hero   = document.getElementById('hero');
@@ -1310,7 +627,6 @@ h2.hl{
 
     var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
-    /* ---------- Scroll-Parallaxe (auch ohne Maus) ---------- */
     var sTicking = false;
     function scrollTick(){
       sTicking = false;
@@ -1321,9 +637,6 @@ h2.hl{
         'translate3d(0,' + (p * SCROLLPAR * window.innerHeight).toFixed(1) + 'px,0)';
     }
 
-    /* will-change nur aktiv halten, solange der Hero wirklich im Bild
-       ist — dauerhaft gesetzt belegt es eine grosse GPU-Ebene und
-       bremst das Compositing im Rest der Seite. */
     if ('IntersectionObserver' in window){
       new IntersectionObserver(function(e){
         media.style.willChange = e[0].isIntersecting ? 'transform' : 'auto';
@@ -1334,15 +647,13 @@ h2.hl{
     function onScroll(){
       if (!sTicking){ sTicking = true; requestAnimationFrame(scrollTick); }
     }
-    // An Lenis' geglaettete Position koppeln, sonst ans native Event.
     if (lenis){ lenis.on('scroll', onScroll); }
     else { window.addEventListener('scroll', onScroll, { passive: true }); }
     window.addEventListener('resize', onScroll);
     scrollTick();
 
-    if (!fine || reduce) return;   /* Touch / reduced motion: nur Basisbild */
+    if (!fine || reduce) return;
 
-    /* ---------- Lichtkegel ---------- */
     var reveal = document.getElementById('heroReveal');
 
     var mouse  = { x: null, y: null };
@@ -1370,23 +681,15 @@ h2.hl{
     applyCell();
     window.addEventListener('resize', applyCell);
 
-    /* Laeuft dauerhaft, solange der Hero im Bild ist — das Atmen
-       braucht einen kontinuierlichen Takt, nicht nur bei Bewegung. */
     function frame(now){
       if (!inView){ return; }
 
       smooth.x += (mouse.x - smooth.x) * EASE;
       smooth.y += (mouse.y - smooth.y) * EASE;
 
-      /* Atmen: Radius sinusfoermig um den Grundwert */
       var breathe = 1 + PULSE_AMP * Math.sin((now || 0) / PULSE_MS * Math.PI * 2);
       var radius  = rBase * breathe;
 
-      /* Ein einziger rect-Read pro Frame, fuer Maske UND Raster.
-         Maske: nur noch drei CSS-Variablen setzen (--mx/--my/--mr),
-         der Verlauf selbst steht fix in der CSS-Regel .hero-reveal.
-         Kein Redraw, kein toDataURL — das war der teure Teil, der
-         auch beim Scrollen jeden Frame Hauptthread-Zeit gefressen hat. */
       var r = media.getBoundingClientRect();
       if (reveal && r.width && r.height){
         reveal.style.setProperty('--mx', (smooth.x - r.left).toFixed(1) + 'px');
@@ -1394,7 +697,6 @@ h2.hl{
         reveal.style.setProperty('--mr', radius.toFixed(1) + 'px');
       }
 
-      /* Raster gegenlaeufig */
       if (pat && r.width && r.height){
         var cx = (smooth.x - r.left) / r.width  - 0.5;
         var cy = (smooth.y - r.top)  / r.height - 0.5;
@@ -1407,11 +709,10 @@ h2.hl{
       requestAnimationFrame(frame);
     }
 
-    /* ---------- Ringwelle bei Bewegung ---------- */
     function emitRipple(x, y){
       if (!ripple) return;
       var now = performance.now();
-      if (now - lastRipple < 220) return;   /* nicht zu dicht */
+      if (now - lastRipple < 220) return;
       lastRipple = now;
       var r = media.getBoundingClientRect();
       var dot = document.createElement('span');
@@ -1450,135 +751,7 @@ h2.hl{
 
 
   /* ============================================================
-     REVEAL — Video oeffnet ins Vollbild, scrubbt, schliesst
-     wieder; Schlagwoerter fliegen links/rechts ein.
-
-     Fortschritt p (0..1) aus der Scrollposition der Sektion.
-       0 .. OPEN_END      Rahmen faehrt auf, Clip startet bei t=0
-       OPEN_END .. CLOSE  Clip wird gescrubbt (voll offen)
-       CLOSE .. 1         Rahmen faehrt wieder zu
-
-     Scrubbing braucht v09-scrub.mp4 (Keyframe je Bild) und einen
-     Server, der Range-Anfragen beantwortet — sonst nur Standbild.
-     ============================================================ */
-  (function(){
-    var sec   = document.getElementById('reveal');
-    var stage = document.getElementById('srStage');
-    var frame = document.getElementById('srFrame');
-    var vid   = document.getElementById('srVideo');
-    var words = Array.prototype.slice.call(document.querySelectorAll('#srWords .sr-word'));
-    if (!sec || !stage || !frame || !vid) return;
-
-    var OPEN_END    = 0.20;   /* bis hier ist der Rahmen offen */
-    var CLOSE_START = 0.82;   /* ab hier faehrt er wieder zu   */
-
-    /* Das Video laeuft stumm (Scrub), daher kein Ton-Manager. */
-
-    /* Scrub-Vorbereitung: erst wenn Bilddaten da sind */
-    var dur = 0, scrubbable = false, seekQueued = null;
-    function seek(t){
-      if (vid.seeking){ seekQueued = t; return; }
-      try { vid.currentTime = t; } catch (e) {}
-    }
-    vid.addEventListener('seeked', function(){
-      if (seekQueued !== null){ var t = seekQueued; seekQueued = null; seek(t); }
-    });
-    function readyScrub(){
-      if (scrubbable || reduce) return;
-      if (vid.readyState < 2) return;
-      dur = vid.duration || 0;
-      if (!dur || !isFinite(dur)) return;
-      var canSeek = vid.seekable.length > 0 && vid.seekable.end(0) > 0.5;
-      if (!canSeek){ vid.loop = true; vid.play().catch(function(){}); return; }
-      scrubbable = true; vid.pause(); seek(0.001);
-    }
-    vid.addEventListener('loadeddata', readyScrub);
-    vid.addEventListener('canplay', readyScrub);
-    readyScrub();
-
-    var ticking = false;
-    var lastSeekTarget = -1;
-
-    function ease(t){ return 1 - Math.pow(1 - t, 3); }   /* easeOutCubic */
-
-    function draw(){
-      ticking = false;
-      var rect  = sec.getBoundingClientRect();
-      var total = sec.offsetHeight - window.innerHeight;
-      var p     = total > 0 ? clamp01(-rect.top / total) : 0;
-
-      /* Oeffnungsgrad 0..1..0 ueber die drei Phasen */
-      var open;
-      if (p < OPEN_END)          open = ease(p / OPEN_END);
-      else if (p > CLOSE_START)  open = ease(1 - (p - CLOSE_START) / (1 - CLOSE_START));
-      else                       open = 1;
-
-      var narrow = window.innerWidth < 760;
-      var sy = narrow ? 34 : 32;   /* Start-Inset vertikal (vh) */
-      var sx = narrow ? 8  : 32;   /* horizontal (vw)           */
-      var sr = 20;                 /* Eckradius (px)            */
-
-      frame.style.setProperty('--inset-y', (sy * (1 - open)).toFixed(2) + 'vh');
-      frame.style.setProperty('--inset-x', (sx * (1 - open)).toFixed(2) + 'vw');
-      frame.style.setProperty('--inset-r', (sr * (1 - open)).toFixed(1) + 'px');
-      stage.style.setProperty('--p', open.toFixed(3));
-
-      /* Untertitel/Regler nur im vollen Zustand */
-      stage.style.setProperty('--p-mid', (p > OPEN_END && p < CLOSE_START ? 1 : 0));
-
-      /* Scrub: Fortschritt der Halte-Phase auf die Clip-Laenge.
-         Feine Schwelle -> beim langsamen, sanften Scrollen laeuft das
-         Video fluessig mit; nur identische Frames werden uebersprungen,
-         damit der Decoder nicht sinnlos arbeitet. */
-      if (scrubbable && dur){
-        var span = CLOSE_START - OPEN_END;
-        var mid  = clamp01((p - OPEN_END) / span);
-        var target = mid * (dur - 0.05);
-        if (Math.abs(target - lastSeekTarget) > 0.008){
-          lastSeekTarget = target;
-          seek(target);
-        }
-      }
-
-      /* Schlagwoerter ab ihrem Schwellwert */
-      for (var i = 0; i < words.length; i++){
-        var at = parseFloat(words[i].getAttribute('data-at')) || 0;
-        words[i].classList.toggle('on', p >= at && p < CLOSE_START + 0.05);
-      }
-    }
-    function tick(){ if (!ticking){ ticking = true; requestAnimationFrame(draw); } }
-
-    /* Video nur abspielen/pausieren je nach Sichtbarkeit */
-    if ('IntersectionObserver' in window){
-      new IntersectionObserver(function(e){
-        if (e[0].isIntersecting){
-          if (!scrubbable && !reduce) vid.play().catch(function(){});
-        } else {
-          if (!scrubbable) vid.pause();
-        }
-      }, { threshold: 0.02 }).observe(sec);
-    }
-
-    if (reduce){
-      vid.loop = true; vid.play().catch(function(){});
-      words.forEach(function(w){ w.classList.add('on'); });
-      return;
-    }
-
-    if (lenis){ lenis.on('scroll', tick); }
-    else { window.addEventListener('scroll', tick, { passive: true }); }
-    window.addEventListener('resize', tick);
-    tick();
-  })();
-
-
-  /* ============================================================
-     TON — ein Manager fuer alle Videos ausser dem Hero-Clip
-
-     Browser erlauben Autoplay nur stumm. Deshalb starten alle Clips
-     stumm und werden erst durch eine Nutzeraktion hoerbar. Es kann
-     immer nur eine Quelle klingen; wer den Ton uebernimmt, stellt die
-     anderen still.
+     TON-MANAGER
      ============================================================ */
   var AUDIO = { on:false, current:null, videos:[], buttons:[] };
 
@@ -1594,7 +767,6 @@ h2.hl{
       b.setAttribute('aria-pressed', String(AUDIO.on));
     });
   }
-  /* Uebernimmt den Ton fuer dieses Video (z. B. wenn es sichtbar wird) */
   function audioClaim(video){ AUDIO.current = video; audioSync(); }
   function audioToggle(video){
     if (AUDIO.on && AUDIO.current === video){ AUDIO.on = false; }
@@ -1609,466 +781,9 @@ h2.hl{
     });
   }
 
-  /* ============================================================
-     GALERIE 1 — Raster
-     thumb: ../img/AI/gallery/  (1:1, 1080px)
-     full:  ../img/AI/full/     (Originalformat, max 1600px)
-     ============================================================ */
-  var FRAMES = [
-    { id:'g01', name:'Encounter',     stage:'scene', label:'Key scene 01' },
-    { id:'g02', name:'Eye level',     stage:'scene', label:'Key scene 02' },
-    { id:'g03', name:'Uplink',        stage:'study', label:'Rig study 01' },
-    { id:'g04', name:'Tethered',      stage:'study', label:'Rig study 02' },
-    { id:'g05', name:'Port array',    stage:'study', label:'Rig study 03' },
-    { id:'g06', name:'Hands pass',    stage:'study', label:'Anatomy test' },
-    { id:'g07', name:'Iris & skin',   stage:'study', label:'Shader test' },
-    { id:'g08', name:'Profile light', stage:'study', label:'Lighting test' }
-  ];
-
-  var STAGES = [
-    { key:'all',   label:'All frames' },
-    { key:'scene', label:'Key scenes' },
-    { key:'study', label:'Studies' }
-  ];
-
-  var grid = document.getElementById('galleryGrid');
-  grid.innerHTML = FRAMES.map(function(f, i){
-    return '<button class="tile" data-stage="' + f.stage + '" data-i="' + i + '" ' +
-             'aria-label="Open ' + f.name + ' full size">' +
-             '<img src="../img/AI/gallery/' + f.id + '.webp" alt="' + f.name + '" ' +
-                  (i < 4 ? '' : 'loading="lazy" ') + 'decoding="async" width="1080" height="1080">' +
-             '<span class="zoom" aria-hidden="true">' +
-               '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round">' +
-               '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>' +
-             '</span>' +
-             '<span class="cap"><span class="name">' + f.name + '</span>' +
-             '<span class="idx">' + f.label + '</span></span>' +
-           '</button>';
-  }).join('');
-  var tiles = Array.prototype.slice.call(grid.children);
-
-  var filters = document.getElementById('filters');
-  filters.innerHTML = STAGES.map(function(s){
-    var n = s.key === 'all' ? FRAMES.length
-          : FRAMES.filter(function(f){ return f.stage === s.key; }).length;
-    return '<button class="chip" data-stage="' + s.key + '" aria-pressed="' +
-           (s.key === 'all') + '">' + s.label + ' <span class="n">' + n + '</span></button>';
-  }).join('');
-
-  filters.addEventListener('click', function(e){
-    var chip = e.target.closest('.chip');
-    if (!chip) return;
-    var stage = chip.getAttribute('data-stage');
-    Array.prototype.forEach.call(filters.children, function(c){
-      c.setAttribute('aria-pressed', String(c === chip));
-    });
-    tiles.forEach(function(t){
-      t.classList.toggle('out', !(stage === 'all' || t.getAttribute('data-stage') === stage));
-    });
-  });
 
   /* ============================================================
-     LIGHTBOX
-     ============================================================ */
-  var lb      = document.getElementById('lightbox');
-  var lbImg   = document.getElementById('lbImg');
-  var lbTitle = document.getElementById('lbTitle');
-  var lbStageName = document.getElementById('lbStageName');
-  var lbCount = document.getElementById('lbCount');
-  var lbStrip = document.getElementById('lbStrip');
-  var lbOpener = null, lbIndex = 0;
-
-  lbStrip.innerHTML = FRAMES.map(function(f, i){
-    return '<button class="lb-thumb" data-i="' + i + '" aria-label="Go to ' + f.name + '">' +
-           '<img src="../img/AI/gallery/' + f.id + '.webp" alt="" loading="lazy" decoding="async"></button>';
-  }).join('');
-  var thumbs = Array.prototype.slice.call(lbStrip.children);
-
-  function show(i){
-    lbIndex = (i + FRAMES.length) % FRAMES.length;
-    var f = FRAMES[lbIndex];
-
-    lbImg.classList.remove('shown');
-    var next = new Image();
-    next.onload = function(){
-      lbImg.src = next.src;
-      lbImg.alt = f.name + ' — ' + f.label;
-      lbImg.classList.add('shown');
-    };
-    next.src = '../img/AI/full/' + f.id + '.webp';
-
-    lbTitle.textContent = f.name;
-    lbStageName.textContent = f.label;
-    lbCount.textContent = String(lbIndex + 1).padStart(2, '0') + ' / ' + FRAMES.length;
-
-    thumbs.forEach(function(t, j){ t.setAttribute('aria-current', String(j === lbIndex)); });
-    thumbs[lbIndex].scrollIntoView({ block:'nearest', inline:'center', behavior: reduce ? 'auto' : 'smooth' });
-
-    [lbIndex + 1, lbIndex - 1].forEach(function(j){
-      var n = FRAMES[(j + FRAMES.length) % FRAMES.length];
-      new Image().src = '../img/AI/full/' + n.id + '.webp';
-    });
-  }
-  function openLb(i, opener){
-    lbOpener = opener || null;
-    show(i);
-    lb.classList.add('on');
-    lb.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('locked');
-    document.getElementById('lbClose').focus();
-  }
-  function closeLb(){
-    lb.classList.remove('on');
-    lb.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('locked');
-    if (lbOpener) lbOpener.focus();
-  }
-
-  grid.addEventListener('click', function(e){
-    var tile = e.target.closest('.tile');
-    if (tile) openLb(parseInt(tile.getAttribute('data-i'), 10), tile);
-  });
-  lbStrip.addEventListener('click', function(e){
-    var t = e.target.closest('.lb-thumb');
-    if (t) show(parseInt(t.getAttribute('data-i'), 10));
-  });
-  document.getElementById('lbClose').addEventListener('click', closeLb);
-  document.getElementById('lbPrev').addEventListener('click', function(){ show(lbIndex - 1); });
-  document.getElementById('lbNext').addEventListener('click', function(){ show(lbIndex + 1); });
-  document.getElementById('lbStageEl').addEventListener('click', function(e){
-    if (e.target === this) closeLb();
-  });
-  document.addEventListener('keydown', function(e){
-    if (!lb.classList.contains('on')) return;
-    if (e.key === 'Escape')     closeLb();
-    if (e.key === 'ArrowRight') show(lbIndex + 1);
-    if (e.key === 'ArrowLeft')  show(lbIndex - 1);
-  });
-  var tx = 0, ty = 0;
-  lb.addEventListener('touchstart', function(e){
-    tx = e.changedTouches[0].clientX; ty = e.changedTouches[0].clientY;
-  }, { passive:true });
-  lb.addEventListener('touchend', function(e){
-    var dx = e.changedTouches[0].clientX - tx;
-    var dy = e.changedTouches[0].clientY - ty;
-    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) show(lbIndex + (dx < 0 ? 1 : -1));
-    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) closeLb();
-  }, { passive:true });
-
-  /* ============================================================
-     GALERIE 2 — Akkordeon-Slider
-
-     Der Streifen driftet nach links, laesst sich mit den Pfeilen
-     springen und mit der Maus oder dem Finger ziehen. Ein Klick auf
-     eine Kachel oeffnet sie gross in der Reel-Lightbox.
-
-     type 'video' -> ../img/AI/videos/eve/<id>.mp4 + ../img/AI/eve/<id>-poster.jpg
-     type 'image' -> ../img/AI/eve/<id>.webp
-     ============================================================ */
-  var REEL = [
-    { id:'v01', type:'video', name:'Trailer plate 01', note:'Teaser · 00:08' },
-    { id:'v02', type:'video', name:'Trailer plate 02', note:'Teaser · 00:05' },
-    { id:'v03', type:'video', name:'Trailer plate 03', note:'Teaser · 00:05' },
-    { id:'v04', type:'video', name:'Trailer plate 04', note:'Teaser · 00:10' },
-    { id:'v05', type:'video', name:'Trailer plate 05', note:'Teaser · 00:06' },
-    { id:'v06', type:'video', name:'Trailer plate 06', note:'Teaser · 00:08' },
-    { id:'v07', type:'video', name:'Trailer plate 07', note:'Teaser · 00:08' },
-    { id:'v08', type:'video', name:'Trailer plate 08', note:'Teaser · 00:08' },
-    { id:'v10', type:'video', name:'Motion pass',      note:'Image-to-video · 00:10' },
-    { id:'i01', type:'image', name:'Costume turnaround', note:'Character sheet' },
-    { id:'i02', type:'image', name:'Glove study',        note:'Material pass' },
-    { id:'i03', type:'image', name:'Weave macro',        note:'Material pass' },
-    { id:'i04', type:'image', name:'Hip rig',            note:'Material pass' },
-    { id:'i05', type:'image', name:'Hair pass',          note:'Shader test' }
-  ];
-
-  function reelPoster(it){
-    return it.type === 'video' ? '../img/AI/eve/' + it.id + '-poster.jpg'
-                               : '../img/AI/eve/' + it.id + '.webp';
-  }
-
-  // Fisher-Yates — bei jedem Aufruf eine neue Reihenfolge
-  function shuffle(a){
-    var c = a.slice();
-    for (var i = c.length - 1; i > 0; i--){
-      var j = Math.floor(Math.random() * (i + 1));
-      var t = c[i]; c[i] = c[j]; c[j] = t;
-    }
-    return c;
-  }
-
-  var order    = shuffle(REEL);
-  var accTrack = document.getElementById('accTrack');
-  var accWrap  = document.getElementById('accWrap');
-
-  function itemHtml(it, i){
-    var media = it.type === 'video'
-      ? '<video src="../img/AI/videos/eve/' + it.id + '.mp4" poster="../img/AI/eve/' + it.id + '-poster.jpg" ' +
-        'muted loop playsinline preload="none"></video>'
-      : '<img src="../img/AI/eve/' + it.id + '.webp" alt="' + it.name + '" loading="lazy" decoding="async">';
-    var badge = it.type === 'video'
-      ? '<span class="badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Clip</span>'
-      : '<span class="badge">Still</span>';
-    return '<button class="acc-item" data-i="' + (i % order.length) + '" aria-label="Open ' + it.name + '">' +
-             media + badge + '<span class="shade"></span>' +
-             '<span class="label"><span class="lt">' + it.name + '</span>' +
-             '<span class="ls">' + it.note + '</span></span>' +
-           '</button>';
-  }
-
-  // Zweimal ausgeben, damit die Schleife nahtlos umspringt
-  accTrack.innerHTML = order.map(itemHtml).concat(order.map(itemHtml)).join('');
-  document.getElementById('accCount').textContent =
-    REEL.filter(function(r){ return r.type === 'video'; }).length + ' clips · ' +
-    REEL.filter(function(r){ return r.type === 'image'; }).length + ' stills';
-
-  var accItems = Array.prototype.slice.call(accTrack.children);
-  var fine     = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-
-  /* ---------- Bewegung ---------- */
-  var DRIFT = 26;        // Pixel pro Sekunde
-  var x = 0, targetX = 0, half = 0;
-  var accRaf = null, accVisible = false, dragging = false, holding = false;
-  var last = 0;
-
-  function measure(){
-    half = accTrack.scrollWidth / 2;
-  }
-  function stepSize(){
-    var el = accItems[0];
-    return el ? el.getBoundingClientRect().width + 12 : 200;
-  }
-  var ARROW_JUMP = 3;   // Bilder pro Pfeilklick
-  function accLoop(ts){
-    var dt = last ? Math.min(0.05, (ts - last) / 1000) : 0;
-    last = ts;
-
-    /* Neu messen, statt uns auf eine einmalig gecachte Haelfte zu
-       verlassen: sobald eine Kachel per Hover/Focus aufklappt oder
-       wieder zuklappt, aendert sich accTrack.scrollWidth sofort.
-       Ohne staendiges Nachmessen lief der Umbruchpunkt "half" nach
-       jeder Interaktion auseinander und der Streifen sprang oder
-       blieb versetzt stehen — auf jeder Bildschirmgroesse. */
-    measure();
-
-    if (!holding && !dragging) targetX += DRIFT * dt;
-    x += (targetX - x) * 0.12;
-
-    if (half > 0){
-      while (x > half){ x -= half; targetX -= half; }
-      while (x < 0)   { x += half; targetX += half; }
-    }
-    accTrack.style.transform = 'translate3d(' + (-x).toFixed(2) + 'px,0,0)';
-    accRaf = accVisible ? requestAnimationFrame(accLoop) : null;
-  }
-
-  document.getElementById('accPrev').addEventListener('click', function(){ targetX -= stepSize() * ARROW_JUMP; });
-  document.getElementById('accNext').addEventListener('click', function(){ targetX += stepSize() * ARROW_JUMP; });
-
-  /* ---------- Ziehen mit Maus und Finger ----------
-     Pfeile UND die Kacheln selbst liegen als Kinder innerhalb von
-     accWrap. setPointerCapture(accWrap) sofort bei pointerdown hat
-     bisher jedes nachfolgende native "click"-Event auf diesen
-     Kindern verschluckt — Pfeile sahen tot aus, und Kacheln oeffneten
-     die Reel-Lightbox nur unzuverlaessig. Jetzt wird der Pointer erst
-     eingefangen, sobald wirklich eine Ziehbewegung ueber der
-     Toleranzschwelle vorliegt — ein reiner Tap/Klick auf Pfeil oder
-     Kachel loest dann ganz normal sein eigenes Click-Event aus. */
-  var DRAG_THRESHOLD = 6;
-  var dragStartX = 0, dragStartTarget = 0, moved = 0, activePointerId = null, captured = false;
-  accWrap.addEventListener('pointerdown', function(e){
-    if (e.target.closest('.acc-nav')) return;
-    activePointerId = e.pointerId;
-    dragStartX = e.clientX; dragStartTarget = targetX;
-    moved = 0; dragging = false; captured = false;
-  });
-  accWrap.addEventListener('pointermove', function(e){
-    if (activePointerId === null || e.pointerId !== activePointerId) return;
-    var dx = e.clientX - dragStartX;
-    moved = Math.max(moved, Math.abs(dx));
-    if (!dragging && moved > DRAG_THRESHOLD){
-      dragging = true;
-      accWrap.classList.add('dragging');
-      if (!captured){ accWrap.setPointerCapture(activePointerId); captured = true; }
-    }
-    if (dragging) targetX = dragStartTarget - dx;
-  });
-  function endDrag(){
-    if (captured && activePointerId !== null){
-      try { accWrap.releasePointerCapture(activePointerId); } catch (err) {}
-    }
-    dragging = false; captured = false; activePointerId = null;
-    accWrap.classList.remove('dragging');
-  }
-  accWrap.addEventListener('pointerup', endDrag);
-  accWrap.addEventListener('pointercancel', endDrag);
-
-  /* ---------- Aufklappen und oeffnen ---------- */
-  function openItem(el){
-    accItems.forEach(function(other){
-      if (other === el) return;
-      other.classList.remove('open');
-      var v = other.querySelector('video');
-      if (v && !v.paused) v.pause();
-    });
-    el.classList.add('open');
-    var vid = el.querySelector('video');
-    if (vid){
-      if (vid.preload === 'none') vid.preload = 'auto';
-      vid.muted = true;            // Moving Cut laeuft grundsaetzlich stumm
-      vid.play().catch(function(){});
-    }
-    holding = true;
-  }
-  function closeItem(el){
-    el.classList.remove('open');
-    var vid = el.querySelector('video');
-    if (vid) vid.pause();
-    if (!accTrack.querySelector('.acc-item.open')) holding = false;
-  }
-
-  accItems.forEach(function(el){
-    if (fine){
-      el.addEventListener('mouseenter', function(){ openItem(el); });
-      el.addEventListener('mouseleave', function(){ closeItem(el); });
-      el.addEventListener('focus',      function(){ openItem(el); });
-      el.addEventListener('blur',       function(){ closeItem(el); });
-    }
-    el.addEventListener('click', function(){
-      if (moved > 8) return;                 // war eine Ziehbewegung, kein Klick
-      reelOpen(parseInt(el.getAttribute('data-i'), 10), el);
-    });
-  });
-
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function(e){
-      accVisible = e[0].isIntersecting;
-      if (accVisible){
-        measure();
-        last = 0;
-        if (!accRaf) accRaf = requestAnimationFrame(accLoop);
-      } else {
-        accItems.forEach(function(el){
-          el.classList.remove('open');
-          var v = el.querySelector('video');
-          if (v && !v.paused) v.pause();
-        });
-        holding = false;
-      }
-    }, { threshold: 0 }).observe(accWrap);
-  } else {
-    accVisible = true; measure(); accRaf = requestAnimationFrame(accLoop);
-  }
-
-  var reMeasure;
-  window.addEventListener('resize', function(){
-    clearTimeout(reMeasure);
-    reMeasure = setTimeout(measure, 200);
-  });
-  window.addEventListener('load', measure);
-  window.addEventListener('load', function(){ if (lenis) lenis.resize(); });
-
-  /* ============================================================
-     REEL-LIGHTBOX — Bild oder Clip in gross
-     ============================================================ */
-  var rlb      = document.getElementById('reelBox');
-  var rlbMedia = document.getElementById('rlbMedia');
-  var rlbImg   = document.getElementById('rlbImg');
-  var rlbVideo = document.getElementById('rlbVideo');
-  var rlbTitle = document.getElementById('rlbTitle');
-  var rlbNote  = document.getElementById('rlbNote');
-  var rlbCount = document.getElementById('rlbCount');
-  var rlbStrip = document.getElementById('rlbStrip');
-  var rlbIndex = 0, rlbOpener = null;
-
-  rlbStrip.innerHTML = order.map(function(it, i){
-    return '<button class="lb-thumb" data-i="' + i + '" aria-label="Go to ' + it.name + '">' +
-           '<img src="' + reelPoster(it) + '" alt="" loading="lazy" decoding="async"></button>';
-  }).join('');
-  var rlbThumbs = Array.prototype.slice.call(rlbStrip.children);
-
-  function reelShow(i){
-    rlbIndex = (i + order.length) % order.length;
-    var it = order[rlbIndex];
-
-    rlbImg.classList.remove('shown');
-    rlbVideo.classList.remove('shown');
-    rlbVideo.pause();
-
-    if (it.type === 'video'){
-      rlbMedia.classList.add('is-video');
-      rlbVideo.src = '../img/AI/videos/eve/' + it.id + '.mp4';
-      rlbVideo.poster = '../img/AI/eve/' + it.id + '-poster.jpg';
-      rlbVideo.muted = true;               // Moving Cut laeuft grundsaetzlich stumm
-      rlbVideo.loop = true;
-      rlbVideo.play().catch(function(){});
-      rlbVideo.classList.add('shown');
-    } else {
-      rlbMedia.classList.remove('is-video');
-      var img = new Image();
-      img.onload = function(){
-        rlbImg.src = img.src;
-        rlbImg.alt = it.name + ' — ' + it.note;
-        rlbImg.classList.add('shown');
-      };
-      img.src = '../img/AI/eve/' + it.id + '.webp';
-    }
-
-    rlbTitle.textContent = it.name;
-    rlbNote.textContent  = it.note;
-    rlbCount.textContent = String(rlbIndex + 1).padStart(2, '0') + ' / ' + order.length;
-    rlbThumbs.forEach(function(t, j){ t.setAttribute('aria-current', String(j === rlbIndex)); });
-    rlbThumbs[rlbIndex].scrollIntoView({ block:'nearest', inline:'center', behavior: reduce ? 'auto' : 'smooth' });
-  }
-
-  function reelOpen(i, opener){
-    rlbOpener = opener || null;
-    reelShow(i);
-    rlb.classList.add('on');
-    rlb.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('locked');
-    document.getElementById('rlbClose').focus();
-  }
-  function reelClose(){
-    rlbVideo.pause();
-    rlb.classList.remove('on');
-    rlb.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('locked');
-    if (rlbOpener) rlbOpener.focus();
-  }
-
-  document.getElementById('rlbClose').addEventListener('click', reelClose);
-  document.getElementById('rlbPrev').addEventListener('click', function(){ reelShow(rlbIndex - 1); });
-  document.getElementById('rlbNext').addEventListener('click', function(){ reelShow(rlbIndex + 1); });
-  document.getElementById('rlbFs').addEventListener('click', function(){
-    goFullscreen(order[rlbIndex].type === 'video' ? rlbVideo : rlbMedia, rlbVideo);
-  });
-  rlbStrip.addEventListener('click', function(e){
-    var t = e.target.closest('.lb-thumb');
-    if (t) reelShow(parseInt(t.getAttribute('data-i'), 10));
-  });
-  document.getElementById('rlbStage').addEventListener('click', function(e){
-    if (e.target === this) reelClose();
-  });
-  document.addEventListener('keydown', function(e){
-    if (!rlb.classList.contains('on')) return;
-    if (e.key === 'Escape')     reelClose();
-    if (e.key === 'ArrowRight') reelShow(rlbIndex + 1);
-    if (e.key === 'ArrowLeft')  reelShow(rlbIndex - 1);
-  });
-  var rtx = 0, rty = 0;
-  rlb.addEventListener('touchstart', function(e){
-    rtx = e.changedTouches[0].clientX; rty = e.changedTouches[0].clientY;
-  }, { passive:true });
-  rlb.addEventListener('touchend', function(e){
-    var dx = e.changedTouches[0].clientX - rtx;
-    var dy = e.changedTouches[0].clientY - rty;
-    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) reelShow(rlbIndex + (dx < 0 ? 1 : -1));
-    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) reelClose();
-  }, { passive:true });
-
-  /* ============================================================
-     TRAILER — startet erst auf Klick, dann mit Ton
+     TRAILER
      ============================================================ */
   var trFrame = document.getElementById('trailerFrame');
   var trVideo = document.getElementById('trailerVideo');
@@ -2080,7 +795,7 @@ h2.hl{
   audioButton(trSnd, trVideo);
 
   function trailerStart(){
-    AUDIO.on = true;              // Klick ist die Nutzeraktion, die Ton erlaubt
+    AUDIO.on = true;
     audioClaim(trVideo);
     trVideo.play().then(function(){
       trFrame.classList.add('playing');
@@ -2110,12 +825,12 @@ h2.hl{
      ============================================================ */
   var labNav = document.getElementById('labNav');
   if (labNav) {
-    var onScroll = function(){
+    var onScrollNav = function(){
       labNav.classList.toggle('solid', window.scrollY > 40);
     };
-    onScroll();
-    if (lenis){ lenis.on('scroll', onScroll); }
-    else { window.addEventListener('scroll', onScroll, { passive: true }); }
+    onScrollNav();
+    if (lenis){ lenis.on('scroll', onScrollNav); }
+    else { window.addEventListener('scroll', onScrollNav, { passive: true }); }
   }
 
   /* ============================================================
@@ -2125,17 +840,13 @@ h2.hl{
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
         if (!en.isIntersecting) return;
-        if (en.target.classList.contains('tile')){
-          var i = Array.prototype.indexOf.call(en.target.parentNode.children, en.target);
-          en.target.style.transitionDelay = ((i % 4) * 0.07).toFixed(2) + 's';
-        }
         en.target.classList.add('in');
         io.unobserve(en.target);
       });
     }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
-    document.querySelectorAll('.rv, .tile').forEach(function(el){ io.observe(el); });
+    document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
   } else {
-    document.querySelectorAll('.rv, .tile').forEach(function(el){ el.classList.add('in'); });
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
   }
 })();
 </script>
